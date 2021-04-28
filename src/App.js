@@ -1,25 +1,43 @@
-import logo from './logo.svg';
 import './App.css';
+import Authpage from './login/Authpage';
+import React from 'react';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import LoginForm from './login/LoginForm';
+import RegisterForm from './login/RegisterForm';
+import ResetForm from './login/ResetForm';
+import Mainpage from './mainpage/Mainpage';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+
+class App extends React.Component{  
+
+  render(){
+    return (
+      
+        <Router>
+          <Switch>
+
+            <Route path='/ws'>
+              <Mainpage/>
+            </Route>
+
+            <Route path='/register'>
+              <Authpage form={<RegisterForm/>}/>
+            </Route>
+
+            <Route path='/reset'>
+              <Authpage form={<ResetForm/>}/>
+            </Route>
+
+            <Route path='/'>
+              <Authpage form={<LoginForm/>}/>
+            </Route>
+
+          </Switch>
+        </Router>
+      
+    );
+  }
 }
 
 export default App;
