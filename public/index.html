@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
     <script src="https://kit.fontawesome.com/6abfa1fd4a.js" crossorigin="anonymous"></script>
 
+    <!-- Imports for AdminLTE -->
+    <link rel="stylesheet" href="%PUBLIC_URL%/adminlte/dist/css/adminlte.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
@@ -18,8 +23,14 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>Conference Management System</title>
   </head>
-  <body>
+  <body class="hold-transition">
+    <base href="/"/>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+
+    <!-- AdminLTE App -->
+    <script src="%PUBLIC_URL%/adminlte/plugins/jquery/jquery.min.js"></script>
+    <script src="%PUBLIC_URL%/adminlte/dist/js/adminlte.min.js"></script>
+    
   </body>
 </html>

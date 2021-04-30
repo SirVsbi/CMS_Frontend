@@ -10,7 +10,6 @@ import Mainpage from './mainpage/Mainpage';
 
 
 class App extends React.Component{  
-
   render(){
     return (
       
@@ -37,7 +36,9 @@ class App extends React.Component{
         </Router>
       
     );
+
   }
+  
 }
 
 export default App;

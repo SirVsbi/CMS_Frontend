@@ -33,6 +33,9 @@ class LoginForm extends React.Component{
         this.logInAttempt = this.logInAttempt.bind(this);
         this.onLogInSuccess = this.onLogInSuccess.bind(this);
         this.onLogInFailed = this.onLogInFailed.bind(this);
+
+        this.onGithubButtonClick = this.onGithubButtonClick.bind(this);
+        this.onGoogleButtonClick = this.onGoogleButtonClick.bind(this);
     }
 
     validateForm(){
@@ -140,20 +143,36 @@ class LoginForm extends React.Component{
         this.setState({wait: false, logInFailed: true});
     }
 
+    onGithubButtonClick(){
+        console.log('Login with Github');
+    }
+
+    onGoogleButtonClick(){
+        console.log('Login with Google');
+    }
+
     render(){
         return (
             <form className="form-signin" onSubmit={this.handleSubmit} noValidate>
-                <h1 className="h3 mb-3 font-weight-normal" > Sign in</h1>
+                <h1 className="h3 mb-3 font-weight-normal" style={{textAlign: 'center'}}> Sign in</h1>
+
                 {this.state.logInFailed &&
                     <div className="alert alert-danger" role="alert">
                         <strong>Invalid credentials!</strong> If you don't remember your login credentials, you can <Link to='/reset' className='alert-link d-inline'>reset your password</Link>.
                     </div>
                 }
-                <div className="form-group">
+                <div className="social-login"> 
+                    <button className="btn btn-dark github-btn social-btn" style={{marginBottom: 5}} type="button" onClick={this.onGithubButtonClick}><span><i className="fab fa-github fa-lg"  /> Sign in with Github</span> </button> <br/>
+                    <button className="btn google-btn social-btn" type="button" onClick={this.onGoogleButtonClick}><span><i className="fab fa-google fa-lg" /> Sign in with Google</span> </button>
+                </div>
+                
+                <p style={{textAlign: 'center'}}> OR</p>
+
+                <div>
                     <input type="text" id="inputUser" name="user" className={"form-control " + (this.state.valid.user?'':'is-invalid')} placeholder="Username or email address" onChange={this.handleInputChange} />
                     <span className="invalid-feedback" >{this.state.errors.user}</span>
                 </div>
-                <div className="form-group">
+                <div>
                     <input type="password" id="inputPassword" name="password" className={"form-control " + (this.state.valid.password?'':'is-invalid')} placeholder="Password" onChange={this.handleInputChange} />
                     <span className="invalid-feedback" >{this.state.errors.password}</span>
 

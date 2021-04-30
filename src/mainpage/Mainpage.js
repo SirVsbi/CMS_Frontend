@@ -1,9 +1,16 @@
 import React from 'react';
-import { Redirect } from 'react-router';
+import { Redirect, Route } from 'react-router-dom';
+import Content from './content/Content';
 import './Mainpage.css';
+import Profile from './profile/Profile';
+import Sidebar from './sidebar/Sidebar';
 
 
 class Mainpage extends React.Component{
+    constructor(props){
+        super(props);
+        this.location = '/ws';
+    }
 
     render(){
         // Here should be a token validation
@@ -16,7 +23,7 @@ class Mainpage extends React.Component{
         }else{
             let tsLast = localStorage.getItem('ts');
             let ts = Date.now() / 1000;
-            if (tsLast && ts - tsLast > 30){ // 30 seconds lifetime
+            if (tsLast && ts - tsLast > 3000000){ 
                 localStorage.removeItem('username');
                 localStorage.removeItem('ts');
                 loggedIn = false;
@@ -27,10 +34,31 @@ class Mainpage extends React.Component{
             return <Redirect to='/'/>
         }
         return (
-            <div style={{backgroundImage: 'url(/img/bgempty.png'}} className="responsive-background">
-                Mainpage loaded properly! <br/>
-                Username: {localStorage.getItem('username')} <br/>
-                You shouldn't be able to go back to '/', '/register' and '/reset'. After 30 seconds you shouldn't be able to come here unless you log in again. <br/>
+            <div id="main" className="sidebar-mini layout-fixed">
+                <Sidebar/>
+
+                {/* Content pages */}
+
+                <Route path='/ws/1'>
+                    <Content title="Test page 1" content={<div>page 1</div>} hierarchy={[{ name: 'Home', to: this.location }]}/>
+                </Route>
+
+                <Route path='/ws/2'>
+                    <Content title="Test page 2" content={<div>page 2</div>} hierarchy={[{ name: 'Home', to: this.location }]}/>
+                </Route>
+
+                <Route path='/ws/3'>
+                    <Content title="Test page 3" content={<div>page 3</div>} hierarchy={[{ name: 'Home', to: this.location }]}/>
+                </Route>
+
+                <Route path='/ws/profile'>
+                    <Content title="Your profile" content={<Profile/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
+                </Route>
+
+                <Route exact path='/ws'>
+                    <Content title="Front page" content={<div>This is the front page. Use navigation to navigate.</div>} hierarchy={[{ name: 'Home', to: this.location}]}/>
+                </Route>
+                
 
             </div>
         )
