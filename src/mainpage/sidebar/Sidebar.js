@@ -30,6 +30,20 @@ export default class Sidebar extends React.Component{
                     <nav className="mt-2">
                         <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                             <SidebarButton name="Dashboard" iconClass="fa-bars" to="/ws" />
+                            <SidebarButton name="Invitations" iconClass="fa-envelope" to="/ws/invitations"/>
+                            <SidebarButton name="Conferences" iconClass="fa-bullhorn" children= {
+                                [
+                                    { key: 'conference-createjoin', name: 'Create or join conference', to: '/ws/conference/join' },
+                                    { key: 'conference-view', name: 'View your conferences', to: '/ws/conference' }
+                                ]
+                            }/>
+                            <SidebarButton name="Papers" iconClass="fa-scroll" children= {
+                                [
+                                    { key: 'paper-view', name: 'Your papers', to: '/ws/paper' },
+                                    { key: 'paper-submit', name: 'Submit paper', to: '/ws/paper/create' },
+                                    { key: 'paper-review', name: 'Review papers', to: '/ws/paper/review' }
+                                ]
+                            }/>
                             <SidebarButton name="Tree button" iconClass="fa-car" children= {
                                 [
                                     { key: 'subitem-1', name: 'Classic subitem', to: '/ws/1' },
