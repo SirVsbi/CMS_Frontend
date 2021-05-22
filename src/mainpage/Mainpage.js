@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import ConferenceForms from './content/conference/ConferenceForms';
+import ConferenceView from './content/conference/ConferenceView';
 import Content from './content/Content';
 import './Mainpage.css';
 import Profile from './profile/Profile';
@@ -58,6 +59,10 @@ class Mainpage extends React.Component{
 
                 <Route path='/ws/conference/join'>
                     <Content title="Create or Join a conference" content={<ConferenceForms/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
+                </Route>
+
+                <Route exact path='/ws/conference'>
+                    <Content title="View conferences" content={<ConferenceView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
                 <Route exact path='/ws'>
