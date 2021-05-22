@@ -2,11 +2,6 @@ import React from 'react';
 
 
 export default class ConferenceFormsCreate extends React.Component{
-    constructor(props){
-        super(props);
-
-    }
-
     componentDidMount(){
         const s = document.createElement('script');
         s.type = 'text/javascript';

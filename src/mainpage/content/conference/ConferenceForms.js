@@ -4,11 +4,6 @@ import ConferenceFormsJoin from './ConferenceFormsJoin';
 
 
 export default class ConferenceForms extends React.Component{
-    constructor(props){
-        super(props);
-
-    }
-
     componentDidMount(){
         const s = document.createElement('script');
         s.type = 'text/javascript';
@@ -25,11 +20,6 @@ export default class ConferenceForms extends React.Component{
                 <div className="row">
                     <div className="col-md-6">
                         <ConferenceFormsCreate/>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-6">
-                        <ConferenceFormsJoin/>
                     </div>
                 </div>
             </div>

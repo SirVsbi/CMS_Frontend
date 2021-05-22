@@ -2,12 +2,7 @@ import React from 'react';
 
 
 export default class ConferenceFormsJoin extends React.Component{
-    constructor(props){
-        super(props);
-
-    }
-
-    
+ 
 
     render(){
         return (

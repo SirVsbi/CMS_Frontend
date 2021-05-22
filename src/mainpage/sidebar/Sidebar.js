@@ -33,8 +33,8 @@ export default class Sidebar extends React.Component{
                             <SidebarButton name="Invitations" iconClass="fa-envelope" to="/ws/invitations"/>
                             <SidebarButton name="Conferences" iconClass="fa-bullhorn" children= {
                                 [
-                                    { key: 'conference-createjoin', name: 'Create or join conference', to: '/ws/conference/join' },
-                                    { key: 'conference-view', name: 'View your conferences', to: '/ws/conference' }
+                                    { key: 'conference-create', name: 'Create a conference', to: '/ws/conference/create' },
+                                    { key: 'conference-view', name: 'View conferences', to: '/ws/conference' }
                                 ]
                             }/>
                             <SidebarButton name="Papers" iconClass="fa-scroll" children= {

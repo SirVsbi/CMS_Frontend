@@ -20,20 +20,20 @@ export default class ProfileMain extends React.Component{
             <div className="card card-primary card-outline">
                 <div className="card-body box-profile">
                     <div className="text-center">
-                        <img className="profile-user-img img-fluid img-circle" src={this.picture} alt="User profile picture" />
+                        <img className="profile-user-img img-fluid img-circle" src={this.picture} alt=""/>
                     </div>
                     <h3 className="profile-username text-center">{this.name}</h3>
                     <p className="text-muted text-center">{this.role}</p>
                     <ul className="list-group list-group-unbordered mb-3">
-                    <li className="list-group-item">
-                        <b>Joined on </b> <a className="float-right">{this.stats.joinedDate}</a>
-                    </li>
-                    <li className="list-group-item">
-                        <b>Some stats</b> <a className="float-right">{this.stats.stats1}</a>
-                    </li>
-                    <li className="list-group-item">
-                        <b>Some other stats</b> <a className="float-right">{this.stats.stats2}</a>
-                    </li>
+                        <li className="list-group-item">
+                            <b>Joined on </b> <span className="float-right">{this.stats.joinedDate}</span>
+                        </li>
+                        <li className="list-group-item">
+                            <b>Some stats</b> <span className="float-right">{this.stats.stats1}</span>
+                        </li>
+                        <li className="list-group-item">
+                            <b>Some other stats</b> <span className="float-right">{this.stats.stats2}</span>
+                        </li>
                     </ul>
                     <a href="/ws/profile" className="btn btn-primary btn-block"><b>Something</b></a>
                 </div>

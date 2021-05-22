@@ -14,11 +14,11 @@ export default class ProfileTabsView extends React.Component{
     }
 
     linkClassName(id){
-        return (this.state.activeTab == id?'nav-link active':'nav-link');
+        return (this.state.activeTab === id?'nav-link active':'nav-link');
     }
 
     tabClassName(id){
-        return (this.state.activeTab == id?'tab-pane active':'tab-pane');
+        return (this.state.activeTab === id?'tab-pane active':'tab-pane');
     }
 
     onTabLinkClick(event){

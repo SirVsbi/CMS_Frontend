@@ -57,8 +57,8 @@ class Mainpage extends React.Component{
                     <Content title="Your profile" content={<Profile/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
-                <Route path='/ws/conference/join'>
-                    <Content title="Create or Join a conference" content={<ConferenceForms/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
+                <Route path='/ws/conference/create'>
+                    <Content title="Create a conference" content={<ConferenceForms/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
                 <Route exact path='/ws/conference'>
