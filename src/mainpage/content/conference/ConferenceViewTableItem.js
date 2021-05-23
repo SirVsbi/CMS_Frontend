@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from "react-router-dom";
 
 
 export default class ConferenceViewTableItem extends React.Component{
@@ -14,9 +15,14 @@ export default class ConferenceViewTableItem extends React.Component{
         this.endDate = props.endDate || "Unknown";
         this.timeLeft = '';
         this.timeDone = 0;
+
+        this.deadline = props.deadline || "Unknown";
+
         let startDateUtc = Date.parse(this.startDate);
         let endDateUtc = Date.parse(this.endDate);
-        
+        let deadlineUtc = Date.parse(this.deadline);
+
+
         if (!isNaN(startDateUtc) && !isNaN(endDateUtc)){
             let now = Date.now();
             this.timeDone = (now-startDateUtc) / (endDateUtc - startDateUtc) * 100;
@@ -43,6 +49,7 @@ export default class ConferenceViewTableItem extends React.Component{
         this.canEdit = (props.canEdit!==undefined?props.canEdit:true);
         this.canDelete = (props.canDelete!==undefined?props.canDelete:true);
 
+        this.canSubmit = Date.now() < deadlineUtc;
     }
 
     render(){
@@ -71,6 +78,7 @@ export default class ConferenceViewTableItem extends React.Component{
                     </div>
                     <small>{this.timeLeft} left</small>
                 </td>
+                <td>{this.deadline}</td>
                 <td>        
                     <span className={"badge " + this.status.className}>{this.status.title}</span>
                 </td>
@@ -92,6 +100,12 @@ export default class ConferenceViewTableItem extends React.Component{
                             <i className="fas fa-trash"/>
                             Delete
                         </button>
+                    }
+                    {this.canSubmit &&
+                    <button className="btn btn-info btn-sm" style={{marginRight:'3px'}} onClick={event =>  window.location.href='../ws/paper/create'}>
+                        <i className="fas fa-file-upload"/>
+                        Submit
+                    </button>
                     }
                 </td>
             </tr>
