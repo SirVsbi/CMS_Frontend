@@ -19,18 +19,23 @@ export default class ConferenceViewTableItem extends React.Component{
         
         if (!isNaN(startDateUtc) && !isNaN(endDateUtc)){
             let now = Date.now();
-            this.timeDone = (now-startDateUtc) / (endDateUtc - startDateUtc) * 100;
-            let difSecs = Math.floor((endDateUtc - now)/1000);
-            let d = Math.floor(Math.floor(Math.floor(difSecs/60)/60)/24)%24;
-            let h = Math.floor(Math.floor(difSecs/60)/60)%60;
-            let m = Math.floor(difSecs/60)%60;
-            let s = difSecs % 60;
-            let twodig = function(v){
-                if (v===0) return '00';
-                if (v<10) return '0'+v;
-                return v;
+            if (now >= startDateUtc){
+                this.timeDone = (now-startDateUtc) / (endDateUtc - startDateUtc) * 100;
+                let difSecs = Math.floor((endDateUtc - now)/1000);
+                let d = Math.floor(Math.floor(Math.floor(difSecs/60)/60)/24)%24;
+                let h = Math.floor(Math.floor(difSecs/60)/60)%60;
+                let m = Math.floor(difSecs/60)%60;
+                let s = difSecs % 60;
+                let twodig = function(v){
+                    if (v===0) return '00';
+                    if (v<10) return '0'+v;
+                    return v;
+                }
+                this.timeLeft = twodig(d)+'d '+twodig(h)+'h '+twodig(m)+'m '+twodig(s)+'s Left';
+            }else{
+                this.timeDone = 0;
+                this.timeLeft = 'Has not started yet!';
             }
-            this.timeLeft = twodig(d)+'d '+twodig(h)+'h '+twodig(m)+'m '+twodig(s)+'s';
         }
 
         this.possibleStatus = {
@@ -69,7 +74,7 @@ export default class ConferenceViewTableItem extends React.Component{
                     <div className="progress progress-sm">
                         <div className="progress-bar bg-green" style={{width:this.timeDone+'%'}} role="progressbar" aria-valuenow={this.timeDone} aria-valuemin="0" aria-valuemax="100"/>              
                     </div>
-                    <small>{this.timeLeft} left</small>
+                    <small>{this.timeLeft}</small>
                 </td>
                 <td>        
                     <span className={"badge " + this.status.className}>{this.status.title}</span>
