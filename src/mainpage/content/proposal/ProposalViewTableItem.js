@@ -28,9 +28,9 @@ export default class ProposalViewTableItem extends React.Component{
             { topicId: 2, name: 'Cyber-security'},
         ]
         this.keywords = props.keywords || [
-            { topicId: 1, name: 'methodology'},
-            { topicId: 2, name: 'visualisation'},
-            { topicId: 2, name: 'framework'},
+            { keywordId: 1, name: 'methodology'},
+            { keywordId: 2, name: 'visualisation'},
+            { keywordId: 3, name: 'framework'},
         ]
         this.possibleStatus = {
             'bidding': {title: 'Bidding', className: 'bg-info'},
@@ -40,6 +40,8 @@ export default class ProposalViewTableItem extends React.Component{
         this.status = this.possibleStatus[props.status] || this.possibleStatus['bidding'];
         this.canView = (props.canView!==undefined?props.canView:true);
         this.canEdit = (props.canEdit!==undefined?props.canEdit:true);
+        // NOT WORKING!!!
+        // I want to show the edit only if today is before the deadline, but I got unexpected dates here (reverse order)
         /*
         if (!isNaN(deadlineUtc) && !isNaN(dateNow)) {
             console.log(deadlineUtc);
@@ -51,6 +53,7 @@ export default class ProposalViewTableItem extends React.Component{
 
          */
         this.canDelete = (props.canDelete!==undefined?props.canDelete:true);
+        this.canReview = (props.canReview!==undefined?props.canReview:false);
 
         this.state = { //state is by default an object
             authors: this.authors,
@@ -181,6 +184,12 @@ export default class ProposalViewTableItem extends React.Component{
                     <button className="btn btn-danger btn-sm" style={{marginRight:'3px'}}>
                         <i className="fas fa-trash"/>
                         Delete
+                    </button>
+                    }
+                    {this.canReview &&
+                    <button className="btn btn-info btn-sm" style={{marginRight:'3px'}}>
+                        <i className="fas fa-clipboard-check"/>
+                        Review
                     </button>
                     }
                 </td>
