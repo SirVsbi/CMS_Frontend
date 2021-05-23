@@ -6,6 +6,7 @@ import Content from './content/Content';
 import './Mainpage.css';
 import Profile from './profile/Profile';
 import Sidebar from './sidebar/Sidebar';
+import ProposalView from "./content/proposal/ProposalView";
 
 
 class Mainpage extends React.Component{
@@ -63,6 +64,14 @@ class Mainpage extends React.Component{
 
                 <Route exact path='/ws/conference'>
                     <Content title="View conferences" content={<ConferenceView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
+                </Route>
+
+                <Route path='/ws/paper/create'>
+                    <Content title="Submit a proposal" content={<ProposalView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
+                </Route>
+
+                <Route exact path='/ws/paper'>
+                    <Content title="View papers" content={<ProposalView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
                 <Route exact path='/ws'>
