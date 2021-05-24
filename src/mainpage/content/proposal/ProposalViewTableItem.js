@@ -70,7 +70,6 @@ export default class ProposalViewTableItem extends React.Component{
     }
 
     showMoreLessAction(){
-        /*
         if (this.state.showMoreLess === 'show more'){
             this.showMoreAbstract();
         }
@@ -78,16 +77,16 @@ export default class ProposalViewTableItem extends React.Component{
             this.showLessAbstract();
         }
 
-         */
+         /**/
     }
 
     showMoreAbstract(){
-        document.getElementById("#paperAbstract").setValue(this.paperAbstract);
+        document.getElementById('paperAbstract').innerHTML = this.paperAbstract;
         this.setState({showMoreLess: 'show less'});
     }
 
     showLessAbstract(){
-        document.getElementById("#paperAbstract").setValue(this.paperAbstractShort);
+        document.getElementById('paperAbstract').innerHTML = this.paperAbstractShort;
         this.setState({showMoreLess: 'show more'});
     }
 
@@ -130,7 +129,7 @@ export default class ProposalViewTableItem extends React.Component{
 
     render(){
         return (
-            <tr>
+            <tr id={this.order}>
                 <td>{this.order}</td>
                 <td>
                     <span>{this.name}</span>
@@ -158,7 +157,11 @@ export default class ProposalViewTableItem extends React.Component{
                         </tbody>
                     </table>
                 </td>
-                <td id={"paperAbstract"} className={"showMore"}>{this.paperAbstractShort}<button onClick={this.showMoreLessAction}>{this.state.showMoreLess}</button></td>
+                <td>
+                    <span id={"paperAbstract"} className={"showMore"}>
+                    {this.paperAbstractShort}
+                    </span>
+                    <button onClick={() => this.showMoreLessAction()}>{this.state.showMoreLess}</button></td>
                 <td>
                     <span>{this.conference.name}</span>
                     <br/>
