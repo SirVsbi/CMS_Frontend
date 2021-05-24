@@ -26,6 +26,7 @@ export default class ConferenceViewTable extends React.Component{
                         <th style={{width:'15%'}}>Chair</th>
                         <th style={{width:'13%'}}>Start date</th>
                         <th style={{width:'20%'}}>Time left</th>
+                        <th style={{width:'13%'}}>Deadline</th>
                         <th style={{width:"40px"}}>Status</th>
                         <th style={{width:'30%'}}></th>
                     </tr>
