@@ -13,6 +13,7 @@ export default class ProposalViewTableItem extends React.Component{
         this.paperAbstract = props.paperAbstract || "Lorem ipsum";
         this.paperAbstractShort = this.paperAbstract.substr(0, 50);
         this.conference = props.conference || { name: "Test conference", call: {deadline: '2020-05-31'} };
+        this.conferenceSection = props.conferenceSection || {name: "Test conference section"};
         this.deadline = this.conference.call.deadline || "2021-04-31";
         this.showMoreLess = 'show more';
 
@@ -152,7 +153,9 @@ export default class ProposalViewTableItem extends React.Component{
                     </span>
                     <button onClick={() => this.showMoreLessAction("paperAbstract"+this.order)}>{this.state.showMoreLess}</button></td>
                 <td>
-                    <span>{this.conference.name}</span>
+                    <span><b>{this.conference.name}</b></span>
+                    <br/>
+                    <span>{this.conferenceSection.name}</span>
                     <br/>
                     <small>Submit deadline: {this.conference.call.deadline}</small>
                 </td>
