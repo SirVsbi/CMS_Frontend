@@ -9,22 +9,36 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox';
 export default class ProposalFormsCreate extends React.Component{
     constructor(props) {
         super(props);
+
+        this.conference = props.conference || "Test conference";
+        this.conferenceSection = props.conferenceSection || "Test conference section";
+        this.deadline = props.deadline || "01/01/2001";
+
+        // get from database
         this.keywords = [
             { keywordId: 1, name: 'methodology'},
             { keywordId: 2, name: 'visualisation'},
             { keywordId: 3, name: 'framework'},
         ];
+
+        //get from database
         this.topics = [
             { topicId: 1, name: 'Machine Learning'},
             { topicId: 2, name: 'Cyber-security'},
         ];
+
+        // get from database
         this.authors = [{name: 'Szabolcs Vidam'}, {name: 'Bogdan Vasc'}, {name: 'Alexandra Tudorescu'}, {name: 'David Turcas'}, {name: 'Andrei Turcas'}, {name: 'Andrea Barrasa'}];
 
+        // the fixed author should be the user who is making the proposal
         this.fixedAuthors = [this.authors[1]];
         this.state = {
             filledAuthors: [...this.fixedAuthors, this.authors[2]],
             selectedFile: '',
             isFilePicked: false,
+            conference: this.conference,
+            conferenceSection: this.conferenceSection,
+            deadline: this.deadline,
         }
 
         this.fileHandleSubmission = this.fileHandleSubmission.bind(this);
@@ -174,7 +188,17 @@ export default class ProposalFormsCreate extends React.Component{
                             <div className="input-group-prepend">
                                 <span className="input-group-text"><i className="fas fa-feather"></i></span>
                             </div>
-                            <input type="text" className="form-control" value={"Test conference"} readOnly={true}/>
+                            <input type="text" className="form-control" value={this.state.conference} readOnly={true}/>
+                        </div>
+                    </div>
+
+                    <div className="form-group">
+                        <label>Conference Section:</label>
+                        <div className="input-group">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text"><i className="fas fa-feather"></i></span>
+                            </div>
+                            <input type="text" className="form-control" value={this.conferenceSection} readOnly={true}/>
                         </div>
                     </div>
 
