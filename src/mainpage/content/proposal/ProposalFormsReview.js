@@ -118,6 +118,7 @@ export default class ProposalFormsReview extends React.Component{
                                     name="rating"
                                     value={this.state.rating}
                                     precision={1}
+                                    max={7}
                                     onChange={(_, value) => {
                                         this.setState({rating: value});
                                     }}
