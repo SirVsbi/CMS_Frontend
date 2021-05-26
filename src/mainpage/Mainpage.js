@@ -8,6 +8,7 @@ import Profile from './profile/Profile';
 import Sidebar from './sidebar/Sidebar';
 import ProposalView from "./content/proposal/ProposalView";
 import ProposalFormsCreate from "./content/proposal/ProposalFormsCreate";
+import ConferenceDetails from './content/conference/ConferenceDetails';
 
 
 class Mainpage extends React.Component{
@@ -67,6 +68,10 @@ class Mainpage extends React.Component{
                     <Content title="Create a conference" content={<ConferenceForms/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
+                <Route exact path='/ws/conference/:id'>
+                    <Content title="View conference" content={<ConferenceDetails/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
+                </Route>
+
                 <Route exact path='/ws/conference'>
                     <Content title="View conferences" content={<ConferenceView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
@@ -84,11 +89,11 @@ class Mainpage extends React.Component{
                 </Route>
 
                 <Route exact path='/ws/room/create'>
-                    <Content title="Create a room" content={<RoomFormsCreate/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
+                    <Content title="Create a room" content={<ProposalView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
                 <Route exact path='/ws/room'>
-                    <Content title="View rooms" content={<RoomView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
+                    <Content title="View rooms" content={<ProposalView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
                 <Route exact path='/ws'>
