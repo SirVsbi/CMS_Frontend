@@ -9,11 +9,6 @@ export default class RoomFormsCreate extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            fields: {
-                name: '',
-                capacity: 0,
-                conferenceSections: [{name: "Section1"}, {name: "Section2"}]
-            },
             error: null,
             success: null
         }
@@ -24,28 +19,15 @@ export default class RoomFormsCreate extends React.Component{
 
     }
 
-    componentDidMount(){
-        const s = document.createElement('script');
-        s.type = 'text/javascript';
-        s.async = true;
-
-        document.body.appendChild(s);
-
-    }
-
     handleSubmit(event){
         event.preventDefault();
         const name = document.getElementById('add-name').value;
         const capacity = document.getElementById('add-capacity').value;
-        let fields = this.state.fields;
-        fields.name = name;
-        fields.capacity = capacity;
-        this.setState({fields: fields});
 
         console.log(this.state.fields);
         this.createConferenceRequest({
-            name: this.state.fields.name,
-            capacity: this.state.fields.capacity
+            name: name,
+            capacity: capacity
         });
 
     }
@@ -103,32 +85,6 @@ export default class RoomFormsCreate extends React.Component{
                             </div>
                         </div>
 
-                    </div>
-
-                    <div className="form-group">
-                        <Autocomplete
-                            multiple
-                            id="section-checkbox"
-                            options={this.state.fields.conferenceSections}
-                            min={1}
-                            disableCloseOnSelect
-                            getOptionLabel={(option) => option.name}
-                            renderOption={(option, { selected }) => (
-                                <React.Fragment>
-                                    <Checkbox
-                                        icon={icon}
-                                        checkedIcon={checkedIcon}
-                                        style={{ marginRight: 8 }}
-                                        checked={selected}
-                                    />
-                                    {option.name}
-                                </React.Fragment>
-                            )}
-                            style={{ width: 500 }}
-                            renderInput={(params) => (
-                                <TextField {...params} variant="outlined" label="Conference sections" placeholder="Section" />
-                            )}
-                        />
                     </div>
 
                     <div className="card-footer">

@@ -14,8 +14,10 @@ export default class RoomViewTable extends React.Component{
     }
 
     render(){
+        let order = 0;
         let tableItems = this.state.data.map(d => {
-            return <RoomViewTableItem key={d.id} {...d}/>
+            order ++;
+            return <RoomViewTableItem key={d.roomId} {...d} order={order+'.'}/>
         });
 
         return (
