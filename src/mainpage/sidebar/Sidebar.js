@@ -51,25 +51,6 @@ export default class Sidebar extends React.Component{
                                     { key: 'room-view', name: 'Create room', to: '/ws/room/create' },
                                 ]
                             }/>
-                            <SidebarButton name="Tree button" iconClass="fa-car" children= {
-                                [
-                                    { key: 'subitem-1', name: 'Classic subitem', to: '/ws/1' },
-                                    { key: 'subitem-2', name: 'Informational', type:'info', to: '/ws/2' },
-                                    { key: 'subitem-3', name: 'Warning', type:'warning', to: '/ws/3' },
-                                    { key: 'subitem-4', name: 'Error', type:'danger', to: '/ws/3' }
-                                ]
-                            }/>
-                            <SidebarButton name="With notifications" iconClass="fa-sun" badgetext="3" children= {
-                                [
-                                    { key: 'subitem-1', name: 'subitem 1', to: '/ws/1' },
-                                    { key: 'subitem-2', name: 'subitem 2', to: '/ws/2' },
-                                    { key: 'subitem-3', name: 'subitem 3', to: '/ws/3' }
-                                ]
-                            }/>
-                            <SidebarButton name="With warnings" iconClass="fa-flag" badgetext="3" badgetype="warning"/>
-                            <SidebarButton name="With error" iconClass="fa-dog" badgetext="Issue" badgetype="danger"/>
-
-                            <SidebarHeader text="Some header"/>
                         </ul>
                     </nav>
                 </div>

@@ -63,9 +63,6 @@ class Profile extends React.Component{
                     <ProfileMain name={this.state.name} role={this.state.role} stats={this.state.userStats} yourProfile={this.state.yourProfile}/>
                     <ProfileAbout info={this.state.userInfo}/>
                 </div>
-                <div className="col-md-9">
-                    <ProfileTabsView/>
-                </div>
             </div>
         )
     }
