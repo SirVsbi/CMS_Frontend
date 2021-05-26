@@ -1,4 +1,5 @@
 import React from 'react';
+import ApiService from '../../../ApiService';
 
 export default class ConferenceFormsCreate extends React.Component{
     constructor(props){
@@ -9,10 +10,14 @@ export default class ConferenceFormsCreate extends React.Component{
                 description: '',
                 startDate: '',
                 endDate: ''
-            }
+            },
+            error: null,
+            success: null
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.onCreateFailed = this.onCreateFailed.bind(this);
+        this.onCreateSuccess = this.onCreateSuccess.bind(this);
         
     }
 
@@ -20,8 +25,8 @@ export default class ConferenceFormsCreate extends React.Component{
         const s = document.createElement('script');
         s.type = 'text/javascript';
         s.async = true;
-        s.innerHTML = '$("#add-start-date").inputmask("dd/mm/yyyy", { "placeholder": "dd/mm/yyyy" });' +
-                      '$("#add-end-date").inputmask("dd/mm/yyyy", { "placeholder": "dd/mm/yyyy" })';
+        s.innerHTML = '$("#add-start-date").inputmask("mm/dd/yyyy hh:mm", { "placeholder": "mm/dd/yyyy hh:mm" });' +
+                      '$("#add-end-date").inputmask("mm/dd/yyyy hh:mm", { "placeholder": "mm/dd/yyyy hh:mm" })';
         
         document.body.appendChild(s);
         
@@ -41,6 +46,25 @@ export default class ConferenceFormsCreate extends React.Component{
         this.setState({fields: fields});
 
         console.log(this.state.fields);
+        this.createConferenceRequest({
+            name: this.state.fields.title,
+            timeStart: Date.parse(this.state.fields.startDate),
+            timeEnd: Date.parse(this.state.fields.endDate),
+            program: this.state.fields.description
+        });
+
+    }
+
+    createConferenceRequest(data){
+        ApiService.CreateConference(data, this.onCreateSuccess, this.onCreateFailed)
+    }
+
+    onCreateSuccess(response){
+        this.setState({success: "You have successfully created a conference!"});
+    }
+
+    onCreateFailed(response){
+        this.setState({error: "Conference creation failed! Error: " + response.message || response});
     }
 
     render(){
@@ -51,6 +75,16 @@ export default class ConferenceFormsCreate extends React.Component{
                         <h3 className="card-title">Create a conference</h3>
                     </div>
                     <div className="card-body">
+                        {this.state.error &&
+                            <div className="alert alert-danger" role="alert">
+                                {this.state.error}
+                            </div>
+                        }
+                        {this.state.success &&
+                            <div className="alert alert-success" role="alert">
+                                {this.state.success}
+                            </div>
+                        }
                         
                         <div className="form-group">
                             <label>Title:</label>
@@ -68,7 +102,7 @@ export default class ConferenceFormsCreate extends React.Component{
                                 <div className="input-group-prepend">
                                     <span className="input-group-text"><i className="fas fa-calendar-alt"></i></span>
                                 </div>
-                                <input name="startDate" type="text" id="add-start-date" className="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask/>
+                                <input name="startDate" type="text" id="add-start-date" className="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="mm/dd/yyyy HH:MM" data-mask/>
                             </div>
                         </div>
 
@@ -78,7 +112,7 @@ export default class ConferenceFormsCreate extends React.Component{
                                 <div className="input-group-prepend">
                                     <span className="input-group-text"><i className="fas fa-calendar-alt"></i></span>
                                 </div>
-                                <input name="endDate" type="text" id="add-end-date" className="form-control" blabla="123" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask inputMode="numeric"/>
+                                <input name="endDate" type="text" id="add-end-date" className="form-control" blabla="123" data-inputmask-alias="datetime" data-inputmask-inputformat="mm/dd/yyyy HH:MM" data-mask inputMode="numeric"/>
                             </div>
                         </div>
 

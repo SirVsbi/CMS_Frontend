@@ -75,6 +75,11 @@ var ApiService = {
                 if (!data.participants || data.participants.length == 0) failure('No user!');
                 success(data.participants[0]);
             });
+    },
+
+    async CreateConference(data, success, failure){
+        console.log(data);
+        this.__PostRequest(this.baseUrl + '/conference', data, success, failure);
     }
 }
 
