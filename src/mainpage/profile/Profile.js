@@ -3,11 +3,15 @@ import ProfileAbout from './ProfileAbout';
 import ProfileMain from './ProfileMain';
 import ProfileTabsView from './ProfileTabsView';
 import ApiService from '../../ApiService';
+import { withRouter } from 'react-router';
 
 
-export default class Profile extends React.Component{
+class Profile extends React.Component{
+
     constructor(props){
         super(props);
+
+        
 
         this.state = {
             picture: "adminlte/dist/img/user_default.jpg",
@@ -23,16 +27,18 @@ export default class Profile extends React.Component{
                 stats1: 500,
                 stats2: 13287
             },
+            yourProfile: true,
             fetching: true
         }
     }
-
-    componentWillMount(){
+    componentDidMount(){
         this.getData();
-    }
 
+    }
     getData(){
-        ApiService.GetUserData(localStorage.getItem('pid'), data => {
+        let id = this.props.match.params.id || localStorage.getItem('pid');
+        if (this.props.match.params.id) this.setState({yourProfile: false});
+        ApiService.GetUserData(id, data => {
             this.setState({
                 name: data.name || this.state.name,
                 userInfo: {
@@ -42,7 +48,6 @@ export default class Profile extends React.Component{
                 },
                 fetching: false
             });
-            console.log(this.state);
         });
     }
 
@@ -55,7 +60,7 @@ export default class Profile extends React.Component{
         return (
             <div className="row">
                 <div className="col-md-3">
-                    <ProfileMain name={this.state.name} role={this.state.role} stats={this.state.userStats}/>
+                    <ProfileMain name={this.state.name} role={this.state.role} stats={this.state.userStats} yourProfile={this.state.yourProfile}/>
                     <ProfileAbout info={this.state.userInfo}/>
                 </div>
                 <div className="col-md-9">
@@ -65,3 +70,5 @@ export default class Profile extends React.Component{
         )
     }
 }
+
+export default withRouter(Profile)

@@ -55,8 +55,12 @@ class Mainpage extends React.Component{
                     <Content title="Test page 3" content={<div>page 3</div>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
-                <Route path='/ws/profile'>
+                <Route exact path='/ws/profile/'>
                     <Content title="Your profile" content={<Profile/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
+                </Route>
+
+                <Route exact path='/ws/profile/:id'>
+                    <Content title="User profile" content={<Profile/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
                 <Route path='/ws/conference/create'>
@@ -67,16 +71,24 @@ class Mainpage extends React.Component{
                     <Content title="View conferences" content={<ConferenceView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
-                <Route path='/ws/paper/create'>
+                <Route path='/ws/proposal/create'>
                     <Content title="Submit a proposal" content={<ProposalFormsCreate/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
-                <Route exact path='/ws/paper/review'>
+                <Route exact path='/ws/proposal/review'>
+                    <Content title="Review proposals" content={<ProposalView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
+                </Route>
+
+                <Route exact path='/ws/proposal'>
                     <Content title="View proposals" content={<ProposalView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
-                <Route exact path='/ws/paper'>
-                    <Content title="View proposals" content={<ProposalView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
+                <Route exact path='/ws/room/create'>
+                    <Content title="Create a room" content={<RoomFormsCreate/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
+                </Route>
+
+                <Route exact path='/ws/room'>
+                    <Content title="View rooms" content={<RoomView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
                 <Route exact path='/ws'>

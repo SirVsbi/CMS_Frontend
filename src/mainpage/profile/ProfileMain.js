@@ -13,7 +13,8 @@ export default class ProfileMain extends React.Component{
                 joinedDate: props.stats.joinedDate || "unknown",
                 stats1: props.stats.stats1 || 0,
                 stats2: props.stats.stats2 || 0
-            }
+            },
+            yourProfile: props.yourProfile || false
 
         }
 
@@ -39,7 +40,9 @@ export default class ProfileMain extends React.Component{
                             <b>Some other stats</b> <span className="float-right">{this.state.stats.stats2}</span>
                         </li>
                     </ul>
-                    <a href="/ws/profile" className="btn btn-primary btn-block"><b>Edit profile</b></a>
+                    {this.state.yourProfile && 
+                        <a href="/ws/profile" className="btn btn-primary btn-block"><b>Edit profile</b></a>
+                    }  
                 </div>
             </div>
 

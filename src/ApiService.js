@@ -78,7 +78,6 @@ var ApiService = {
     },
 
     async CreateConference(data, success, failure){
-        console.log(data);
         this.__PostRequest(this.baseUrl + '/conference', data, success, failure);
     },
 
@@ -98,7 +97,21 @@ var ApiService = {
                 if (!data.conferences || data.conferences.length == 0) failure("No such conference!");
                 success(data.conferences[0]);
             });
+    },
+
+    async CreateRoom(data, success, failure){
+        this.__PostRequest(this.baseUrl + '/room', data, success, failure);
+    },
+
+    async GetAllRooms(success, failure){
+        fetch(this.baseUrl + '/room')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.rooms) failure();
+                success(data.rooms);
+            });
     }
+
 
 
 }
