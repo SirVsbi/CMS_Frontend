@@ -24,7 +24,7 @@ export default class Sidebar extends React.Component{
 
                 {/* Sidebar */}
                 <div className="sidebar">
-                    <SidebarUser name="Bogdan Vasc" picture="user_default.jpg"/>
+                    <SidebarUser name={localStorage.getItem('username')} picture="user_default.jpg"/>
                     <SidebarSearch/>
 
                     <nav className="mt-2">

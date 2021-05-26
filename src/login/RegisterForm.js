@@ -2,7 +2,8 @@ import React from 'react';
 import './Authpage.css';
 import ApiService from '../ApiService';
 import Validator from '../Validations';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
+import { Alert } from '@material-ui/lab';
 
 class RegisterForm extends React.Component{
     constructor(props){
@@ -34,7 +35,8 @@ class RegisterForm extends React.Component{
                 password: true
             },
             wait: false,
-            registrationFailed: false
+            registrationFailed: false,
+            successRegistration: false
         };
         this.linkStyle = this.linkStyle.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -95,7 +97,7 @@ class RegisterForm extends React.Component{
             invalid = true;
         }
 
-        if (fields.webpage !== '' && !Validator.webpage(fields.webpage)){
+        if (fields.webpage !== '' && !Validator.website(fields.webpage)){
             errors.webpage = 'Enter a valid website or leave empty!';
             valid.webpage = false;
             invalid = true;
@@ -154,14 +156,26 @@ class RegisterForm extends React.Component{
     onRegisterSuccess(response){
         console.log('Register success: ' + response.message || response);
         this.setState({wait: false});
+        this.setState({successRegistration: true});
     }
 
     onRegisterFailed(response){
         console.log('Register failed: ' + response.error || response);
+        alert('Register failed: ' + response.error || response);
         this.setState({wait: false, registrationFailed: true});
     }
 
     render(){
+        if (this.state.successRegistration){
+            return (
+                <Redirect
+                    to={{
+                        pathname: "/",
+                        afterRegister: true
+                    }}
+                />
+            )
+        }
         return (
             <form className="form-signup" onSubmit={this.handleSubmit} noValidate>
                 {this.state.registrationFailed &&
