@@ -27,14 +27,34 @@ var ApiService = {
         
         // placeholder
 
-        setTimeout(() =>{
+        /*setTimeout(() =>{
             console.log(data);
             if (data.username === 'admin' && data.password === 'admin'){
                 success({message: 'OK', username: 'admin'});
             }else{
                 failure({error: 'Invalid credentials!'});
             }
-        }, 2500);
+        }, 2500);*/
+        console.log('Request:');
+        console.log(data);
+        fetch(this.baseUrl+'/participant')
+            .then(response => response.json())
+            .then(users => {
+                if (!users.participants) failure();
+                return users;
+            })
+            .then(users => users.participants)
+            .then(users => {
+                let user = null;
+                for(var i=0; i<users.length; i++){
+                    if (data.password !== users[i].password) continue;
+                    if (data.username && data.username !== users[i].userName) continue;
+                    if (data.email && data.email !== users[i].email) continue;
+                    user = users[i];
+                }
+                if (user !== null) success(user);
+                else failure('Invalid credentials!');
+            });
             
     },
 
@@ -46,7 +66,54 @@ var ApiService = {
         setTimeout(() => {
             success({message: 'Check your email: ' + data.email});
         }, 2500);
+    },
+
+    async GetUserData(id, success, failure){
+        fetch(this.baseUrl + '/participant/' + id)
+            .then(response => response.json())
+            .then(data => {
+                if (!data.participants || data.participants.length == 0) failure('No user!');
+                success(data.participants[0]);
+            });
+    },
+
+    async CreateConference(data, success, failure){
+        this.__PostRequest(this.baseUrl + '/conference', data, success, failure);
+    },
+
+    async GetAllConferences(success, failure){
+        fetch(this.baseUrl + '/conference')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.conferences) failure();
+                success(data.conferences);
+            });
+    },
+
+    async GetConferenceDetails(id, success, failure){
+        fetch(this.baseUrl + '/conference/' + id)
+            .then(response => response.json())
+            .then(data => {
+                if (!data.conferences || data.conferences.length == 0) failure("No such conference!");
+                success(data.conferences[0]);
+            });
+    },
+
+    async CreateRoom(data, success, failure){
+        this.__PostRequest(this.baseUrl + '/room', data, success, failure);
+    },
+
+    async GetAllRooms(success, failure){
+        fetch(this.baseUrl + '/room')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.rooms) failure();
+                success(data.rooms);
+            });
     }
+
+
+
 }
 
 export default ApiService;

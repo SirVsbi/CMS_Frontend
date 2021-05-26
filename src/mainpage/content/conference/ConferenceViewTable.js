@@ -13,8 +13,10 @@ export default class ConferenceViewTable extends React.Component{
     }
 
     render(){
+        let order = 0;
         let tableItems = this.state.data.map(d => {
-            return <ConferenceViewTableItem key={d.id} {...d}/>
+            order++;
+            return <ConferenceViewTableItem key={d.conferenceId} {...d} order={order+'.'}/>
         });
 
         return (

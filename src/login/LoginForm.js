@@ -14,7 +14,7 @@ class LoginForm extends React.Component{
             },
             userType: 'username',
             errors: {
-                user: '',
+                user: '',   
                 password: ''
             },
             valid: {
@@ -22,7 +22,8 @@ class LoginForm extends React.Component{
                 password: true
             },
             wait: false,
-            logInFailed: false
+            logInFailed: false,
+            afterRegister: this.props.location && this.props.location.afterRegister
         };
 
         this.linkStyle = this.linkStyle.bind(this);
@@ -133,7 +134,8 @@ class LoginForm extends React.Component{
     onLogInSuccess(response){
         console.log('Logged in successfully: ' + response.message);
         this.setState({wait: false});
-        localStorage.setItem('username', response.username);
+        localStorage.setItem('username', response.userName);
+        localStorage.setItem('pid', response.pid);
         localStorage.setItem('ts', Date.now() / 1000);
         window.location.href = '/ws';
     }
@@ -159,6 +161,11 @@ class LoginForm extends React.Component{
                 {this.state.logInFailed &&
                     <div className="alert alert-danger" role="alert">
                         <strong>Invalid credentials!</strong> If you don't remember your login credentials, you can <Link to='/reset' className='alert-link d-inline'>reset your password</Link>.
+                    </div>
+                }
+                {this.state.afterRegister &&
+                    <div className="alert alert-success" role="alert">
+                        <strong>You have registered successfully!</strong> Enter your credentials below to log into the platform.
                     </div>
                 }
                 <div className="social-login"> 

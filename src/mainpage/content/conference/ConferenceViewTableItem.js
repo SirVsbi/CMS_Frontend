@@ -7,16 +7,15 @@ export default class ConferenceViewTableItem extends React.Component{
         super(props);
 
         this.order = props.order || "1.";
-        this.title = props.title || "Untitled";
+        this.title = props.name || "Untitled";
         this.createdOn = props.createdOn || "unknown";
         this.chairPicture = props.chairPicture || "adminlte/dist/img/user_default.jpg";
         this.chairName = props.chairName || "Unknown";
-        this.startDate = props.startDate || "Unknown";
-        this.endDate = props.endDate || "Unknown";
+        this.startDate = props.timeStart || "Unknown";
+        this.endDate = props.timeEnd || "Unknown";
         this.timeLeft = '';
         this.timeDone = 0;
 
-        this.deadline = props.deadline || "Unknown";
 
         let startDateUtc = Date.parse(this.startDate);
         let endDateUtc = Date.parse(this.endDate);
@@ -25,7 +24,7 @@ export default class ConferenceViewTableItem extends React.Component{
 
         if (!isNaN(startDateUtc) && !isNaN(endDateUtc)){
             let now = Date.now();
-            if (now >= startDateUtc){
+            if (now >= startDateUtc && now <= endDateUtc){
                 this.timeDone = (now-startDateUtc) / (endDateUtc - startDateUtc) * 100;
                 let difSecs = Math.floor((endDateUtc - now)/1000);
                 let d = Math.floor(Math.floor(Math.floor(difSecs/60)/60)/24)%24;
@@ -38,7 +37,11 @@ export default class ConferenceViewTableItem extends React.Component{
                     return v;
                 }
                 this.timeLeft = twodig(d)+'d '+twodig(h)+'h '+twodig(m)+'m '+twodig(s)+'s Left';
-            }else{
+            }else if (now >= startDateUtc && now > endDateUtc){
+                this.timeDone = 100;
+                this.timeLeft = 'Finished!';
+            }
+            else{
                 this.timeDone = 0;
                 this.timeLeft = 'Has not started yet!';
             }
@@ -52,7 +55,7 @@ export default class ConferenceViewTableItem extends React.Component{
         this.status = this.possibleStatus[props.status] || this.possibleStatus['bidding'];
         this.canView = (props.canView!==undefined?props.canView:true);
         this.canEdit = (props.canEdit!==undefined?props.canEdit:true);
-        this.canDelete = (props.canDelete!==undefined?props.canDelete:true);
+        this.canDelete = (props.canDelete!==undefined?props.canDelete:false);
 
         this.canSubmit = (props.canSubmit!==undefined?props.canSubmit&&Date.now() < deadlineUtc:false);
     }
@@ -83,7 +86,7 @@ export default class ConferenceViewTableItem extends React.Component{
                     </div>
                     <small>{this.timeLeft}</small>
                 </td>
-                <td>{this.deadline}</td>
+                <td>{this.endDate}</td>
                 <td>        
                     <span className={"badge " + this.status.className}>{this.status.title}</span>
                 </td>

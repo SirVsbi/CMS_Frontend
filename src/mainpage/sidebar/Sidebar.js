@@ -24,7 +24,7 @@ export default class Sidebar extends React.Component{
 
                 {/* Sidebar */}
                 <div className="sidebar">
-                    <SidebarUser name="Bogdan Vasc" picture="user_default.jpg"/>
+                    <SidebarUser name={localStorage.getItem('username')} picture="user_default.jpg"/>
                     <SidebarSearch/>
 
                     <nav className="mt-2">
@@ -37,11 +37,17 @@ export default class Sidebar extends React.Component{
                                     { key: 'conference-view', name: 'View conferences', to: '/ws/conference' }
                                 ]
                             }/>
-                            <SidebarButton name="Papers" iconClass="fa-scroll" children= {
+                            <SidebarButton name="Proposals" iconClass="fa-scroll" children= {
                                 [
-                                    { key: 'paper-view', name: 'Your papers', to: '/ws/paper' },
-                                    { key: 'paper-submit', name: 'Submit paper', to: '/ws/paper/create' },
-                                    { key: 'paper-review', name: 'Review papers', to: '/ws/paper/review' }
+                                    { key: 'proposal-view', name: 'View proposals', to: '/ws/proposal' },
+                                    { key: 'proposal-submit', name: 'Submit proposal', to: '/ws/proposal/create' },
+                                    { key: 'proposal-review', name: 'Review proposal', to: '/ws/proposal/review' }
+                                ]
+                            }/>
+                            <SidebarButton name="Rooms" iconClass="fa-house" children= {
+                                [
+                                    { key: 'room-create', name: 'View proposals', to: '/ws/room' },
+                                    { key: 'room-view', name: 'Submit proposal', to: '/ws/room/create' }
                                 ]
                             }/>
                             <SidebarButton name="Tree button" iconClass="fa-car" children= {
