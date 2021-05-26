@@ -1,5 +1,5 @@
 import React from 'react';
-
+import ApiService from '../../../ApiService';
 
 export default class ConferenceSection extends React.Component{
     constructor(props){
@@ -8,10 +8,12 @@ export default class ConferenceSection extends React.Component{
         this.state = {
             id: props.id || 1,
             title: props.name || 'Section name',
+            sessionChairId: props.sessionChairId,
             chairName: props.chairName || "Unknown chair",
             roomName: props.roomName || "Unknown room",
             timeStart: props.timeStart || "Unknown",
             timeEnd: props.timeEnd || "Unknown",
+            fetching: true,
             activeTab: null
         }
 
@@ -33,6 +35,9 @@ export default class ConferenceSection extends React.Component{
 
     componentDidMount(){
         this.setTabActive('general');
+        console.log(this.props);
+        
+
     }
 
     render(){

@@ -7,10 +7,6 @@ export default class ConferenceView extends React.Component{
     constructor(props){
         super(props);
 
-        this.data = [
-            { id: 312, order:'1', title:'Test conference', createdOn: '22-05-2021', chairName: 'Bogdan Vasc', startDate: '2021-05-21', endDate: '2021-05-24', deadline: '2021-05-31', status: 'review', canView: true, canEdit: true, canDelete: true, canSubmit: true },
-            { id: 150, order:'2', title:'Another hardcoded conference', createdOn: '22-05-2021', chairName: 'Bogdan Vasc', startDate: '2021-05-24', endDate: '2021-05-28', deadline: '2021-05-23', status: 'bidding', canView: true, canEdit: false, canDelete: false, canSubmit: false }
-        ];
         this.state = {
             data: [],
             fetching: true

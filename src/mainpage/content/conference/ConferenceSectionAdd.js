@@ -10,9 +10,10 @@ export default class ConferenceSectionAdd extends React.Component{
 
         this.state = {
             rooms: [],
+            chairs: [],
             error: null,
             success: null,
-            fetching: true
+            fetching: 2
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -38,6 +39,13 @@ export default class ConferenceSectionAdd extends React.Component{
         }, error => {
             alert('Error getting rooms information: ' + (error.message || error));
         });
+
+        ApiService.GetPossibleUsersForChair(null, data => {
+            this.setState({
+                chairs: data,
+                fetching: this.state.fetching - 1
+            });
+        });
         
     }
 
@@ -50,14 +58,19 @@ export default class ConferenceSectionAdd extends React.Component{
         const room = document.getElementById('add-room').value;
 
         let data = {
-            conferenceID: this.conferenceId,
-            chairID: chair,
-            roomID: room,
+            conferenceId: this.conferenceId,
+            chairId: chair,
+            roomId: room,
             name: name,
-            timeStart: startDate,
-            timeEnd: endDate
+            timeStart: Date.parse(startDate),
+            timeEnd: Date.parse(endDate)
         }
         console.log(data);
+        ApiService.CreateConferenceSection(data, response => {
+            this.setState({success: 'Section created successfull!'});
+        }, error => {
+            this.setState({error: 'Failed to create section: ' + error.message || error});
+        });
     }
 
     createSectionSuccess(response){
@@ -69,12 +82,18 @@ export default class ConferenceSectionAdd extends React.Component{
     }
 
     render(){
-        if (this.state.fetching) return (<div>...</div>);
+        if (this.state.fetching > 0) return (<div>...</div>);
 
         let roomsOptions = [];
         for (var i = 0; i < this.state.rooms.length; i++){
             roomsOptions.push(
                 <option key={this.state.rooms[i].roomId} value={this.state.rooms[i].roomId}>{this.state.rooms[i].name}</option>
+            );
+        }
+        let chairOptions = [];
+        for (var i = 0; i < this.state.chairs.length; i++){
+            chairOptions.push(
+                <option key={this.state.chairs[i].pid} value={this.state.chairs[i].pid}>{this.state.chairs[i].name}</option>
             );
         }
         return (
@@ -144,9 +163,7 @@ export default class ConferenceSectionAdd extends React.Component{
                                     <span className="input-group-text"><i className="fab fa-redhat"></i></span>
                                 </div>
                                 <select id="add-chair" className="form-control">
-                                    <option>Test 1</option>
-                                    <option>Test 2</option>
-                                    <option>Test 3</option>
+                                    {chairOptions}
                                 </select>
                             </div>
                         </div>

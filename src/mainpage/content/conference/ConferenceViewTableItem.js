@@ -93,7 +93,7 @@ export default class ConferenceViewTableItem extends React.Component{
                 </td>
                 <td className="project-actions" key={this.order}>
                     {this.canView &&
-                        <button className="btn btn-primary btn-sm" style={{marginRight:'3px'}}>
+                        <button className="btn btn-primary btn-sm" style={{marginRight:'3px'}} onClick={() => {window.location.href="/ws/conference/" + this.conferenceId}}>
                             <i className="fas fa-folder"/>
                             View
                         </button>

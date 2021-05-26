@@ -110,6 +110,39 @@ var ApiService = {
                 if (!data.rooms) failure();
                 else success(data.rooms);
             });
+    },
+
+    async GetAllConferenceSections(conferenceId, success, failure){
+        fetch(this.baseUrl + '/conference_section/')
+            .then(response => response.json())
+            .then(data => data.conferenceSections)
+            .then(data => {
+                let res = [];
+                for (var i = 0; i < data.length; i ++){
+                    if (data[i].conferenceId == conferenceId) res.push(data[i]);
+                }
+                success(res);
+            });
+    },
+
+    async CreateConferenceSection(data, success, failure){
+        this.__PostRequest(this.baseUrl + '/conference_section', data, success, failure);
+    },
+
+    async GetPossibleUsersForChair(data, success, failure){
+        fetch(this.baseUrl + '/participant')
+            .then(response => response.json())
+            .then(data => success(data.participants));
+    },
+
+    async GetParticipantNameById(id, success, failure){
+        fetch(this.baseUrl + '/participant/' + id)
+            .then(response => response.json())
+            .then(data => data.participants)
+            .then(data => {
+                if (data.length == 0) failure();
+                else success(data[0].name);
+            })
     }
 
 

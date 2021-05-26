@@ -9,7 +9,8 @@ class ConferenceDetails extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            sections: [{name: 'First section'}, {}, {}, {}],
+            //sections: [{name: 'First section'}, {}, {}, {}],
+            sections: [],
             conferenceId: this.props.match.params.id,
             conference: {
                 name: '',
@@ -18,7 +19,7 @@ class ConferenceDetails extends React.Component{
                 program: ''
             },
             rooms: [],
-            fetching: 1
+            fetching: 2
         }
 
     }
@@ -36,6 +37,14 @@ class ConferenceDetails extends React.Component{
             });
         }, error => {
             alert('Error getting conference infornmation: ' + (error.message || error));
+        });
+
+        ApiService.GetAllConferenceSections(this.state.conferenceId, data => {
+            this.setState({
+                sections: data,
+                fetching: this.state.fetching - 1
+            });
+            console.log(data);
         });
     }
 

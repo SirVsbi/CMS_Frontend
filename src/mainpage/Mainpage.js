@@ -67,11 +67,11 @@ class Mainpage extends React.Component{
                     <Content title="User profile" content={<Profile/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
-                <Route path='/ws/conference/create'>
+                <Route exact path='/ws/conference/create'>
                     <Content title="Create a conference" content={<ConferenceForms/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
-                <Route exact path='/ws/conference/:id'>
+                <Route path='/ws/conference/:id'>
                     <Content title="View conference" content={<ConferenceDetails/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
