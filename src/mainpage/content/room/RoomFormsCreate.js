@@ -1,5 +1,9 @@
 import React from 'react';
 import ApiService from '../../../ApiService';
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import {Checkbox, TextField} from "@material-ui/core";
+import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@material-ui/icons/CheckBox";
 
 export default class RoomFormsCreate extends React.Component{
     constructor(props){
@@ -8,6 +12,7 @@ export default class RoomFormsCreate extends React.Component{
             fields: {
                 name: '',
                 capacity: 0,
+                conferenceSections: [{name: "Section1"}, {name: "Section2"}]
             },
             error: null,
             success: null
@@ -58,6 +63,8 @@ export default class RoomFormsCreate extends React.Component{
     }
 
     render(){
+        const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+        const checkedIcon = <CheckBoxIcon fontSize="small" />;
         return (
             <div className="card card-danger">
                 <form onSubmit={this.handleSubmit} noValidate>
@@ -96,6 +103,32 @@ export default class RoomFormsCreate extends React.Component{
                             </div>
                         </div>
 
+                    </div>
+
+                    <div className="form-group">
+                        <Autocomplete
+                            multiple
+                            id="section-checkbox"
+                            options={this.state.fields.conferenceSections}
+                            min={1}
+                            disableCloseOnSelect
+                            getOptionLabel={(option) => option.name}
+                            renderOption={(option, { selected }) => (
+                                <React.Fragment>
+                                    <Checkbox
+                                        icon={icon}
+                                        checkedIcon={checkedIcon}
+                                        style={{ marginRight: 8 }}
+                                        checked={selected}
+                                    />
+                                    {option.name}
+                                </React.Fragment>
+                            )}
+                            style={{ width: 500 }}
+                            renderInput={(params) => (
+                                <TextField {...params} variant="outlined" label="Conference sections" placeholder="Section" />
+                            )}
+                        />
                     </div>
 
                     <div className="card-footer">
