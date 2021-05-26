@@ -8,6 +8,7 @@ import Profile from './profile/Profile';
 import Sidebar from './sidebar/Sidebar';
 import ProposalView from "./content/proposal/ProposalView";
 import ProposalFormsCreate from "./content/proposal/ProposalFormsCreate";
+import ProposalFormsReview from "./content/proposal/ProposalFormsReview";
 
 
 class Mainpage extends React.Component{
@@ -72,7 +73,7 @@ class Mainpage extends React.Component{
                 </Route>
 
                 <Route exact path='/ws/paper/review'>
-                    <Content title="View proposals" content={<ProposalView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
+                    <Content title="Review proposals" content={<ProposalFormsReview/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
                 <Route exact path='/ws/paper'>

@@ -15,6 +15,9 @@ export default class ProposalViewTableItem extends React.Component{
         this.conference = props.conference || { name: "Test conference", call: {deadline: '2020-05-31'} };
         this.conferenceSection = props.conferenceSection || {name: "Test conference section"};
         this.deadline = this.conference.call.deadline || "2021-04-31";
+        // should work if it's on the server: otherwise I get "failed - no file" error, but visually we get something downloading
+        this.filePath = props.filePath || "ProposalFormsReview.js";
+        this.displayFilePath = props.displayFilePath || "BestPaper.txt";
         this.showMoreLess = 'show more';
 
         console.log(this.conference.call.deadline);
@@ -87,7 +90,6 @@ export default class ProposalViewTableItem extends React.Component{
             return (
                 <tr key={participantId}>
                     <td>{authorName}</td>
-                    <td>{email}</td>
                 </tr>
             )
         })
@@ -151,7 +153,9 @@ export default class ProposalViewTableItem extends React.Component{
                     <span id={"paperAbstract"+this.order} className={"showMore"}>
                     {this.paperAbstractShort}
                     </span>
-                    <button onClick={() => this.showMoreLessAction("paperAbstract"+this.order)}>{this.state.showMoreLess}</button></td>
+                    <button onClick={() => this.showMoreLessAction("paperAbstract"+this.order)}>{this.state.showMoreLess}</button>
+                </td>
+                <td><a href={this.filePath} download>{this.displayFilePath}</a></td>
                 <td>
                     <span><b>{this.conference.name}</b></span>
                     <br/>
