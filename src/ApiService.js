@@ -80,7 +80,27 @@ var ApiService = {
     async CreateConference(data, success, failure){
         console.log(data);
         this.__PostRequest(this.baseUrl + '/conference', data, success, failure);
+    },
+
+    async GetAllConferences(success, failure){
+        fetch(this.baseUrl + '/conference')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.conferences) failure();
+                success(data.conferences);
+            });
+    },
+
+    async GetConferenceDetails(id, success, failure){
+        fetch(this.baseUrl + '/conference/' + id)
+            .then(response => response.json())
+            .then(data => {
+                if (!data.conferences || data.conferences.length == 0) failure("No such conference!");
+                success(data.conferences[0]);
+            });
     }
+
+
 }
 
 export default ApiService;
