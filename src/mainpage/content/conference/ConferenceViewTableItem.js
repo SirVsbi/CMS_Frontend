@@ -6,6 +6,7 @@ export default class ConferenceViewTableItem extends React.Component{
     constructor(props){
         super(props);
 
+        this.conferenceId = props.conferenceId;
         this.order = props.order || "1.";
         this.title = props.name || "Untitled";
         this.createdOn = props.createdOn || "unknown";
@@ -65,7 +66,7 @@ export default class ConferenceViewTableItem extends React.Component{
             <tr>
                 <td>{this.order}</td>
                 <td>
-                    <span>{this.title}</span>
+                    <a href={"/ws/conference/" + this.conferenceId}>{this.title}</a>
                     <br/>
                     <small>Created on {this.createdOn}</small>
                 </td>

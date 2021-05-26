@@ -73,7 +73,7 @@ var ApiService = {
             .then(response => response.json())
             .then(data => {
                 if (!data.participants || data.participants.length == 0) failure('No user!');
-                success(data.participants[0]);
+                else success(data.participants[0]);
             });
     },
 
@@ -86,7 +86,7 @@ var ApiService = {
             .then(response => response.json())
             .then(data => {
                 if (!data.conferences) failure();
-                success(data.conferences);
+                else success(data.conferences);
             });
     },
 
@@ -95,7 +95,7 @@ var ApiService = {
             .then(response => response.json())
             .then(data => {
                 if (!data.conferences || data.conferences.length == 0) failure("No such conference!");
-                success(data.conferences[0]);
+                else success(data.conferences[0]);
             });
     },
 
@@ -108,7 +108,7 @@ var ApiService = {
             .then(response => response.json())
             .then(data => {
                 if (!data.rooms) failure();
-                success(data.rooms);
+                else success(data.rooms);
             });
     }
 
