@@ -58,7 +58,7 @@ export default class ConferenceViewTableItem extends React.Component{
         this.canEdit = (props.canEdit!==undefined?props.canEdit:true);
         this.canDelete = (props.canDelete!==undefined?props.canDelete:false);
 
-        this.canSubmit = Date.now() < deadlineUtc;
+        this.canSubmit = (props.canSubmit!==undefined?props.canSubmit&&Date.now() < deadlineUtc:false);
     }
 
     render(){
