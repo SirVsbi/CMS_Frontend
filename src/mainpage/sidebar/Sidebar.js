@@ -44,10 +44,10 @@ export default class Sidebar extends React.Component{
                                     { key: 'proposal-review', name: 'Review proposal', to: '/ws/proposal/review' }
                                 ]
                             }/>
-                            <SidebarButton name="Rooms" iconClass="fa-house" children= {
+                            <SidebarButton name="Rooms" iconClass="fa-home" children= {
                                 [
-                                    { key: 'room-create', name: 'View proposals', to: '/ws/room' },
-                                    { key: 'room-view', name: 'Submit proposal', to: '/ws/room/create' }
+                                    { key: 'room-create', name: 'View rooms', to: '/ws/room' },
+                                    { key: 'room-view', name: 'Create room', to: '/ws/room/create' }
                                 ]
                             }/>
                             <SidebarButton name="Tree button" iconClass="fa-car" children= {
