@@ -1,4 +1,5 @@
 import React from 'react';
+import ShowMore from "../../../shared/ShowMore";
 
 export default class ProposalViewTableItem extends React.Component{
     constructor(props){
@@ -12,7 +13,11 @@ export default class ProposalViewTableItem extends React.Component{
         this.paperAbstract = props.paperAbstract || "Lorem ipsum";
         this.paperAbstractShort = this.paperAbstract.substr(0, 50);
         this.conference = props.conference || { name: "Test conference", call: {deadline: '2020-05-31'} };
+        this.conferenceSection = props.conferenceSection || {name: "Test conference section"};
         this.deadline = this.conference.call.deadline || "2021-04-31";
+        // should work if it's on the server: otherwise I get "failed - no file" error, but visually we get something downloading
+        this.filePath = props.filePath || "ProposalFormsReview.js";
+        this.displayFilePath = props.displayFilePath || "BestPaper.txt";
         this.showMoreLess = 'show more';
 
         console.log(this.conference.call.deadline);
@@ -39,19 +44,7 @@ export default class ProposalViewTableItem extends React.Component{
         }
         this.status = this.possibleStatus[props.status] || this.possibleStatus['bidding'];
         this.canView = (props.canView!==undefined?props.canView:true);
-        this.canEdit = (props.canEdit!==undefined?props.canEdit:true);
-        // NOT WORKING!!!
-        // I want to show the edit only if today is before the deadline, but I got unexpected dates here (reverse order)
-        /*
-        if (!isNaN(deadlineUtc) && !isNaN(dateNow)) {
-            console.log(deadlineUtc);
-            console.log(Date.now());
-            this.canEdit = dateNow < deadlineUtc;
-            console.log(deadlineUtc);
-            console.log(Date.now());
-        }
-
-         */
+        this.canEdit = (props.canEdit!==undefined?props.canEdit && dateNow < deadlineUtc:true);
         this.canDelete = (props.canDelete!==undefined?props.canDelete:true);
         this.canReview = (props.canReview!==undefined?props.canReview:false);
 
@@ -69,24 +62,24 @@ export default class ProposalViewTableItem extends React.Component{
 
     }
 
-    showMoreLessAction(){
+    showMoreLessAction(id){
         if (this.state.showMoreLess === 'show more'){
-            this.showMoreAbstract();
+            this.showMoreAbstract(id);
         }
         else{
-            this.showLessAbstract();
+            this.showLessAbstract(id);
         }
 
          /**/
     }
 
-    showMoreAbstract(){
-        document.getElementById('paperAbstract').innerHTML = this.paperAbstract;
+    showMoreAbstract(id){
+        document.getElementById(id).innerHTML = this.paperAbstract;
         this.setState({showMoreLess: 'show less'});
     }
 
-    showLessAbstract(){
-        document.getElementById('paperAbstract').innerHTML = this.paperAbstractShort;
+    showLessAbstract(id){
+        document.getElementById(id).innerHTML = this.paperAbstractShort;
         this.setState({showMoreLess: 'show more'});
     }
 
@@ -97,7 +90,6 @@ export default class ProposalViewTableItem extends React.Component{
             return (
                 <tr key={participantId}>
                     <td>{authorName}</td>
-                    <td>{email}</td>
                 </tr>
             )
         })
@@ -158,12 +150,16 @@ export default class ProposalViewTableItem extends React.Component{
                     </table>
                 </td>
                 <td>
-                    <span id={"paperAbstract"} className={"showMore"}>
+                    <span id={"paperAbstract"+this.order} className={"showMore"}>
                     {this.paperAbstractShort}
                     </span>
-                    <button onClick={() => this.showMoreLessAction()}>{this.state.showMoreLess}</button></td>
+                    <button onClick={() => this.showMoreLessAction("paperAbstract"+this.order)}>{this.state.showMoreLess}</button>
+                </td>
+                <td><a href={this.filePath} download>{this.displayFilePath}</a></td>
                 <td>
-                    <span>{this.conference.name}</span>
+                    <span><b>{this.conference.name}</b></span>
+                    <br/>
+                    <span>{this.conferenceSection.name}</span>
                     <br/>
                     <small>Submit deadline: {this.conference.call.deadline}</small>
                 </td>
