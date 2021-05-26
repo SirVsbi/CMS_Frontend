@@ -78,7 +78,8 @@ class Mainpage extends React.Component{
 
                 <Route exact path='/ws/proposal/review'>
                     <Content title="Review proposals" content={<ProposalFormsReview/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
-
+                </Route>
+                        
                 <Route exact path='/ws/proposal'>
                     <Content title="View proposals" content={<ProposalView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
