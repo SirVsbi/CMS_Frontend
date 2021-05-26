@@ -47,7 +47,8 @@ export default class Sidebar extends React.Component{
                             <SidebarButton name="Rooms" iconClass="fa-home" children= {
                                 [
                                     { key: 'room-create', name: 'View rooms', to: '/ws/room' },
-                                    { key: 'room-view', name: 'Create room', to: '/ws/room/create' }
+                                    { key: 'room-timetable-view', name: 'View room timetable', to: '/ws/room/timetable' },
+                                    { key: 'room-view', name: 'Create room', to: '/ws/room/create' },
                                 ]
                             }/>
                             <SidebarButton name="Tree button" iconClass="fa-car" children= {

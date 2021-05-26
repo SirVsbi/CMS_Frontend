@@ -11,6 +11,7 @@ import ProposalFormsCreate from "./content/proposal/ProposalFormsCreate";
 import ProposalFormsReview from "./content/proposal/ProposalFormsReview";
 import RoomFormsCreate from "./content/room/RoomFormsCreate"
 import RoomView from "./content/room/RoomView";
+import RoomTimetableView from "./content/room/roomTimetable/RoomTimetableView";
 
 class Mainpage extends React.Component{
     constructor(props){
@@ -91,6 +92,10 @@ class Mainpage extends React.Component{
 
                 <Route exact path='/ws/room'>
                     <Content title="View rooms" content={<RoomView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
+                </Route>
+
+                <Route exact path='/ws/room/timetable'>
+                    <Content title="View room timetable" content={<RoomTimetableView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
                 <Route exact path='/ws'>
