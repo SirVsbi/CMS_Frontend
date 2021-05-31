@@ -217,9 +217,27 @@ var ApiService = {
         this.__PostRequest(this.baseUrl + '/proposal', data, success, failure);
     },
 
+    async GetAllReviews(success, failure){
+        fetch(this.baseUrl + '/review')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.reviews) failure();
+                else success(data.reviews);
+            });
+    },
+
     async CreateReview(data, success, failure){
         console.log(data);
         this.__PostRequest(this.baseUrl + '/review', data, success, failure);
+    },
+
+    async GetQualifierDetails(id, success, failure){
+        fetch(this.baseUrl + '/qualifier/' + id)
+            .then(response => response.json())
+            .then(data => {
+                if (!data.qualifiers || data.qualifiers.length == 0) failure("No such qualifier!");
+                else success(data.qualifiers[0]);
+            });
     }
 
 }

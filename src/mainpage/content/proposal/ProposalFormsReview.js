@@ -106,10 +106,6 @@ export default class ProposalFormsReview extends React.Component{
         this.fileHandleSubmission();
     }
 
-    createReview(){
-        ApiService.CreateReview({}, )
-    }
-
     componentDidMount(){
         const s = document.createElement('script');
         s.type = 'text/javascript';

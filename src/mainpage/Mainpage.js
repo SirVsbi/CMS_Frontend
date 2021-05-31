@@ -13,6 +13,7 @@ import RoomFormsCreate from "./content/room/RoomFormsCreate"
 import RoomView from "./content/room/RoomView";
 import RoomTimetableView from "./content/room/roomTimetable/RoomTimetableView";
 import ConferenceDetails from './content/conference/ConferenceDetails';
+import ReviewView from "./content/proposal/review/ReviewView";
 
 class Mainpage extends React.Component{
     constructor(props){
@@ -99,12 +100,12 @@ class Mainpage extends React.Component{
                     <Content title="View rooms" content={<RoomView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
-                <Route exact path='/ws/room/create(/:id)(/:name)(/:capacity)'>
-                    <Content title="Edit room" content={<RoomFormsCreate/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
-                </Route>
-
                 <Route exact path='/ws/room/timetable'>
                     <Content title="View room timetable" content={<RoomTimetableView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
+                </Route>
+
+                <Route exact path='/ws/review'>
+                    <Content title="View reviews" content={<ReviewView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
                 <Route exact path='/ws'>
