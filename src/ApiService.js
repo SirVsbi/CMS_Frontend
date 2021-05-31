@@ -201,6 +201,25 @@ var ApiService = {
                 if (!data.proposals) failure();
                 else success(data.proposals);
             });
+    },
+
+    async GetProposalDetails(id, success, failure){
+        fetch(this.baseUrl + '/proposal/' + id)
+            .then(response => response.json())
+            .then(data => {
+                if (!data.conferences || data.conferences.length == 0) failure("No such proposal!");
+                else success(data.conferences[0]);
+            });
+    },
+
+    async CreateProposal(data, success, failure){
+        console.log(data);
+        this.__PostRequest(this.baseUrl + '/proposal', data, success, failure);
+    },
+
+    async CreateReview(data, success, failure){
+        console.log(data);
+        this.__PostRequest(this.baseUrl + '/review', data, success, failure);
     }
 
 }
