@@ -91,12 +91,16 @@ class Mainpage extends React.Component{
                     <Content title="View proposals" content={<ProposalView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
-                <Route exact path='/ws/room/create'>
-                    <Content title="Create a room" content={<RoomFormsCreate/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
-                </Route>
+                <Route exact path='/ws/room/create/:id?/:name?/:capacity?'
+                       render={(props) => <Content title="View proposals" content={<RoomFormsCreate {...props} />} hierarchy={[{ name: 'Home', to: this.location }]}/>}
+                />
 
                 <Route exact path='/ws/room'>
                     <Content title="View rooms" content={<RoomView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
+                </Route>
+
+                <Route exact path='/ws/room/create(/:id)(/:name)(/:capacity)'>
+                    <Content title="Edit room" content={<RoomFormsCreate/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
                 <Route exact path='/ws/room/timetable'>

@@ -36,7 +36,7 @@ class ConferenceDetails extends React.Component{
                 fetching: this.state.fetching - 1
             });
         }, error => {
-            alert('Error getting conference infornmation: ' + (error.message || error));
+            alert('Error getting conference information: ' + (error.message || error));
         });
 
         ApiService.GetAllConferenceSections(this.state.conferenceId, data => {

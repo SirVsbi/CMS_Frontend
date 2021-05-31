@@ -22,6 +22,45 @@ var ApiService = {
             });
     },
 
+    async __PutRequest(link, data, success, failure){
+        const request = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        }
+        fetch(link, request)
+            .then(async response => {
+                const data = await response.json();
+                if (!response.ok){
+                    const error = data || response.status; // || data.message || data.error - TBD
+                    failure(error);
+                }else{
+                    success(data);
+                }
+            }, async rejected => {
+                failure(rejected);
+            });
+    },
+
+    async __DeleteRequest(link, id, success, failure){
+        var deleteLink = link + '/' + parseInt(id);
+        const request = {
+            method: 'DELETE'
+        }
+        fetch(deleteLink, request)
+            .then(async response => {
+                const data = await response.json();
+                if (!response.ok){
+                    const error = data || response.status; // || data.message || data.error - TBD
+                    failure(error);
+                }else{
+                    success(data);
+                }
+            }, async rejected => {
+                failure(rejected);
+            });
+    },
+
     async LogInUser(data, success, failure){
         // There must be an end-point to specifically verify the identity of a participant
         
@@ -103,6 +142,15 @@ var ApiService = {
         this.__PostRequest(this.baseUrl + '/room', data, success, failure);
     },
 
+    async DeleteRoom(id, success, failure){
+        this.__DeleteRequest(this.baseUrl + '/room', id, success, failure);
+    },
+
+    async UpdateRoom(data, success, failure){
+        this.__PutRequest(this.baseUrl + '/room/update', data, success, failure);
+    },
+
+
     async GetAllRooms(success, failure){
         fetch(this.baseUrl + '/room')
             .then(response => response.json())
@@ -126,6 +174,7 @@ var ApiService = {
     },
 
     async CreateConferenceSection(data, success, failure){
+        console.log(data);
         this.__PostRequest(this.baseUrl + '/conference_section', data, success, failure);
     },
 
@@ -143,9 +192,16 @@ var ApiService = {
                 if (data.length == 0) failure();
                 else success(data[0].name);
             })
+    },
+
+    async GetAllProposals(success, failure){
+        fetch(this.baseUrl + '/proposal')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.proposals) failure();
+                else success(data.proposals);
+            });
     }
-
-
 
 }
 

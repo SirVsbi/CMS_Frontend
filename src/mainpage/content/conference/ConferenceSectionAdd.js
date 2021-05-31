@@ -58,16 +58,16 @@ export default class ConferenceSectionAdd extends React.Component{
         const room = document.getElementById('add-room').value;
 
         let data = {
-            conferenceId: this.conferenceId,
-            chairId: chair,
-            roomId: room,
+            conferenceId: parseInt(this.conferenceId),
+            sessionChairId: parseInt(chair),
+            roomId: parseInt(room),
             name: name,
             timeStart: Date.parse(startDate),
             timeEnd: Date.parse(endDate)
         }
         console.log(data);
         ApiService.CreateConferenceSection(data, response => {
-            this.setState({success: 'Section created successfull!'});
+            this.setState({success: 'Section created successfully!'});
         }, error => {
             this.setState({error: 'Failed to create section: ' + error.message || error});
         });
