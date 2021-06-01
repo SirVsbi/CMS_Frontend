@@ -13,6 +13,7 @@ import RoomFormsCreate from "./content/room/RoomFormsCreate"
 import RoomView from "./content/room/RoomView";
 import RoomTimetableView from "./content/room/roomTimetable/RoomTimetableView";
 import ConferenceDetails from './content/conference/ConferenceDetails';
+import ReviewView from "./content/proposal/review/ReviewView";
 import Error403 from './content/errors/Error403';
 import InvitationsView from './content/invitations/InvitationsView';
 
@@ -73,17 +74,17 @@ class Mainpage extends React.Component{
                     <Content title="Submit a proposal" content={<ProposalFormsCreate/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
-                <Route exact path='/ws/proposal/review'>
-                    <Content title="Review proposals" content={<ProposalFormsReview/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
-                </Route>
+                <Route exact path='/ws/proposal/review/:id'
+                    render={(props) => <Content title="Review proposal" content={<ProposalFormsReview {...props} />} hierarchy={[{ name: 'Home', to: this.location }]}/>}
+                />
       
                 <Route exact path='/ws/proposal'>
                     <Content title="View proposals" content={<ProposalView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
-                <Route exact path='/ws/room/create'>
-                    <Content title="Create a room" content={<RoomFormsCreate/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
-                </Route>
+                <Route exact path='/ws/room/create/:id?/:name?/:capacity?'
+                       render={(props) => <Content title="View proposals" content={<RoomFormsCreate {...props} />} hierarchy={[{ name: 'Home', to: this.location }]}/>}
+                />
 
                 <Route exact path='/ws/room'>
                     <Content title="View rooms" content={<RoomView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
@@ -91,6 +92,10 @@ class Mainpage extends React.Component{
 
                 <Route exact path='/ws/room/timetable'>
                     <Content title="View room timetable" content={<RoomTimetableView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
+                </Route>
+
+                <Route exact path='/ws/review'>
+                    <Content title="View reviews" content={<ReviewView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
                 <Route exact path="/ws/invitations">
