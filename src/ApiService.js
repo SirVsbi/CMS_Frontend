@@ -285,6 +285,23 @@ var ApiService = {
                 if (!data.qualifiers || data.qualifiers.length == 0) failure("No such qualifier!");
                 else success(data.qualifiers[0]);
             });
+    },
+
+    async AddProposal(data, success, failure){
+        this.__PostRequest(this.baseUrl + '/proposal', data, success, failure);
+    },
+
+    async GetAllProposals(success, failure){
+        fetch(this.baseUrl + '/proposal')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.proposals) failure("Bad proposals");
+                else success(data.proposals);
+            });
+    },
+
+    async AddAuthor(data, success, failure){
+        this.__PostRequest(this.baseUrl+'/author', data, success, failure);   
     }
 
 }

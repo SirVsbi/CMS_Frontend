@@ -3,6 +3,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import {Checkbox, Chip, TextField} from "@material-ui/core";
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import ApiService from '../../../ApiService';
 
 
 
@@ -28,20 +29,53 @@ export default class ProposalFormsCreate extends React.Component{
         ];
 
         // get from database
-        this.authors = [{name: 'Szabolcs Vidam'}, {name: 'Bogdan Vasc'}, {name: 'Alexandra Tudorescu'}, {name: 'David Turcas'}, {name: 'Andrei Turcas'}, {name: 'Andrea Barrasa'}];
+        this.authors = [];
+        this.fixedAuthors = [];
 
-        // the fixed author should be the user who is making the proposal
-        this.fixedAuthors = [this.authors[1]];
         this.state = {
-            filledAuthors: [...this.fixedAuthors, this.authors[2]],
+            filledAuthors: [],
             selectedFile: '',
             isFilePicked: false,
-            conference: this.conference,
-            conferenceSection: this.conferenceSection,
+            conferences: [],
+            conferenceSelected: null,
+            sectionSelected: null,
             deadline: this.deadline,
+            fetching: 2
         }
 
+
+        this.onSelectChange = this.onSelectChange.bind(this);
         this.fileHandleSubmission = this.fileHandleSubmission.bind(this);
+        this.getData = this.getData.bind(this);
+    }
+
+    componentDidMount(){
+        this.getData();
+    }
+
+    getData(){
+        ApiService.GetAllConferences(data => {
+            this.setState({
+                conferences: data,
+                conferenceSelected: data.length>0?data[0]:null,
+                fetching: this.state.fetching - 1
+            });
+        });
+        ApiService.GetAllParticipants(data => {
+            console.log(data);
+            this.authors = data;
+            this.fixedAuthors = [];
+            for (var i = 0; i < this.authors.length; i++){
+                if (this.authors[i].pid == localStorage.getItem('pid')){
+                    this.fixedAuthors.push(this.authors[i]);
+                }
+            }
+            this.setState({
+                filledAuthors: [...this.fixedAuthors],
+                fetching: this.state.fetching - 1
+            });
+        });
+
     }
 
     fileChangeHandler = event => {
@@ -51,40 +85,84 @@ export default class ProposalFormsCreate extends React.Component{
 
     // NEEDS MODIFICATION FOR OUR OWN DB (if we're going to store the files there)
     fileHandleSubmission(){
-        const formData = new FormData();
+        //proposal: 
+        let proposalName = document.getElementById('proposal-name').value;
+        let fileName = this.state.selectedFile?this.state.selectedFile.name:'';
+        let abstract = document.getElementById('abstract').value;
 
-        formData.append('File', this.state.selectedFile);
+        let conferenceSectionId = document.getElementById('section-selector').value;
+        let authors = this.state.filledAuthors.map(author => author.pid);
 
-        fetch(
-            'https://freeimage.host/api/1/upload?key=<YOUR_API_KEY>',
-            {
-                method: 'POST',
-                body: formData,
-            }
-        )
-            .then((response) => response.json())
-            .then((result) => {
-                console.log('Success:', result);
+        ApiService.AddProposal({
+            name: proposalName, filePath: fileName, paperAbstract: abstract
+        }, success => {
+            ApiService.GetAllProposals(data => {
+                var proposalId = null;
+                for (var i = 0; i < data.length; i++){
+                    if (data[i].name == proposalName && data[i].filePath == fileName){
+                        proposalId = data[i].proposalId;
+                    }
+                }
+                if (proposalId == null) alert('Issue when creating authors.');
+                else{
+                    for (var j = 0; j < authors.length; j++){
+                        ApiService.AddAuthor({
+                            participantId: authors[j],
+                            conferenceSectionId: conferenceSectionId,
+                            proposalId: proposalId
+                        }, success => {window.location.reload()}, error => {
+                            alert('Error when adding an author: ' + error.message || error);
+                        });
+                    }
+                }
+            }, error => {
+                alert('Failed to get proposals: ' + error.message || error);
             })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+        }, error => {
+            alert('Failed to add proposal: ' + error.message || error);
+        })
+
+        //authors:
+        
+
+        console.log(authors);
+        console.log(conferenceSectionId);
+
+
     };
 
-    componentDidMount(){
-        const s = document.createElement('script');
-        s.type = 'text/javascript';
-        s.async = true;
+    onSelectChange(event){
+        let id = event.target.id;
+        let value = event.target.value;
 
-        document.body.appendChild(s);
+        if (id == 'conference-selector'){
+            console.log('conference selected to ' + value);
+            for (var i = 0; i < this.state.conferences.length; i++){
+                let c = this.state.conferences[i];
+                if (c.conferenceId == value){
+                    this.setState({conferenceSelected: c});
+                }
+            }
+        }
     }
 
     render(){
-
-        //this.setState({filledAuthors: [...this.fixedAuthors, this.authors[2]]});
+        if (this.state.fetching) return <div>Fetching data...</div>
 
         const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
         const checkedIcon = <CheckBoxIcon fontSize="small" />;
+
+        let conferenceOptions = this.state.conferences.map(c => {
+            return (
+                <option key={c.conferenceId} value={c.conferenceId}>{c.name}</option>
+            );
+        });
+        let sectionsOptions = this.state.conferenceSelected == null?[] : this.state.conferenceSelected.conferenceSections.map(s => {
+            return (
+                <option key={s.conferenceSectionId} value={s.conferenceSectionId}>{s.name}</option>
+            );
+        });
+
         return (
             <div className="card card-danger">
                 <div className="card-header">
@@ -98,7 +176,7 @@ export default class ProposalFormsCreate extends React.Component{
                             <div className="input-group-prepend">
                                 <span className="input-group-text"><i className="fas fa-feather"></i></span>
                             </div>
-                            <input type="text" className="form-control"/>
+                            <input id="proposal-name" type="text" className="form-control"/>
                         </div>
                     </div>
 
@@ -114,11 +192,11 @@ export default class ProposalFormsCreate extends React.Component{
                                     ]});
                             }}
                             options={this.authors}
-                            getOptionLabel={(option) => option.name}
+                            getOptionLabel={(option) => option?option.name:"?"}
                             renderTags={(tagValue, getTagProps) =>
                                 tagValue.map((option, index) => (
                                     <Chip
-                                        label={option.name}
+                                        label={option?option.name:"?"}
                                         {...getTagProps({ index })}
                                         disabled={this.fixedAuthors.indexOf(option) !== -1}
                                     />
@@ -130,7 +208,7 @@ export default class ProposalFormsCreate extends React.Component{
                             )}
                         />
                     </div>
-
+                    {false &&
                     <div className="form-group">
                         <Autocomplete
                             multiple
@@ -155,7 +233,8 @@ export default class ProposalFormsCreate extends React.Component{
                             )}
                         />
                     </div>
-
+                    }
+                    {false &&
                     <div className="form-group">
                     <Autocomplete
                         multiple
@@ -180,7 +259,7 @@ export default class ProposalFormsCreate extends React.Component{
                         )}
                     />
                     </div>
-
+                    }
 
                     <div className="form-group">
                         <label>Conference:</label>
@@ -188,7 +267,9 @@ export default class ProposalFormsCreate extends React.Component{
                             <div className="input-group-prepend">
                                 <span className="input-group-text"><i className="fas fa-feather"></i></span>
                             </div>
-                            <input type="text" className="form-control" defaultValue={this.state.conference}/>
+                            <select id="conference-selector" className="form-control" onChange={this.onSelectChange} autoComplete="off">
+                                {conferenceOptions}
+                            </select>
                         </div>
                     </div>
 
@@ -198,24 +279,17 @@ export default class ProposalFormsCreate extends React.Component{
                             <div className="input-group-prepend">
                                 <span className="input-group-text"><i className="fas fa-feather"></i></span>
                             </div>
-                            <input type="text" className="form-control" defaultValue={this.conferenceSection}/>
-                        </div>
-                    </div>
-
-                    <div className="form-group">
-                        <label>Deadline:</label>
-                        <div className="input-group">
-                            <div className="input-group-prepend">
-                                <span className="input-group-text"><i className="fas fa-calendar-alt"></i></span>
-                            </div>
-                            <input type="text" id="add-start-date" className="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask value={'01/01/2001'}/>
+                            
+                            <select id="section-selector" className="form-control" onChange={this.onSelectChange} autoComplete="off">
+                                {sectionsOptions}
+                            </select>
                         </div>
                     </div>
 
 
                     <div className="form-group">
                         <label>Abstract:</label>
-                        <textarea className="form-control" rows="3" placeholder="Enter..."></textarea>
+                        <textarea id="abstract" className="form-control" rows="6" placeholder="Enter..."></textarea>
                     </div>
                 </div>
 
