@@ -188,7 +188,7 @@ export default class ProposalFormsCreate extends React.Component{
                             <div className="input-group-prepend">
                                 <span className="input-group-text"><i className="fas fa-feather"></i></span>
                             </div>
-                            <input type="text" className="form-control" value={this.state.conference} readOnly={true}/>
+                            <input type="text" className="form-control" defaultValue={this.state.conference}/>
                         </div>
                     </div>
 
@@ -198,7 +198,7 @@ export default class ProposalFormsCreate extends React.Component{
                             <div className="input-group-prepend">
                                 <span className="input-group-text"><i className="fas fa-feather"></i></span>
                             </div>
-                            <input type="text" className="form-control" value={this.conferenceSection} readOnly={true}/>
+                            <input type="text" className="form-control" defaultValue={this.conferenceSection}/>
                         </div>
                     </div>
 
@@ -208,7 +208,7 @@ export default class ProposalFormsCreate extends React.Component{
                             <div className="input-group-prepend">
                                 <span className="input-group-text"><i className="fas fa-calendar-alt"></i></span>
                             </div>
-                            <input type="text" id="add-start-date" className="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask value={'01/01/2001'} readOnly={true}/>
+                            <input type="text" id="add-start-date" className="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask value={'01/01/2001'}/>
                         </div>
                     </div>
 

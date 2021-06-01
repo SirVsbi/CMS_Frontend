@@ -6,13 +6,14 @@ export default class ConferenceSection extends React.Component{
         super(props);
 
         this.state = {
-            id: props.id || 1,
-            title: props.name || 'Section name',
-            sessionChairId: props.sessionChairId,
-            chairName: props.chairName || "Unknown chair",
-            roomName: props.roomName || "Unknown room",
-            timeStart: props.timeStart || "Unknown",
-            timeEnd: props.timeEnd || "Unknown",
+            id: props.data.id || 1,
+            title: props.data.title || 'Section name',
+            sessionChair: props.data.sessionChair,
+            roomId: props.data.roomId,
+            roomName: props.data.roomName,
+            timeStart: props.data.timeStart || "Unknown",
+            timeEnd: props.data.timeEnd || "Unknown",
+            onDelete: props.onDelete,
             fetching: true,
             activeTab: null
         }
@@ -48,13 +49,13 @@ export default class ConferenceSection extends React.Component{
                         <li className="pt-2 px-3">
                             <h3 className="card-title">{this.state.title}</h3> 
                         </li>
-                        <li className="nav-item">
+                        <li className="nav-item" style={{cursor:'pointer'}}>
                             <a className="nav-link" id={this.state.id+"-general-link"} data-toggle="pill" role="tab" aria-controls={this.state.id+"-tab-general"} role="tab" aria-selected="false" onClick={() => {this.setTabActive('general')}}>General</a>
                         </li>
-                        <li className="nav-item">
+                        <li className="nav-item" style={{cursor:'pointer'}}>
                             <a className="nav-link" id={this.state.id+"-authors-link"} data-toggle="pill" role="tab" aria-controls={this.state.id+"-tab-authors"} role="tab" aria-selected="false" onClick={() => {this.setTabActive('authors')}}>Authors</a>
                         </li>
-                        <li className="nav-item">
+                        <li className="nav-item" style={{cursor:'pointer'}}>
                             <a className="nav-link" id={this.state.id+"-edit-link"} data-toggle="pill" role="tab" aria-controls={this.state.id+"-tab-edit"} role="tab" aria-selected="false" onClick={() => {this.setTabActive('edit')}}>Edit</a>
                         </li>
                     </ul>
@@ -64,7 +65,9 @@ export default class ConferenceSection extends React.Component{
                         <div id={this.state.id+"-general-content"} className="tab-pane fade active-show" role="tabpanel" aria-labelledby={this.state.id+"-tab-general"}>
                             <strong><i className="fab fa-redhat" /> Chair</strong>
                             <p className="text-muted">
-                                {this.state.chairName}
+                                <a href={"/ws/profile/"+this.state.sessionChair.participant.pid}>
+                                    {this.state.sessionChair.participant.name + ' (' + this.state.sessionChair.participant.userName + ')'}
+                                </a>
                             </p>
                             <hr />
                             <strong><i className="fas fa-laptop-house" /> Room</strong>
@@ -83,7 +86,7 @@ export default class ConferenceSection extends React.Component{
                             </p>
                             <hr />
                             <button type="button" className="btn btn-block btn-info">Edit</button>
-                            <button type="button" className="btn btn-block btn-danger">Delete</button>
+                            <button type="button" className="btn btn-block btn-danger" onClick={() => {this.state.onDelete(this.state.id)}}>Delete</button>
                         </div>
                         <div id={this.state.id+"-authors-content"} className="tab-pane fade active-show" role="tabpanel" aria-labelledby={this.state.id+"-tab-authors"}>
                             Authors

@@ -5,7 +5,7 @@ var ApiService = {
     async __PostRequest(link, data, success, failure){
         const request = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Origin': 'http://localhost:8080' },
             body: JSON.stringify(data)
         }
         fetch(link, request)
@@ -22,19 +22,26 @@ var ApiService = {
             });
     },
 
-    async LogInUser(data, success, failure){
-        // There must be an end-point to specifically verify the identity of a participant
-        
-        // placeholder
+    async __DeleteRequest(link, success, failure){
+        const request = {
+            method: 'DELETE',
+            headers: { 'Origin': 'http://localhost:8080' }
+        }
 
-        /*setTimeout(() =>{
-            console.log(data);
-            if (data.username === 'admin' && data.password === 'admin'){
-                success({message: 'OK', username: 'admin'});
-            }else{
-                failure({error: 'Invalid credentials!'});
-            }
-        }, 2500);*/
+        fetch(link, request)
+            .then(async response => {
+                const data = await response.json();
+                if (!response.ok){
+                    failure(data || response.status);
+                }else{
+                    success(data);
+                }
+            }, async rejected => {
+                failure(rejected);
+            })
+    },
+
+    async LogInUser(data, success, failure){
         console.log('Request:');
         console.log(data);
         fetch(this.baseUrl+'/participant')
@@ -45,7 +52,7 @@ var ApiService = {
             })
             .then(users => users.participants)
             .then(users => {
-                let user = null;
+                var user = null;
                 for(var i=0; i<users.length; i++){
                     if (data.password !== users[i].password) continue;
                     if (data.username && data.username !== users[i].userName) continue;
@@ -53,6 +60,7 @@ var ApiService = {
                     user = users[i];
                 }
                 if (user !== null) success(user);
+                    
                 else failure('Invalid credentials!');
             });
             
@@ -129,6 +137,10 @@ var ApiService = {
         this.__PostRequest(this.baseUrl + '/conference_section', data, success, failure);
     },
 
+    async DeleteConfereceSection(id, success, failure){
+        this.__DeleteRequest(this.baseUrl + '/conference_section/' + id, success, failure);
+    },
+
     async GetPossibleUsersForChair(data, success, failure){
         fetch(this.baseUrl + '/participant')
             .then(response => response.json())
@@ -143,7 +155,49 @@ var ApiService = {
                 if (data.length == 0) failure();
                 else success(data[0].name);
             })
-    }
+    },
+
+    async GetAllParticipants(success, failure){
+        fetch(this.baseUrl + '/participant')
+            .then(response => response.json())
+            .then(data => data.participants)
+            .then(data => { success(data); })
+    },
+
+    async GetAllChairs(success, failure){
+        fetch(this.baseUrl + '/chair')
+            .then(response => response.json())
+            .then(data => data.chairs)
+            .then(data => { success(data); })
+    },
+
+    async GetAllReviewers(success, failure){
+        fetch(this.baseUrl + '/reviewer')
+            .then(response => response.json())
+            .then(data => data.reviewers)
+            .then(data => { success(data); })
+    },
+
+    async GetAllCoChairs(success, failure){
+        fetch(this.baseUrl + '/cochair')
+            .then(response => response.json())
+            .then(data => data.coChairs)
+            .then(data => { success(data); })
+    },
+
+    async AddChair(participantId, success, failure){
+        this.__PostRequest(this.baseUrl+'/chair', {participantId: participantId}, success, failure);
+    },
+
+    async AddCoChair(participantId, success, failure){
+        console.log({participantId: participantId});
+        this.__PostRequest(this.baseUrl+'/cochair', {participantId: participantId}, success, failure);
+    },
+
+    async AddReviewer(participantId, success, failure){
+        console.log({participantId: participantId});
+        this.__PostRequest(this.baseUrl+'/reviewer', {participantId: participantId}, success, failure);
+    },
 
 
 

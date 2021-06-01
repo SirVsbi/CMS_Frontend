@@ -4,11 +4,28 @@ import React from 'react';
 export default class ProfileMain extends React.Component{
     constructor(props){
         super(props);
-        console.log(props);
+
+        let rolesName = {
+            'chair': {title: 'Chair', importance: 6},
+            'reviewer': {title: 'Reviewer', importance: 4},
+            'admin': {title: 'Administrator', importance: 7},
+            'cochair': {title: 'Co Chair', importance: 5},
+            'listener': {title: 'Listener', importance: 2},
+            'author': {title: 'Author', importance: 3},
+            'participant': {title: 'Participant', importance: 1},
+        }
+        let rolesText = ""
+        props.roles.map(role => {
+            if (rolesText !== "") rolesText += ", ";
+            rolesText += (rolesName[role] ? rolesName[role].title : 'Participant');
+        });
+
+
+
         this.state = {
             picture: props.picture || "adminlte/dist/img/user_default.jpg",
             name: props.name || "Unnamed user",
-            role: props.role || "",
+            roles: rolesText,
             stats: {
                 joinedDate: props.stats.joinedDate || "unknown",
                 stats1: props.stats.stats1 || 0,
@@ -28,16 +45,10 @@ export default class ProfileMain extends React.Component{
                         <img className="profile-user-img img-fluid img-circle" src={this.state.picture} alt=""/>
                     </div>
                     <h3 className="profile-username text-center">{this.state.name}</h3>
-                    <p className="text-muted text-center">{this.state.role}</p>
+                    <p className="text-muted text-center">{this.state.roles}</p>
                     <ul className="list-group list-group-unbordered mb-3">
                         <li className="list-group-item">
                             <b>Joined on </b> <span className="float-right">{this.state.stats.joinedDate}</span>
-                        </li>
-                        <li className="list-group-item">
-                            <b>Some stats</b> <span className="float-right">{this.state.stats.stats1}</span>
-                        </li>
-                        <li className="list-group-item">
-                            <b>Some other stats</b> <span className="float-right">{this.state.stats.stats2}</span>
                         </li>
                     </ul>
                     {this.state.yourProfile && 

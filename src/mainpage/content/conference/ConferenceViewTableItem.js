@@ -66,7 +66,7 @@ export default class ConferenceViewTableItem extends React.Component{
             <tr>
                 <td>{this.order}</td>
                 <td>
-                    <a href={"/ws/conference/" + this.conferenceId}>{this.title}</a>
+                    <a href={"/ws/conference/view/" + this.conferenceId}>{this.title}</a>
                     <br/>
                     <small>Created on {this.createdOn}</small>
                 </td>
@@ -93,7 +93,7 @@ export default class ConferenceViewTableItem extends React.Component{
                 </td>
                 <td className="project-actions" key={this.order}>
                     {this.canView &&
-                        <button className="btn btn-primary btn-sm" style={{marginRight:'3px'}} onClick={() => {window.location.href="/ws/conference/" + this.conferenceId}}>
+                        <button className="btn btn-primary btn-sm" style={{marginRight:'3px'}} onClick={() => {window.location.href="/ws/conference/view/" + this.conferenceId}}>
                             <i className="fas fa-folder"/>
                             View
                         </button>

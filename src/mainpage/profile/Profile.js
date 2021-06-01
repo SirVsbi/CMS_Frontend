@@ -11,22 +11,20 @@ class Profile extends React.Component{
     constructor(props){
         super(props);
 
-        
-
         this.state = {
             picture: "adminlte/dist/img/user_default.jpg",
             name: "",
-            role: "Participant",
             userInfo: {
                 affiliation: "",
                 webpage: "",
                 contact: "",
             },
             userStats:{
-                joinedDate: "Unknown",
+                joinedDate: "30 May 2021",
                 stats1: 500,
                 stats2: 13287
             },
+            roles: [],
             yourProfile: true,
             fetching: true
         }
@@ -39,6 +37,14 @@ class Profile extends React.Component{
         let id = this.props.match.params.id || localStorage.getItem('pid');
         if (this.props.match.params.id) this.setState({yourProfile: false});
         ApiService.GetUserData(id, data => {
+            let roles = [];
+            if (data.userName == 'admin') roles.push('admin');
+            if (data.reviewer !== null) roles.push('reviewer');
+            if (data.chair !== null) roles.push('chair');
+            if (data.coChair !== null) roles.push('cochair');
+            if (data.author !== null) roles.push('author');
+            if (data.listener !== null) roles.push('listener');
+            if (roles.length == 0) roles.push('participant');
             this.setState({
                 name: data.name || this.state.name,
                 userInfo: {
@@ -46,9 +52,10 @@ class Profile extends React.Component{
                     webpage: data.webpage || this.state.userInfo.webpage,
                     contact: data.email || this.state.userInfo.contact
                 },
+                roles: roles,
                 fetching: false
             });
-        });
+        }, failure => {alert(failure.message || failure)});
     }
 
     render(){
@@ -60,7 +67,7 @@ class Profile extends React.Component{
         return (
             <div className="row">
                 <div className="col-md-3">
-                    <ProfileMain name={this.state.name} role={this.state.role} stats={this.state.userStats} yourProfile={this.state.yourProfile}/>
+                    <ProfileMain name={this.state.name} roles={this.state.roles} stats={this.state.userStats} yourProfile={this.state.yourProfile}/>
                     <ProfileAbout info={this.state.userInfo}/>
                 </div>
             </div>
