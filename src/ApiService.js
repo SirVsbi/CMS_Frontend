@@ -22,6 +22,39 @@ var ApiService = {
             });
     },
 
+
+    async __PutRequest(link, data, success, failure){
+        const request = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        }
+        fetch(link, request)
+            .then(async response => {
+                const data = await response.json();
+                if (!response.ok){
+                    const error = data || response.status; // || data.message || data.error - TBD
+                    failure(error);
+                }else{
+                    success(data);
+                }
+            }, async rejected => {
+                failure(rejected);
+            });
+    },
+
+    async __DeleteRequest(link, id, success, failure){
+        var deleteLink = link + '/' + parseInt(id);
+        const request = {
+            method: 'DELETE'
+        }
+        fetch(deleteLink, request)
+            .then(async response => {
+                const data = await response.json();
+                if (!response.ok){
+                    const error = data || response.status; // || data.message || data.error - TBD
+                    failure(error);
+/*
     async __DeleteRequest(link, success, failure){
         const request = {
             method: 'DELETE',
@@ -33,12 +66,13 @@ var ApiService = {
                 const data = await response.json();
                 if (!response.ok){
                     failure(data || response.status);
+*/
                 }else{
                     success(data);
                 }
             }, async rejected => {
                 failure(rejected);
-            })
+            });
     },
 
     async LogInUser(data, success, failure){
@@ -111,6 +145,15 @@ var ApiService = {
         this.__PostRequest(this.baseUrl + '/room', data, success, failure);
     },
 
+    async DeleteRoom(id, success, failure){
+        this.__DeleteRequest(this.baseUrl + '/room', id, success, failure);
+    },
+
+    async UpdateRoom(data, success, failure){
+        this.__PutRequest(this.baseUrl + '/room/update', data, success, failure);
+    },
+
+
     async GetAllRooms(success, failure){
         fetch(this.baseUrl + '/room')
             .then(response => response.json())
@@ -134,6 +177,7 @@ var ApiService = {
     },
 
     async CreateConferenceSection(data, success, failure){
+        console.log(data);
         this.__PostRequest(this.baseUrl + '/conference_section', data, success, failure);
     },
 
@@ -157,7 +201,39 @@ var ApiService = {
             })
     },
 
-    async GetAllParticipants(success, failure){
+    async GetAllProposals(success, failure){
+        fetch(this.baseUrl + '/proposal')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.proposals) failure();
+                else success(data.proposals);
+            });
+    },
+
+    async GetProposalDetails(id, success, failure){
+        fetch(this.baseUrl + '/proposal/' + id)
+            .then(response => response.json())
+            .then(data => {
+                if (!data.conferences || data.conferences.length == 0) failure("No such proposal!");
+                else success(data.conferences[0]);
+            });
+    },
+
+    async CreateProposal(data, success, failure){
+        console.log(data);
+        this.__PostRequest(this.baseUrl + '/proposal', data, success, failure);
+    },
+
+    async GetAllReviews(success, failure){
+        fetch(this.baseUrl + '/review')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.reviews) failure();
+                else success(data.reviews);
+            });
+    },
+  
+      async GetAllParticipants(success, failure){
         fetch(this.baseUrl + '/participant')
             .then(response => response.json())
             .then(data => data.participants)
@@ -199,7 +275,19 @@ var ApiService = {
         this.__PostRequest(this.baseUrl+'/reviewer', {participantId: participantId}, success, failure);
     },
 
+    async CreateReview(data, success, failure){
+        console.log(data);
+        this.__PostRequest(this.baseUrl + '/review', data, success, failure);
+    },
 
+    async GetQualifierDetails(id, success, failure){
+        fetch(this.baseUrl + '/qualifier/' + id)
+            .then(response => response.json())
+            .then(data => {
+                if (!data.qualifiers || data.qualifiers.length == 0) failure("No such qualifier!");
+                else success(data.qualifiers[0]);
+            });
+    }
 
 }
 
