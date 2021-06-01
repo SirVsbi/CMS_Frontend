@@ -42,8 +42,6 @@ var ApiService = {
     },
 
     async LogInUser(data, success, failure){
-        console.log('Request:');
-        console.log(data);
         fetch(this.baseUrl+'/participant')
             .then(response => response.json())
             .then(users => {

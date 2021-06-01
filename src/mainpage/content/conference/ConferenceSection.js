@@ -1,6 +1,5 @@
 import React from 'react';
-import ApiService from '../../../ApiService';
-
+import moment from 'moment';
 export default class ConferenceSection extends React.Component{
     constructor(props){
         super(props);
@@ -11,8 +10,8 @@ export default class ConferenceSection extends React.Component{
             sessionChair: props.data.sessionChair,
             roomId: props.data.roomId,
             roomName: props.data.roomName,
-            timeStart: props.data.timeStart || "Unknown",
-            timeEnd: props.data.timeEnd || "Unknown",
+            timeStart: props.data.timeStart?moment(props.data.timeStart).format('YYYY-MM-DD HH:MM'):"Unknown",
+            timeEnd: props.data.timeEnd?moment(props.data.timeEnd).format('YYYY-MM-DD HH:MM'):"Unknown",
             onDelete: props.onDelete,
             fetching: true,
             activeTab: null
