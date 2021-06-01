@@ -14,6 +14,8 @@ import RoomView from "./content/room/RoomView";
 import RoomTimetableView from "./content/room/roomTimetable/RoomTimetableView";
 import ConferenceDetails from './content/conference/ConferenceDetails';
 import ReviewView from "./content/proposal/review/ReviewView";
+import Error403 from './content/errors/Error403';
+import InvitationsView from './content/invitations/InvitationsView';
 
 class Mainpage extends React.Component{
     constructor(props){
@@ -48,18 +50,6 @@ class Mainpage extends React.Component{
 
                 {/* Content pages */}
 
-                <Route path='/ws/1'>
-                    <Content title="Test page 1" content={<div>page 1</div>} hierarchy={[{ name: 'Home', to: this.location }]}/>
-                </Route>
-
-                <Route path='/ws/2'>
-                    <Content title="Test page 2" content={<div>page 2</div>} hierarchy={[{ name: 'Home', to: this.location }]}/>
-                </Route>
-
-                <Route path='/ws/3'>
-                    <Content title="Test page 3" content={<div>page 3</div>} hierarchy={[{ name: 'Home', to: this.location }]}/>
-                </Route>
-
                 <Route exact path='/ws/profile/'>
                     <Content title="Your profile" content={<Profile/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
@@ -72,7 +62,7 @@ class Mainpage extends React.Component{
                     <Content title="Create a conference" content={<ConferenceForms/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
-                <Route path='/ws/conference/:id'>
+                <Route path='/ws/conference/view/:id'>
                     <Content title="View conference" content={<ConferenceDetails/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
@@ -107,6 +97,16 @@ class Mainpage extends React.Component{
                 <Route exact path='/ws/review'>
                     <Content title="View reviews" content={<ReviewView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
+
+                <Route exact path="/ws/invitations">
+                    <Content title="Application users" content={<InvitationsView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
+                </Route>
+
+
+                <Route exact path='/ws/403'>
+                    <Content title="Not allowed" content={<Error403/>} hierarchy={[{ name: 'Home', to: this.location}]}/>
+                </Route>
+
 
                 <Route exact path='/ws'>
                     <Content title="Front page" content={<div>This is the front page. Use navigation to navigate.</div>} hierarchy={[{ name: 'Home', to: this.location}]}/>

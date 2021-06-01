@@ -8,47 +8,53 @@ import ApiService from '../../../ApiService';
 class ConferenceDetails extends React.Component{
     constructor(props){
         super(props);
+        this.sections = [];
         this.state = {
             //sections: [{name: 'First section'}, {}, {}, {}],
-            sections: [],
             conferenceId: this.props.match.params.id,
-            conference: {
-                name: '',
-                timeStart: '',
-                timeEnd: '',
-                program: ''
-            },
+            name: '',
+            timeStart: '',
+            timeEnd: '',
+            program: '',
             rooms: [],
-            fetching: 2
+            fetching: 1
         }
 
+        this.deleteConferenceSection = this.deleteConferenceSection.bind(this);
+        this.getData = this.getData.bind(this);
+
+    }
+
+    getData(){
+        ApiService.GetConferenceDetails(this.state.conferenceId,  data => {
+            this.sections = data.conferenceSections;
+            console.log(data);
+            this.setState({
+                name: data.name || 'Unknown',
+                timeStart: data.timeStart || 'Unknown',
+                timeEnd: data.timeEnd || 'Unknown',
+                program: data.program || 'Unknown program',
+                fetching: this.state.fetching - 1
+            });
+            
+        }, error => {
+            //alert('Error getting conference infornmation: ' + (error.message || error));
+        });
     }
 
     componentDidMount(){
-        ApiService.GetConferenceDetails(this.state.conferenceId,  data => {
-            this.setState({
-                conference: {
-                    name: data.name || 'Unknown',
-                    timeStart: data.timeStart || 'Unknown',
-                    timeEnd: data.timeEnd || 'Unknown',
-                    program: data.program || 'Unknown program'
-                },
-                fetching: this.state.fetching - 1
-            });
-        }, error => {
-            alert('Error getting conference information: ' + (error.message || error));
-        });
-
-        ApiService.GetAllConferenceSections(this.state.conferenceId, data => {
-            this.setState({
-                sections: data,
-                fetching: this.state.fetching - 1
-            });
-            console.log(data);
-        });
+        if (this.state.conferenceId == 'create') return;
+        this.getData();
+        
     }
 
+    deleteConferenceSection(id){
+        ApiService.DeleteConfereceSection(id, response => {
 
+        }, error => {
+
+        });
+    }
 
     render(){
         if (this.state.fetching > 0){
@@ -57,8 +63,10 @@ class ConferenceDetails extends React.Component{
             )
         }
         let col1 = [], col2 = [], id = 1;
-        for (var i = 0; i < this.state.sections.length; i++){
-            let sec = <ConferenceSection id={id} key={id} {...this.state.sections[i]}/>;
+        for (var i = 0; i < this.sections.length; i++){
+            let s = this.sections[i];
+            let sData = {id: s.conferenceSectionId, title: s.name, timeStart: s.timeStart, timeEnd: s.timeEnd, roomId: s.room.roomId, roomName: s.room.name, sessionChair: s.sessionChair}
+            let sec = <ConferenceSection id={s.conferenceSectionId} key={s.conferenceSectionId} data={sData} onDelete={this.deleteConferenceSection}/>;
             if (i%2==0) col1.push(sec);
             else col2.push(sec);
             id ++;
@@ -80,10 +88,10 @@ class ConferenceDetails extends React.Component{
                             <div className="col-12 col-md-12 col-lg-6 order-1 order-md-1">
                                 <h3 className="text-primary">
                                     <i className="fas fa-paint-brush"/>
-                                    {this.state.conference.name}
+                                    {this.state.name}
                                 </h3>
                                 <p className="text-muted">
-                                    {this.state.conference.program}
+                                    {this.state.program}
                                 </p>
                                 <div className="text-muted">
                                     Conference creator
@@ -92,21 +100,21 @@ class ConferenceDetails extends React.Component{
                                             <img alt="Avatar" src="adminlte/dist/img/user_default.jpg" style={{borderRadius: "50%", display: "inline", width: "2.5rem"}}></img>
                                         </div>
                                         <div className="list-inline-item">
-                                            <a href="/ws/profile">Admin</a>
+                                            <a href="/ws/profile/1">Admin</a>
                                         </div>
                                     </div>
                                     <br/>
                                     <p>
                                         Created on
-                                        <b className="d-block">{this.state.conference.createOn}</b>
+                                        <b className="d-block">{this.state.createOn}</b>
                                     </p>
                                     <p>
                                         Start date
-                                        <b className="d-block">{this.state.conference.timeStart}</b>
+                                        <b className="d-block">{this.state.timeStart}</b>
                                     </p>
                                     <p>
                                         Deadline
-                                        <b className="d-block">{this.state.conference.timeEnd}</b>
+                                        <b className="d-block">{this.state.timeEnd}</b>
                                     </p>
                                 </div>
                             </div>
@@ -127,15 +135,16 @@ class ConferenceDetails extends React.Component{
                     </div>
                     <div className="card-body">
                         <div className="row">
-                            <div className="col-12 col-md-12 col-lg-3 order-2 order-md-1">
+                            <div className="col-12 col-md-12 col-lg-3 order-1 order-md-1">
+                                <ConferenceSectionAdd conferenceId={this.state.conferenceId} onAdd={this.getData}/>
+                            </div>
+                            <div className="col-12 col-md-12 col-lg-3 order-2 order-md-2">
                                 {col1}
                             </div>
-                            <div className="col-12 col-md-12 col-lg-3 order-2 order-md-1">
+                            <div className="col-12 col-md-12 col-lg-3 order-2 order-md-2">
                                 {col2}
                             </div>
-                            <div className="col-12 col-md-12 col-lg-3 order-1 order-md-2">
-                                <ConferenceSectionAdd conferenceId={this.state.conferenceId}/>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>

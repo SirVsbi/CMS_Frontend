@@ -137,7 +137,14 @@ class LoginForm extends React.Component{
         localStorage.setItem('username', response.userName);
         localStorage.setItem('pid', response.pid);
         localStorage.setItem('ts', Date.now() / 1000);
+        localStorage.setItem('isAdmin', (response.userName=='admin'));
+        localStorage.setItem('isListener', (response.listener !== null));
+        localStorage.setItem('isAuthor', (response.author !== null));
+        localStorage.setItem('isChair', (response.chair !== null));
+        localStorage.setItem('isCoChair', (response.coChair !== null));
+        localStorage.setItem('isReviewer', (response.reviewer !== null));
         window.location.href = '/ws';
+        console.log('ha');
     }
 
     onLogInFailed(response){

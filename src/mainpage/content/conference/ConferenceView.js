@@ -18,7 +18,7 @@ export default class ConferenceView extends React.Component{
         ApiService.GetAllConferences(data => {
             this.setState({data: data, fetching: false});
         }, error => {
-            alert('Failed getting conferences! Error: ' + (error.message || error));
+            //alert('Failed getting conferences! Error: ' + (error.message || error));
         });
     }
 

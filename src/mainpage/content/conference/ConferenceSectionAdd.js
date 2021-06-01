@@ -1,5 +1,6 @@
 import React from 'react';
 import ApiService from '../../../ApiService';
+import Error403 from '../errors/Error403';
 
 
 export default class ConferenceSectionAdd extends React.Component{
@@ -11,6 +12,7 @@ export default class ConferenceSectionAdd extends React.Component{
         this.state = {
             rooms: [],
             chairs: [],
+            onAdd: props.onAdd,
             error: null,
             success: null,
             fetching: 2
@@ -40,7 +42,7 @@ export default class ConferenceSectionAdd extends React.Component{
             alert('Error getting rooms information: ' + (error.message || error));
         });
 
-        ApiService.GetPossibleUsersForChair(null, data => {
+        ApiService.GetAllChairs(data => {
             this.setState({
                 chairs: data,
                 fetching: this.state.fetching - 1
@@ -58,16 +60,17 @@ export default class ConferenceSectionAdd extends React.Component{
         const room = document.getElementById('add-room').value;
 
         let data = {
-            conferenceId: parseInt(this.conferenceId),
-            sessionChairId: parseInt(chair),
-            roomId: parseInt(room),
+            conferenceId: this.conferenceId,
+            sessionChairId: chair,
+            roomId: room,
             name: name,
             timeStart: Date.parse(startDate),
             timeEnd: Date.parse(endDate)
         }
         console.log(data);
         ApiService.CreateConferenceSection(data, response => {
-            this.setState({success: 'Section created successfully!'});
+            this.setState({success: 'Section created successfull!'});
+            this.state.onAdd();
         }, error => {
             this.setState({error: 'Failed to create section: ' + error.message || error});
         });
@@ -82,6 +85,13 @@ export default class ConferenceSectionAdd extends React.Component{
     }
 
     render(){
+
+        if (!localStorage.getItem('isAdmin') == "true"){
+            return (
+                <Error403/>
+            )
+        }
+
         if (this.state.fetching > 0) return (<div>...</div>);
 
         let roomsOptions = [];
@@ -90,12 +100,12 @@ export default class ConferenceSectionAdd extends React.Component{
                 <option key={this.state.rooms[i].roomId} value={this.state.rooms[i].roomId}>{this.state.rooms[i].name}</option>
             );
         }
-        let chairOptions = [];
-        for (var i = 0; i < this.state.chairs.length; i++){
-            chairOptions.push(
-                <option key={this.state.chairs[i].pid} value={this.state.chairs[i].pid}>{this.state.chairs[i].name}</option>
-            );
-        }
+        let chairOptions = this.state.chairs.map(c => {
+            return (
+                <option key={c.chairId} value={c.chairId}>{c.participant.userName}</option>
+            )
+        });
+
         return (
             <div className="card card-danger">
                 <form onSubmit={this.handleSubmit} noValidate>
