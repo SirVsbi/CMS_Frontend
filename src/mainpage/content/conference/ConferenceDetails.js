@@ -9,6 +9,7 @@ import moment from 'moment';
 class ConferenceDetails extends React.Component{
     constructor(props){
         super(props);
+        console.log(this.props.match.params.id);
         this.state = {
             //sections: [{name: 'First section'}, {}, {}, {}],
             conferenceId: this.props.match.params.id,
@@ -20,6 +21,7 @@ class ConferenceDetails extends React.Component{
             rooms: [],
             fetching: 1
         }
+        
 
         this.deleteConferenceSection = this.deleteConferenceSection.bind(this);
         this.getData = this.getData.bind(this);
