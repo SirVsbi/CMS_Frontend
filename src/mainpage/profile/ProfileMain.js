@@ -52,7 +52,7 @@ export default class ProfileMain extends React.Component{
                         </li>
                     </ul>
                     {this.state.yourProfile && 
-                        <a href="/ws/profile" className="btn btn-primary btn-block"><b>Edit profile</b></a>
+                        <a href="/ws/logout" className="btn btn-primary btn-block"><b>Sign Out</b></a>
                     }  
                 </div>
             </div>
