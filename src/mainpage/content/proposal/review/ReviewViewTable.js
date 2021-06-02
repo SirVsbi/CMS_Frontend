@@ -14,10 +14,14 @@ export default class ReviewViewTable extends React.Component{
 
     render(){
         let order = 0;
+        //let reviews = this.state.data[0].proposal.reviews;
+        //console.log(reviews);
         let tableItems = this.state.data.map(d => {
             order++;
             return <ReviewViewTableItem key={d.reviewId} {...d} order={order+'.'}/>
         });
+
+        console.log(this.state.data);
 
         return (
             <table className="table table-stripped">

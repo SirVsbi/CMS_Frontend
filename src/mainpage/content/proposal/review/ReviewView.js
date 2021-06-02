@@ -7,9 +7,13 @@ export default class ReviewView extends React.Component{
     constructor(props){
         super(props);
 
+        this.id = parseInt(this.props.match.params.id) || null;
+
         this.canReview = props.canReview || true;
 
         this.state = {
+            proposalId: this.id,
+            proposalData: [],
             data: [],
             fetching: true
         }
@@ -27,8 +31,19 @@ export default class ReviewView extends React.Component{
         });
     }
 
+    getProposalDetails(){
+        ApiService.GetProposalDetails(this.state.proposalId, data => {
+            this.setState({
+                data: data,
+            });
+        }, error => {
+            alert("Error when fetching proposal: " + error.message || error);
+        });
+    }
+
     componentDidMount(){
-        this.getData();
+        //this.getData();
+        this.getProposalDetails();
     }
 
     getProposal(){
@@ -62,7 +77,7 @@ export default class ReviewView extends React.Component{
                 <span>Fetching data...</span>
             )
         }
-
+        console.log(this.getProposal());
         return (
             <div className="row">
                 <div className="">
