@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/cms-frontend/static/css/main.11476531.chunk.css",
+    "main.js": "/cms-frontend/static/js/main.a22f48f8.chunk.js",
+    "main.js.map": "/cms-frontend/static/js/main.a22f48f8.chunk.js.map",
+    "runtime-main.js": "/cms-frontend/static/js/runtime-main.a5486205.js",
+    "runtime-main.js.map": "/cms-frontend/static/js/runtime-main.a5486205.js.map",
+    "static/js/2.bb542af2.chunk.js": "/cms-frontend/static/js/2.bb542af2.chunk.js",
+    "static/js/2.bb542af2.chunk.js.map": "/cms-frontend/static/js/2.bb542af2.chunk.js.map",
+    "index.html": "/cms-frontend/index.html",
+    "static/css/main.11476531.chunk.css.map": "/cms-frontend/static/css/main.11476531.chunk.css.map",
+    "static/js/2.bb542af2.chunk.js.LICENSE.txt": "/cms-frontend/static/js/2.bb542af2.chunk.js.LICENSE.txt",
+    "static/media/Authpage.css": "/cms-frontend/static/media/SIMPLIFICA Typeface.41b3c7c2.ttf"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a5486205.js",
+    "static/js/2.bb542af2.chunk.js",
+    "static/css/main.11476531.chunk.css",
+    "static/js/main.a22f48f8.chunk.js"
+  ]
+}
