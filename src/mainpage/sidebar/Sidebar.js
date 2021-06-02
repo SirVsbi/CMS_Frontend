@@ -41,7 +41,6 @@ export default class Sidebar extends React.Component{
                                 [
                                     { key: 'proposal-view', name: 'View proposals', to: '/ws/proposal' },
                                     { key: 'proposal-submit', name: 'Submit proposal', to: '/ws/proposal/create' },
-                                    { key: 'proposal-review', name: 'Review proposal', to: '/ws/proposal/review' },
                                     { key: 'review-view', name: 'View reviews', to: '/ws/review' }
                                 ]
                             }/>

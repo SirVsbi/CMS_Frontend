@@ -103,7 +103,7 @@ export default class ProposalFormsCreate extends React.Component{
                         proposalId = data[i].proposalId;
                     }
                 }
-                if (proposalId == null) alert('Issue when creating authors.');
+                if (proposalId == null) alert('Issue when creating proposal');
                 else{
                     for (var j = 0; j < authors.length; j++){
                         ApiService.AddAuthor({

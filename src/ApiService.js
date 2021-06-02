@@ -8,6 +8,8 @@ var ApiService = {
             headers: { 'Content-Type': 'application/json', 'Origin': 'http://localhost:8080' },
             body: JSON.stringify(data)
         }
+        console.log('POST on: ' + link);
+        console.log(data);
         fetch(link, request)
             .then(async response => {
                 const data = await response.json();

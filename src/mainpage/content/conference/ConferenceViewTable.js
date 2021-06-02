@@ -24,9 +24,10 @@ export default class ConferenceViewTable extends React.Component{
                 <thead>
                     <tr>
                         <th style={{width:"1%"}}>#</th>
-                        <th style={{width:'20%'}}>Title</th>
-                        <th style={{width:'15%'}}>Created By</th>
-                        <th style={{width:'13%'}}>Start date</th>
+                        <th style={{width:'15%'}}>Title</th>
+                        <th style={{width:'10%'}}>Created By</th>
+                        <th style={{width:'10%'}}>Start date</th>
+                        <th style={{width:'10%'}}>End date</th>
                         <th style={{width:'20%'}}>Time left</th>
                         <th style={{width:'13%'}}>Deadline</th>
                         <th style={{width:"40px"}}>Status</th>

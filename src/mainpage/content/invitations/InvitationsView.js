@@ -58,6 +58,7 @@ export default class InvitationsView extends React.Component{
             this.setState({success: "Successfully added a chair!"});
             this.setState({fetching: 4});
             this.getData();
+            localStorage.setItem('isChair', 'true');
         }, error => {
             alert("Error when trying to add chair: " + error.message || error);
         });
@@ -68,6 +69,7 @@ export default class InvitationsView extends React.Component{
             this.setState({success: "Successfully added a chair!"});
             this.setState({fetching: 4});
             this.getData();
+            localStorage.setItem('isReviewer', 'true');
         }, error => {
             alert("Error when trying to add reviewer: " + error.message || error);
         });
@@ -78,6 +80,7 @@ export default class InvitationsView extends React.Component{
             this.setState({success: "Successfully added a chair!"});
             this.setState({fetching: 4});
             this.getData();
+            localStorage.setItem('isCoChair', 'true');
         }, error => {
             alert("Error when trying to add cochair: " + error.message || error);
         });

@@ -30,10 +30,10 @@ export default class ReviewViewTableItem extends React.Component{
             proposal: this.proposal,
             proposalName: this.proposal.name,
             qualifier: this.qualifier,
-            qualifierName: this.qualifier.name,
-            qualifierScore: this.qualifier.score,
+            qualifierName: this.qualifier?this.qualifier.name:null,
+            qualifierScore: this.qualifier?this.qualifier.score:null,
             reviewer: this.reviewer,
-            reviewerName: this.reviewer.participant.name
+            reviewerName: this.reviewer?this.reviewer.participant.name:null
         };
 
     }

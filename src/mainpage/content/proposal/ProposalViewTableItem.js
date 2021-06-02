@@ -1,6 +1,7 @@
 import React from 'react';
 import ShowMore from "../../../shared/ShowMore";
 import ApiService from "../../../ApiService";
+import moment from 'moment';
 
 export default class ProposalViewTableItem extends React.Component{
     constructor(props){
@@ -24,7 +25,7 @@ export default class ProposalViewTableItem extends React.Component{
         this.conferenceSection = this.authors[0].conferenceSection;
         console.log(this.conferenceSection);
         this.conference = this.conferenceSection.conference;
-        this.deadline = this.conference.deadline || "2021-04-31";
+        this.deadline = this.conference.deadline;
         //this.deadline = "2021-04-31";
 
         //console.log(this.conference.deadline);
@@ -39,9 +40,9 @@ export default class ProposalViewTableItem extends React.Component{
         }
         this.status = this.possibleStatus[props.status] || this.possibleStatus['bidding'];
         this.canView = (props.canView!==undefined?props.canView:true);
-        this.canEdit = (props.canEdit!==undefined?props.canEdit && dateNow < deadlineUtc:true);
-        this.canDelete = (props.canDelete!==undefined?props.canDelete:true);
-        this.canReview = (props.canReview!==undefined?props.canReview:true);
+        this.canEdit = (props.canEdit!==undefined?props.canEdit && dateNow < deadlineUtc:false);
+        this.canDelete = (props.canDelete!==undefined?props.canDelete:false);
+        this.canReview = localStorage.getItem('isReviewer')=='true'?true:false;//(props.canReview!==undefined?props.canReview:true);
 
         this.state = { //state is by default an object
             proposalId: this.proposalId,
@@ -87,16 +88,12 @@ export default class ProposalViewTableItem extends React.Component{
     }
 
     setPermissions(){
-        this.setState({canView: this.state.canView && true});
-        if (this.state.user.chair != null && !this.isUserAuthor()){
-            this.setState({canReview: this.state.canReview && true, canEdit: this.state.canEdit && false, canDelete: this.state.canDelete && false});
-        }
-        else if (this.isUserAuthor()){
-            this.setState({canReview: this.state.canReview && false, canEdit: this.state.canEdit && true, canDelete: this.state.canDelete && true});
-        }
-        else{
-            this.setState({canReview: this.state.canReview && false, canEdit: this.state.canEdit && false, canDelete: this.state.canDelete && false});
-        }
+        this.setState({
+            canView: this.state.canView && true,
+            canEdit: localStorage.getItem('isChair') == 'true',
+            canReview: localStorage.getItem('isReviewer') == 'true',
+            canDelete: false
+        });
     }
 
     componentDidMount() {
@@ -183,7 +180,7 @@ export default class ProposalViewTableItem extends React.Component{
                     <span id={"paperAbstract"+this.order} className={"showMore"}>
                     {this.paperAbstractShort}
                     </span>
-                    <button onClick={() => this.showMoreLessAction("paperAbstract"+this.order)}>{this.state.showMoreLess}</button>
+                    <button className="btn btn-info btn-sm" onClick={() => this.showMoreLessAction("paperAbstract"+this.order)}>{this.state.showMoreLess}</button>
                 </td>
                 <td><a href={this.filePath} download>{this.displayFilePath}</a></td>
                 <td>
@@ -191,7 +188,7 @@ export default class ProposalViewTableItem extends React.Component{
                     <br/>
                     <span>{this.conferenceSection.name}</span>
                     <br/>
-                    <small>Submit deadline: {this.conference.deadline}</small>
+                    <small>Submit deadline: {this.deadline?moment(this.deadline).format('YYYY-MM-DD HH:MM'): "unknown"}</small>
                 </td>
                 <td>
                     <span className={"badge " + this.status.className}>{this.status.title}</span>
