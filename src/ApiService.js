@@ -1,11 +1,11 @@
 
 var ApiService = {
-    baseUrl: 'http://localhost:8080/api',
+    baseUrl: 'http://ec2-54-229-138-236.eu-west-1.compute.amazonaws.com:8080/api',
 
     async __PostRequest(link, data, success, failure){
         const request = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Origin': 'http://localhost:8080' },
+            headers: { 'Content-Type': 'application/json'},// 'Origin': 'http://localhost:8080' },
             body: JSON.stringify(data)
         }
         console.log('POST on: ' + link);
@@ -28,7 +28,7 @@ var ApiService = {
     async __PutRequest(link, data, success, failure){
         const request = {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json', 'Origin': 'http://localhost:8080' },
+            headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify(data)
         }
         let putLink = link + '/update';
@@ -68,7 +68,7 @@ var ApiService = {
     async __DeleteRequest(link, success, failure){
         const request = {
             method: 'DELETE',
-            headers: { 'Origin': 'http://localhost:8080' }
+            //headers: { 'Origin': 'http://localhost:8080' }
         }
 
         fetch(link, request)
