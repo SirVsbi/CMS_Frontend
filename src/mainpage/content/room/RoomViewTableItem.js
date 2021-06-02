@@ -10,8 +10,8 @@ export default class RoomViewTableItem extends React.Component {
         this.capacity = props.capacity || 20;
 
         this.canView = true;
-        this.canEdit = props.canEdit || true;
-        this.canDelete = props.canDelete || true;
+        this.canEdit = localStorage.getItem('isAdmin')=='true';
+        this.canDelete = localStorage.getItem('isAdmin')=='true';
 
         this.state = {
             order: this.order,
