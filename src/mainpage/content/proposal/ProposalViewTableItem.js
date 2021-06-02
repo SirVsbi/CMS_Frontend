@@ -223,8 +223,6 @@ export default class ProposalViewTableItem extends React.Component{
                 <td>{this.order}</td>
                 <td>
                     <span>{this.name}</span>
-                    <br/>
-                    <small>Created on {this.createdOn}</small>
                 </td>
                 <td>
                 <table id='authors'>
@@ -237,7 +235,7 @@ export default class ProposalViewTableItem extends React.Component{
                     <span id={"paperAbstract"+this.order} className={"showMore"}>
                     {this.paperAbstractShort}
                     </span>
-                    <button onClick={() => this.showMoreLessAction("paperAbstract"+this.order)}>{this.state.showMoreLess}</button>
+                    <button className="btn btn-info btn-sm" onClick={() => this.showMoreLessAction("paperAbstract"+this.order)}>{this.state.showMoreLess}</button>
                 </td>
                 <td><a href={this.filePath} download>{this.filePath}</a></td>
                 <td>
@@ -245,7 +243,7 @@ export default class ProposalViewTableItem extends React.Component{
                     <br/>
                     <span>{this.conferenceSection.name}</span>
                     <br/>
-                    <small>Submit deadline: {this.conference.deadline}</small>
+                    <small>Submit deadline: {this.conference.deadline?moment(this.conference.deadline).format('YYYY-MM-DD HH:MM'):'unknown'}</small>
                 </td>
                 <td>
                     <span className={"badge " + this.status.className}>{this.status.title}</span>

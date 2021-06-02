@@ -41,8 +41,7 @@ export default class Sidebar extends React.Component{
                             <SidebarButton name="Proposals" iconClass="fa-scroll" children= {
                                 [
                                     { key: 'proposal-view', name: 'View proposals', to: '/ws/proposal' },
-                                    { key: 'proposal-submit', name: 'Submit proposal', to: '/ws/proposal/create' },
-                                    { key: 'review-view', name: 'View reviews', to: '/ws/review' }
+                                    { key: 'proposal-submit', name: 'Submit proposal', to: '/ws/proposal/create' }
                                 ]
                             }/>
                             <SidebarButton name="Rooms" iconClass="fa-home" children= {
