@@ -33,9 +33,11 @@ export default class ProposalViewTableItem extends React.Component{
         this.deadline = this.conference.deadline;
         //this.deadline = "2021-04-31";
 
-        //console.log(this.conference.deadline);
+        console.log(this.conference.deadline);
         let deadlineUtc = Date.parse(this.deadline);
+        console.log(deadlineUtc);
         let dateNow = Date.now();
+        console.log(dateNow);
 
         this.possibleStatus = {
             'bidding': {title: 'Bidding', className: 'bg-info'},
@@ -45,9 +47,9 @@ export default class ProposalViewTableItem extends React.Component{
         }
         this.status = this.possibleStatus[props.status] || this.possibleStatus['bidding'];
         this.canView = (props.canView!==undefined?props.canView:true);
-        this.canEdit = (props.canEdit!==undefined?props.canEdit && dateNow < deadlineUtc:false);
+        this.canEdit = dateNow < deadlineUtc;
         this.canDelete = (props.canDelete!==undefined?props.canDelete:false);
-        this.canReview = localStorage.getItem('isReviewer')=='true'?true:false;//(props.canReview!==undefined?props.canReview:true);
+        this.canReview = localStorage.getItem('isReviewer')=='true'?(dateNow < deadlineUtc):false;//(props.canReview!==undefined?props.canReview:true);
 
         this.state = { //state is by default an object
             proposalId: this.proposalId,
@@ -67,6 +69,7 @@ export default class ProposalViewTableItem extends React.Component{
         this.reviewProposal = this.reviewProposal.bind(this);
 
         this.openReviews = this.openReviews.bind(this);
+        this.editProposal = this.editProposal.bind(this);
     }
 
     getProposalDetails(){
@@ -79,7 +82,7 @@ export default class ProposalViewTableItem extends React.Component{
         });
     }
 
-    isUserAuthor(){
+    isUserAuthor2(){
         for (let i = 0; i < this.state.authors.length; i++){
         //this.state.authors.map((author) => {
             const author = this.state.authors[i];
@@ -94,10 +97,27 @@ export default class ProposalViewTableItem extends React.Component{
         return false;
     }
 
+    isUserAuthor(){
+        if(this.state.authors.length === 0){
+            return false;
+        }
+        for (let i = 0; i < this.state.authors.length; i++){
+            //this.state.authors.map((author) => {
+            const author = this.state.authors[i];
+            const { participant } = author;
+            //console.log(author);
+            let authorPid = participant.pid;
+            if(authorPid.toString() === localStorage.getItem('pid')){
+                return true;
+            }
+        }
+        return false;
+    }
+
     setPermissions(){
         console.log(localStorage);
         if(localStorage.getItem('isReviewer') === "true" && !this.isUserAuthor()){
-            this.setState({canReview: this.state.canReview && true, canEdit: this.state.canEdit && false, canDelete: this.state.canDelete && false});
+            this.setState({canReview: this.state.canReview && true, canEdit: false, canDelete: this.state.canDelete && false});
         }
         else if (this.isUserAuthor()){
             this.setState({canReview: this.state.canReview && false, canEdit: this.state.canEdit && true, canDelete: this.state.canDelete && true});
@@ -119,6 +139,11 @@ export default class ProposalViewTableItem extends React.Component{
         }
 
          */
+    }
+
+    editProposal(event){
+        event.preventDefault();
+        window.location.href = '/ws/proposal/create/' + this.state.proposalId;
     }
 
     openReviews(event){
@@ -214,7 +239,7 @@ export default class ProposalViewTableItem extends React.Component{
                     </span>
                     <button onClick={() => this.showMoreLessAction("paperAbstract"+this.order)}>{this.state.showMoreLess}</button>
                 </td>
-                <td><a href={this.filePath} download>{this.displayFilePath}</a></td>
+                <td><a href={this.filePath} download>{this.filePath}</a></td>
                 <td>
                     <span><b>{this.conference.name}</b></span>
                     <br/>
@@ -233,7 +258,7 @@ export default class ProposalViewTableItem extends React.Component{
                     </button>
                     }
                     {this.state.canEdit &&
-                    <button className="btn btn-info btn-sm" style={{marginRight:'3px'}}>
+                    <button className="btn btn-info btn-sm" style={{marginRight:'3px'}} onClick={this.editProposal}>
                         <i className="fas fa-pencil-alt"/>
                         Edit
                     </button>
