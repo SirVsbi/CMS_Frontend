@@ -13,7 +13,7 @@ class Authpage extends React.Component{
             );
         }
         return (
-            <div style={{backgroundImage: 'url(/img/bg1.png'}} className="responsive-background">
+            <div style={{backgroundImage: 'url(https://i.ibb.co/wwLtQTM/bg1.png'}} className="responsive-background">
                 <div className='title-div'>
                     <span className='main-title'>Conference Management System</span>
                 </div>
