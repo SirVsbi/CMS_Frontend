@@ -7,7 +7,8 @@ export default class ProposalViewTableItem extends React.Component{
         super(props);
 
         this.order = props.order || "1.";
-        this.user = props.user || {pid: 1, name: "Alexandra-Natalia Tudorescu", chair: {chairId: 1}}
+        //this.user = props.user || {pid: 1, name: "Alexandra-Natalia Tudorescu", chair: {chairId: 1}}
+        this.username = localStorage.username;
         this.proposalId = props.proposalId;
         this.name = props.name || "Untitled";
         this.createdOn = props.createdOn || "unknown";
@@ -29,6 +30,7 @@ export default class ProposalViewTableItem extends React.Component{
         ];
 
         console.log(this.authors);
+        console.log(this.user);
 
         this.conferenceSection = this.authors[0].conferenceSection;
         console.log(this.conferenceSection);
@@ -97,8 +99,8 @@ export default class ProposalViewTableItem extends React.Component{
             const author = this.state.authors[i];
             const { participant } = author;
             //console.log(author);
-            let authorPid = participant.pid;
-            if(authorPid === this.state.user.pid){
+            let authorName = participant.name;
+            if(authorName === this.state.username){
                 //alert("AUTHOR");
                 return true;
             }
@@ -107,6 +109,17 @@ export default class ProposalViewTableItem extends React.Component{
     }
 
     setPermissions(){
+        console.log(localStorage);
+        if(localStorage.getItem('isReviewer') === "true" && !this.isUserAuthor()){
+            this.setState({canReview: this.state.canReview && true, canEdit: this.state.canEdit && false, canDelete: this.state.canDelete && false});
+        }
+        else if (this.isUserAuthor()){
+            this.setState({canReview: this.state.canReview && false, canEdit: this.state.canEdit && true, canDelete: this.state.canDelete && true});
+        }
+        else{
+            this.setState({canReview: this.state.canReview && false, canEdit: this.state.canEdit && false, canDelete: this.state.canDelete && false});
+        }
+        /*
         this.setState({canView: this.state.canView && true});
         if (this.state.user.chair != null && !this.isUserAuthor()){
             this.setState({canReview: this.state.canReview && true, canEdit: this.state.canEdit && false, canDelete: this.state.canDelete && false});
@@ -117,6 +130,8 @@ export default class ProposalViewTableItem extends React.Component{
         else{
             this.setState({canReview: this.state.canReview && false, canEdit: this.state.canEdit && false, canDelete: this.state.canDelete && false});
         }
+
+         */
     }
 
     componentDidMount() {

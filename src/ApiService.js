@@ -29,7 +29,8 @@ var ApiService = {
             headers: { 'Content-Type': 'application/json', 'Origin': 'http://localhost:8080' },
             body: JSON.stringify(data)
         }
-        fetch(link, request)
+        let putLink = link + '/update';
+        fetch(putLink, request)
             .then(async response => {
                 const data = await response.json();
                 if (!response.ok){
@@ -204,15 +205,6 @@ var ApiService = {
                 if (data.length == 0) failure();
                 else success(data[0].name);
             })
-    },
-
-    async GetAllProposals(success, failure){
-        fetch(this.baseUrl + '/proposal')
-            .then(response => response.json())
-            .then(data => {
-                if (!data.proposals) failure();
-                else success(data.proposals);
-            });
     },
 
     async GetProposalDetails(id, success, failure){
