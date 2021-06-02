@@ -5,6 +5,7 @@ export default class RoomTimetableViewTableItem extends React.Component {
     constructor(props) {
         super(props);
         console.log(props);
+        console.log(localStorage);
 
         this.order = props.order || "1.";
         this.id = props.conferenceSectionId;
@@ -35,14 +36,49 @@ export default class RoomTimetableViewTableItem extends React.Component {
         this.joinConference = this.joinConference.bind(this);
     }
 
+    isUserAuthor(){
+        if(this.state.authors.length === 0){
+            return false;
+        }
+        for (let i = 0; i < this.state.authors.length; i++){
+            //this.state.authors.map((author) => {
+            const author = this.state.authors[i];
+            const { participant } = author;
+            //console.log(author);
+            let authorPid = participant.pid;
+            if(authorPid.toString() === localStorage.getItem('pid')){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    isUserListener(){
+        if(this.state.listeners.length === 0){
+            return false;
+        }
+        for (let i = 0; i < this.state.listeners.length; i++){
+            //this.state.authors.map((author) => {
+            const listener = this.state.listeners[i];
+            const { participant } = listener;
+            //console.log(author);
+            let listenerPid = participant.pid;
+            if(listenerPid.toString() === localStorage.getItem('pid')){
+                return true;
+            }
+        }
+        return false;
+    }
+
     setPermissions(){
         console.log(localStorage);
-        if(this.sessionChair.pid !== localStorage.getItem('pid')){
+        if(this.sessionChair.pid.toString() !== localStorage.getItem('pid') && !this.isUserAuthor() && !this.isUserListener()){
             this.setState({canJoinListener: this.state.canJoinListener && true});
         }
         else{
             this.setState({canJoinListener: this.state.canJoinListener && false});
         }
+
             /*
         this.setState({canView: this.state.canView && true});
         if (this.state.user.chair != null && !this.isUserAuthor()){
@@ -78,6 +114,10 @@ export default class RoomTimetableViewTableItem extends React.Component {
                 </tr>
             )
         })
+    }
+
+    componentDidMount() {
+        this.setPermissions();
     }
 
     render(){

@@ -24,6 +24,7 @@ export default class RoomViewTableItem extends React.Component {
 
         this.editRoom = this.editRoom.bind(this);
         this.deleteRoom = this.deleteRoom.bind(this);
+        this.viewTimetable = this.viewTimetable.bind(this);
     }
 
     editRoom(event){
@@ -40,6 +41,11 @@ export default class RoomViewTableItem extends React.Component {
         });
     }
 
+    viewTimetable(event){
+        event.preventDefault();
+        window.location.href = '/ws/room/timetable/' + this.state.roomId;
+    }
+
     render(){
         return (
             <tr id={this.state.order}>
@@ -48,7 +54,7 @@ export default class RoomViewTableItem extends React.Component {
                 <td>{this.capacity}</td>
                 <td className="project-actions" key={this.order}>
                     {this.canView &&
-                    <button className="btn btn-primary btn-sm" style={{marginRight:'3px'}}>
+                    <button className="btn btn-primary btn-sm" style={{marginRight:'3px'}} onClick={this.viewTimetable}>
                         <i className="fas fa-folder"/>
                         Timetable
                     </button>
