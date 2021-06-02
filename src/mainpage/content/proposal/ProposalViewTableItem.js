@@ -59,7 +59,8 @@ export default class ProposalViewTableItem extends React.Component{
             canView: this.canView,
             canEdit: this.canEdit,
             canReview: this.canReview,
-            canDelete: this.canDelete
+            canDelete: this.canDelete,
+            canViewReviews: this.canReview
         };
 
         this.showMoreLessAction = this.showMoreLessAction.bind(this);
@@ -104,6 +105,7 @@ export default class ProposalViewTableItem extends React.Component{
         else{
             this.setState({canReview: this.state.canReview && false, canEdit: this.state.canEdit && false, canDelete: this.state.canDelete && false});
         }
+        this.setState({canViewReviews: this.state.canReview, canReview: this.state.canReview && this.status === "bidding"});
         /*
         this.setState({canView: this.state.canView && true});
         if (this.state.user.chair != null && !this.isUserAuthor()){
@@ -224,7 +226,7 @@ export default class ProposalViewTableItem extends React.Component{
                     <span className={"badge " + this.status.className}>{this.status.title}</span>
                 </td>
                 <td className="project-actions" key={this.order}>
-                    {this.state.canReview &&
+                    {this.state.canViewReviews &&
                     <button className="btn btn-primary btn-sm" style={{marginRight:'3px'}} onClick={this.openReviews}>
                         <i className="fas fa-folder"/>
                         Reviews
