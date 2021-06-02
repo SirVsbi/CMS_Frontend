@@ -83,6 +83,11 @@ export default class RoomFormsCreate extends React.Component{
     }
 
     render(){
+        if (!(localStorage.getItem('isAdmin') == "true")){
+            return (
+                <Error403/>
+            )
+        }
         const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
         const checkedIcon = <CheckBoxIcon fontSize="small" />;
         return (
