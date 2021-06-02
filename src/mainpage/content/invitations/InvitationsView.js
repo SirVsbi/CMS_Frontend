@@ -53,7 +53,9 @@ export default class InvitationsView extends React.Component{
     }
 
     addChair(pid){
-        console.log(pid);
+        if (!pid || pid == '' || pid < 0){
+            alert('Invalid operation!'); return;
+        }
         ApiService.AddChair(Number(pid), response => {
             this.setState({success: "Successfully added a chair!"});
             this.setState({fetching: 4});
@@ -68,6 +70,9 @@ export default class InvitationsView extends React.Component{
     }
 
     addReviewer(pid){
+        if (!pid || pid == '' || pid < 0){
+            alert('Invalid operation!'); return;
+        }
         ApiService.AddReviewer(Number(pid), response => {
             this.setState({success: "Successfully added a chair!"});
             this.setState({fetching: 4});
@@ -81,6 +86,9 @@ export default class InvitationsView extends React.Component{
     }
 
     addCochair(pid){
+        if (!pid || pid == '' || pid < 0){
+            alert('Invalid operation!'); return;
+        }
         ApiService.AddCoChair(Number(pid), response => {
             this.setState({success: "Successfully added a chair!"});
             this.setState({fetching: 4});
@@ -106,12 +114,30 @@ export default class InvitationsView extends React.Component{
                 <span>Fetching data...</span>
             )
         }
+        let reviewersToAdd = this.state.all.filter(p => {
+            for (var i = 0; i < this.state.reviewers.length; i++){
+                if (this.state.reviewers[i].participant.pid == p.pid) return false;
+            }
+            return true;
+        });
+        let chairsToAdd = this.state.all.filter(p => {
+            for (var i = 0; i < this.state.chairs.length; i++){
+                if (this.state.chairs[i].participant.pid == p.pid) return false;
+            }
+            return true;
+        });
+        let cochairsToAdd = this.state.all.filter(p => {
+            for (var i = 0; i < this.state.cochairs.length; i++){
+                if (this.state.cochairs[i].participant.pid == p.pid) return false;
+            }
+            return true;
+        });
         return (
             <div className="row">
                 <div className="">
-                        <InvitationsTable vid="chairs" title="Chairs" data={this.state.chairs} all={this.state.all} onAdd={this.addChair}/>
-                        <InvitationsTable vid="cochairs" title="Co Chairs" data={this.state.cochairs} all={this.state.all} onAdd={this.addCochair}/>
-                        <InvitationsTable vid="reviewers" title="Reviewers" data={this.state.reviewers} all={this.state.all} onAdd={this.addReviewer}/>
+                        <InvitationsTable vid="chairs" title="Chairs" data={this.state.chairs} all={chairsToAdd} onAdd={this.addChair}/>
+                        <InvitationsTable vid="cochairs" title="Co Chairs" data={this.state.cochairs} all={cochairsToAdd} onAdd={this.addCochair}/>
+                        <InvitationsTable vid="reviewers" title="Reviewers" data={this.state.reviewers} all={reviewersToAdd} onAdd={this.addReviewer}/>
                        
                     
                 </div>
