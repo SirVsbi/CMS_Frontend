@@ -149,6 +149,15 @@ var ApiService = {
             });
     },
 
+    async GetRoomDetails(id, success, failure){
+        fetch(this.baseUrl + '/room/' + id)
+            .then(response => response.json())
+            .then(data => {
+                if (!data.rooms || data.rooms.length == 0) failure("No such conference!");
+                else success(data.rooms[0]);
+            });
+    },
+
     async CreateRoom(data, success, failure){
         this.__PostRequest(this.baseUrl + '/room', data, success, failure);
     },
