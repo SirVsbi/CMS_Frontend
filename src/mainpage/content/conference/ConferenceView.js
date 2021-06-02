@@ -12,6 +12,8 @@ export default class ConferenceView extends React.Component{
             fetching: true
         }
 
+        this.getData = this.getData.bind(this);
+
     }
 
     getData(){
@@ -19,6 +21,14 @@ export default class ConferenceView extends React.Component{
             this.setState({data: data, fetching: false});
         }, error => {
             //alert('Failed getting conferences! Error: ' + (error.message || error));
+        });
+    }
+
+    onDelete(conferenceId){
+        ApiService.DeleteConference(conferenceId, success => {
+            this.getData();
+        },error => {
+            alert('Could not delete conference: ' + error.message || error);
         });
     }
 
@@ -40,7 +50,7 @@ export default class ConferenceView extends React.Component{
                             <h3 className="card-title">Conferences</h3>
                         </div>
                         <div className="card-body">
-                            <ConferenceViewTable data={this.state.data}/>
+                            <ConferenceViewTable data={this.state.data} onDelete={this.onDelete}/>
                         </div>
                     </div>
                 </div>

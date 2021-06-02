@@ -9,6 +9,7 @@ export default class ConferenceViewTable extends React.Component{
         this.state = {
             data: props.data || []
         }
+        this.onDelete = props.onDelete;
 
     }
 
@@ -16,7 +17,7 @@ export default class ConferenceViewTable extends React.Component{
         let order = 0;
         let tableItems = this.state.data.map(d => {
             order++;
-            return <ConferenceViewTableItem key={d.conferenceId} {...d} order={order+'.'}/>
+            return <ConferenceViewTableItem key={d.conferenceId} {...d} order={order+'.'} onDelete={this.onDelete}/>
         });
 
         return (
