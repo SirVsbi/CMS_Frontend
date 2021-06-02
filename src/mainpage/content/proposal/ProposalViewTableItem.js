@@ -65,6 +65,7 @@ export default class ProposalViewTableItem extends React.Component{
         this.showMoreLessAction = this.showMoreLessAction.bind(this);
         this.reviewProposal = this.reviewProposal.bind(this);
 
+        this.openReviews = this.openReviews.bind(this);
     }
 
     getProposalDetails(){
@@ -116,6 +117,11 @@ export default class ProposalViewTableItem extends React.Component{
         }
 
          */
+    }
+
+    openReviews(event){
+        event.preventDefault();
+        window.location.href = '/ws/review/' + this.state.proposalId;
     }
 
     componentDidMount() {
@@ -218,10 +224,10 @@ export default class ProposalViewTableItem extends React.Component{
                     <span className={"badge " + this.status.className}>{this.status.title}</span>
                 </td>
                 <td className="project-actions" key={this.order}>
-                    {this.state.canView &&
-                    <button className="btn btn-primary btn-sm" style={{marginRight:'3px'}}>
+                    {this.state.canReview &&
+                    <button className="btn btn-primary btn-sm" style={{marginRight:'3px'}} onClick={this.openReviews}>
                         <i className="fas fa-folder"/>
-                        View
+                        Reviews
                     </button>
                     }
                     {this.state.canEdit &&
