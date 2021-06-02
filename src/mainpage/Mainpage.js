@@ -92,7 +92,7 @@ class Mainpage extends React.Component{
                     <Content title="View rooms" content={<RoomView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
-                <Route exact path='/ws/room/timetable'>
+                <Route exact path='/ws/room/timetable/:id'>
                     <Content title="View room timetable" content={<RoomTimetableView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 

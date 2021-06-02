@@ -14,7 +14,7 @@ export default class RoomTimetableViewTable extends React.Component{
 
     render(){
         let tableItems = this.state.data.map(d => {
-            return <RoomTimetableViewTableItem key={d.id} {...d}/>
+            return <RoomTimetableViewTableItem key={d.conferenceSectionId} {...d}/>
         });
 
         return (
@@ -27,9 +27,6 @@ export default class RoomTimetableViewTable extends React.Component{
                     <th style={{width:'12%'}}>Session chair</th>
                     <th style={{width:'10%'}}>Start time</th>
                     <th style={{width:'10%'}}>End time</th>
-                    <th style={{width:'10%'}}>Paper</th>
-                    <th style={{width:'20%'}}>Authors</th>
-
                     <th style={{width:'30%'}}></th>
                 </tr>
                 </thead>
