@@ -1,9 +1,10 @@
 import React from 'react';
 import ReviewViewTable from './ReviewViewTable';
 import ApiService from "../../../../ApiService";
+import {withRouter} from "react-router-dom";
 
 
-export default class ReviewView extends React.Component{
+class ReviewView extends React.Component{
     constructor(props){
         super(props);
 
@@ -34,10 +35,12 @@ export default class ReviewView extends React.Component{
     getProposalDetails(){
         ApiService.GetProposalDetails(this.state.proposalId, data => {
             this.setState({
-                data: data,
+                data: data.reviews,
+                fetching: false,
             });
         }, error => {
             alert("Error when fetching proposal: " + error.message || error);
+            //this.setState({fetching: false});
         });
     }
 
@@ -110,3 +113,5 @@ export default class ReviewView extends React.Component{
         )
     }
 }
+
+export default withRouter(ReviewView)

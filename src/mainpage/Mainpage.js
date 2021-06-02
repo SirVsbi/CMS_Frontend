@@ -95,7 +95,7 @@ class Mainpage extends React.Component{
                 </Route>
 
                 <Route exact path='/ws/review/:id'>
-                    render={(props) => <Content title="View reviews" content={<ReviewView {...props} />} hierarchy={[{ name: 'Home', to: this.location }]}/>}
+                    <Content title="View reviews" content={<ReviewView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
                 <Route exact path="/ws/invitations">
