@@ -7,6 +7,11 @@ class Authpage extends React.Component{
 
 
     render(){
+        if (localStorage.getItem('username') !== undefined && localStorage.getItem('username') !== null){
+            return (
+                <Redirect to="/ws"/>
+            );
+        }
         return (
             <div style={{backgroundImage: 'url(/img/bg1.png'}} className="responsive-background">
                 <div className='title-div'>
