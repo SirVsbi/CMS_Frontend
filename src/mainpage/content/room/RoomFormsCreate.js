@@ -4,6 +4,8 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import {Checkbox, TextField} from "@material-ui/core";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
+import Error403 from '../errors/Error403';
+
 
 export default class RoomFormsCreate extends React.Component{
     constructor(props){
@@ -83,6 +85,11 @@ export default class RoomFormsCreate extends React.Component{
     }
 
     render(){
+        if (!(localStorage.getItem('isAdmin') == "true")){
+            return (
+                <Error403/>
+            )
+        }
         const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
         const checkedIcon = <CheckBoxIcon fontSize="small" />;
         return (
