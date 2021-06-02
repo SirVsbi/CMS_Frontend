@@ -139,10 +139,10 @@ class ConferenceDetails extends React.Component{
                             <div className="col-12 col-md-12 col-lg-3 order-1 order-md-1">
                                 <ConferenceSectionAdd conferenceId={this.state.conferenceId} onAdd={this.getData}/>
                             </div>
-                            <div className="col-12 col-md-12 col-lg-3 order-2 order-md-2">
+                            <div className="col-12 col-md-12 col-lg-4 order-2 order-md-2">
                                 {col1}
                             </div>
-                            <div className="col-12 col-md-12 col-lg-3 order-2 order-md-2">
+                            <div className="col-12 col-md-12 col-lg-4 order-2 order-md-2">
                                 {col2}
                             </div>
                             
