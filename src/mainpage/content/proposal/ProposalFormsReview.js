@@ -6,6 +6,7 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import Rating from '@material-ui/lab/Rating'
 import ProposalViewTable from "./ProposalViewTable";
 import ApiService from "../../../ApiService";
+import Error403 from '../errors/Error403';
 
 
 export default class ProposalFormsReview extends React.Component{
@@ -29,8 +30,6 @@ export default class ProposalFormsReview extends React.Component{
         // get from database
         let authors = [{name: 'Szabolcs Vidam'}, {name: 'Bogdan Vasc'}, {name: 'Alexandra Tudorescu'}, {name: 'David Turcas'}, {name: 'Andrei Turcas'}, {name: 'Andrea Barrasa'}];
 
-        this.user = props.user || {pid: 1, reviewer: { reviewerId: 1 }, name: "Alexandra Tudorescu"};
-        this.reviewer = this.user.reviewer;
         this.proposal = props.proposal || {name: "Best proposal", paperAbstract: "Lorem ipsum", filePath: "../../../../public/testFiles/BestPaper.txt"};
         this.authors = props.authors || authors;
         this.keywords = props.keywords || keywords;
@@ -43,7 +42,6 @@ export default class ProposalFormsReview extends React.Component{
             filledAuthors: [...this.authors],
             selectedFile: '',
             isFilePicked: false,
-            reviewerId: this.reviewer.reviewerId,
             conference: this.conference,
             conferenceSection: this.conferenceSection,
             deadline: this.deadline,
@@ -52,6 +50,9 @@ export default class ProposalFormsReview extends React.Component{
             topics: this.topics,
             proposal: this.proposal,
             rating: 0,
+
+            user: null,
+            fetching: true
         }
 
         this.fileHandleSubmission = this.fileHandleSubmission.bind(this);
@@ -59,10 +60,21 @@ export default class ProposalFormsReview extends React.Component{
     }
 
     getProposalDetails(){
-        ApiService.GetProposalDetails(this.state.proposalId.toString(), data => {
+        console.log(this.state.proposalId);
+        ApiService.GetProposalDetails(this.state.proposalId, data => {
             this.setState({
                 proposalData: data,
             });
+
+            ApiService.GetUserData(localStorage.getItem('pid'), data => {
+                this.setState({
+                    user: data,
+                    fetching: false
+                });
+            }, error => {
+                alert("Error when fetching user data: " + error.message || error);
+            })
+
         }, error => {
             alert("Error when fetching proposal: " + error.message || error);
         });
@@ -106,7 +118,7 @@ export default class ProposalFormsReview extends React.Component{
             proposalId: parseInt(proposalId),
             justification: justification,
             qualifierId: qualifierId,
-            reviewerId: reviewerId
+            reviewerId: this.state.user.reviewer.reviewerId
         }
         console.log(data);
         ApiService.CreateReview(data, success => {
@@ -125,13 +137,19 @@ export default class ProposalFormsReview extends React.Component{
         s.async = true;
 
         document.body.appendChild(s);
-        //this.getProposalDetails();
+        this.getProposalDetails();
     }
 
     render(){
         //alert(this.state.proposalId);
 
         //this.setState({filledAuthors: [...this.fixedAuthors, this.authors[2]]});
+        if (!(localStorage.getItem('isReviewer') == 'true')){
+            return (
+                <Error403/>
+            )
+        }
+        if (this.state.fetching) return (<span>Fetching data...</span>);
 
         const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
         const checkedIcon = <CheckBoxIcon fontSize="small" />;
