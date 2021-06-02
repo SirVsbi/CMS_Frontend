@@ -133,16 +133,18 @@ class LoginForm extends React.Component{
 
     onLogInSuccess(response){
         console.log('Logged in successfully: ' + response.message);
+        console.log(response.authors.length > 0);
         this.setState({wait: false});
         localStorage.setItem('username', response.userName);
         localStorage.setItem('pid', response.pid);
         localStorage.setItem('ts', Date.now() / 1000);
-        localStorage.setItem('isAdmin', (response.userName=='admin'));
-        localStorage.setItem('isListener', (response.listener !== null));
-        localStorage.setItem('isAuthor', (response.author !== null));
-        localStorage.setItem('isChair', (response.chair !== null));
-        localStorage.setItem('isCoChair', (response.coChair !== null));
-        localStorage.setItem('isReviewer', (response.reviewer !== null));
+        localStorage.setItem('isAdmin', response.userName=='admin'?"true":"false");
+        localStorage.setItem('isListener', response.listener !== null?"true":"false");
+        localStorage.setItem('isAuthor', response.authors.length > 0?"true":"false");
+        localStorage.setItem('isChair', response.chair !== null?"true":"false");
+        localStorage.setItem('isCoChair', response.coChair !== null?"true":"false");
+        localStorage.setItem('isReviewer', response.reviewer !== null?"true":"false");
+        localStorage.setItem('picture', 'https://i.ibb.co/bKb1FBn/avatar5.png');
         window.location.href = '/ws';
         console.log('ha');
     }

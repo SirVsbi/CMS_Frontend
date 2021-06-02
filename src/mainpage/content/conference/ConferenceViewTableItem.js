@@ -11,11 +11,12 @@ export default class ConferenceViewTableItem extends React.Component{
         this.order = props.order || "1.";
         this.title = props.name || "Untitled";
         this.createdOn = props.createdOn || "unknown";
-        this.chairPicture = props.chairPicture || "adminlte/dist/img/user_default.jpg";
+        this.chairPicture = props.chairPicture || localStorage.getItem('picture')
         this.chairName = props.chairName || "Unknown";
         this.startDate = props.timeStart?moment(props.timeStart).format('YYYY-MM-DD HH:MM'):"Unknown";
         this.endDate = props.timeEnd?moment(props.timeEnd).format('YYYY-MM-DD HH:MM'):"Unknown";
         this.deadline = props.deadline?moment(props.deadline).format('YYYY-MM-DD HH:MM'):"Unknown";
+        this.onDelete = props.onDelete;
         this.timeLeft = '';
         this.timeDone = 0;
 
@@ -58,7 +59,7 @@ export default class ConferenceViewTableItem extends React.Component{
         this.status = this.possibleStatus[props.status] || this.possibleStatus['bidding'];
         this.canView = (props.canView!==undefined?props.canView:true);
         this.canEdit = (props.canEdit!==undefined?props.canEdit:false);
-        this.canDelete = (props.canDelete!==undefined?props.canDelete:false);
+        this.canDelete = localStorage.getItem('isAdmin')=='true';
 
         this.canSubmit = (props.canSubmit!==undefined?props.canSubmit&&Date.now() < deadlineUtc:false);
     }
@@ -106,7 +107,7 @@ export default class ConferenceViewTableItem extends React.Component{
                         </button>
                     }
                     {this.canDelete && 
-                        <button className="btn btn-danger btn-sm" style={{marginRight:'3px'}}>
+                        <button className="btn btn-danger btn-sm" style={{marginRight:'3px'}} onClick={() => {this.onDelete(this.conferenceId)}}>
                             <i className="fas fa-trash"/>
                             Delete
                         </button>

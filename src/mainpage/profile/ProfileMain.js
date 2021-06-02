@@ -23,7 +23,7 @@ export default class ProfileMain extends React.Component{
 
 
         this.state = {
-            picture: props.picture || "adminlte/dist/img/user_default.jpg",
+            picture: props.picture || localStorage.getItem('picture'),
             name: props.name || "Unnamed user",
             roles: rolesText,
             stats: {

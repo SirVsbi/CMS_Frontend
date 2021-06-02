@@ -149,6 +149,10 @@ var ApiService = {
             });
     },
 
+    async DeleteConference(id, success, failure){
+        this.__DeleteRequest(this.baseUrl+'/conference/'+id, success, failure);
+    },
+
     async GetRoomDetails(id, success, failure){
         fetch(this.baseUrl + '/room/' + id)
             .then(response => response.json())

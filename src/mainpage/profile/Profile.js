@@ -12,7 +12,7 @@ class Profile extends React.Component{
         super(props);
 
         this.state = {
-            picture: "adminlte/dist/img/user_default.jpg",
+            picture: "https://i.ibb.co/bKb1FBn/avatar5.png",
             name: "",
             userInfo: {
                 affiliation: "",
@@ -42,7 +42,8 @@ class Profile extends React.Component{
             if (data.reviewer !== null) roles.push('reviewer');
             if (data.chair !== null) roles.push('chair');
             if (data.coChair !== null) roles.push('cochair');
-            if (data.author !== null) roles.push('author');
+            console.log(data);
+            if (data.authors !== null && data.authors.length > 0) roles.push('author');
             if (data.listener !== null) roles.push('listener');
             if (roles.length == 0) roles.push('participant');
             this.setState({

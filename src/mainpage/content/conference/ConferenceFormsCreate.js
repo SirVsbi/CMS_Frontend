@@ -44,20 +44,38 @@ export default class ConferenceFormsCreate extends React.Component{
         const desc = document.getElementById('add-description').value;
         let fields = this.state.fields;
         fields.title = title;
-        fields.startDate = startDate;
-        fields.endDate = endDate;
+        fields.startDate = Date.parse(startDate) || null;
+        fields.endDate = Date.parse(endDate) || null;
         fields.description = desc;
-        fields.deadline = deadline;
-        this.setState({fields: fields});
+        fields.deadline = Date.parse(deadline) || null;
 
-        console.log(this.state.fields);
-        this.createConferenceRequest({
-            name: this.state.fields.title,
-            timeStart: Date.parse(this.state.fields.startDate),
-            timeEnd: Date.parse(this.state.fields.endDate),
-            deadline: Date.parse(this.state.fields.deadline),
-            program: this.state.fields.description
-        });
+        let error = null;
+        if (fields.startDate == null){
+            error = 'Please enter a valid start date!';
+        }else if(fields.endDate == null){
+            error = 'Please enter a valid end date!';
+        }else if(fields.deadline == null){
+            error = 'Please enter a valid deadline!';
+        }else if (fields.endDate <= fields.startDate){
+            error = 'End date must be later than start date!';
+        }else if (fields.deadline < fields.startDate){
+            error = 'Deadline must not be earlier than the start date!';
+        }else if (fields.deadline > fields.endDate){
+            error = 'Deadline must not be later than the end date!';
+        }
+
+        this.setState({fields: fields, success: null, error: error});
+
+        if (!error){
+            console.log(this.state.fields);
+            this.createConferenceRequest({
+                name: this.state.fields.title,
+                timeStart: this.state.fields.startDate,
+                timeEnd: this.state.fields.endDate,
+                deadline: this.state.fields.deadline,
+                program: this.state.fields.description
+            });
+        }
 
     }
 

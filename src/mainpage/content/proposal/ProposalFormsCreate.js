@@ -91,9 +91,16 @@ class ProposalFormsCreate extends React.Component{
 
     getData(){
         ApiService.GetAllConferences(data => {
+            console.log(data);
             this.setState({
-                conferences: data,
-                conferenceSelected: data.length>0?data[0]:null,
+                conferences: data.filter(c => {
+                    var now = Date.now();
+                    if (!c.timeStart || !c.timeEnd || !c.deadline || now < c.timeStart || now > c.deadline || now > c.timeEnd) return false;
+                    return true;
+                })
+            });
+            this.setState({
+                conferenceSelected: this.state.conferences.length>0?this.state.conferences[0]:null,
                 fetching: this.state.fetching - 1
             });
         });
