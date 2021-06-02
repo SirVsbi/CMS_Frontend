@@ -16,6 +16,8 @@ import ConferenceDetails from './content/conference/ConferenceDetails';
 import ReviewView from "./content/proposal/review/ReviewView";
 import Error403 from './content/errors/Error403';
 import InvitationsView from './content/invitations/InvitationsView';
+import LogOut from './other/Logout';
+import AboutUs from './other/AboutUs';
 
 class Mainpage extends React.Component{
     constructor(props){
@@ -105,6 +107,14 @@ class Mainpage extends React.Component{
 
                 <Route exact path='/ws/403'>
                     <Content title="Not allowed" content={<Error403/>} hierarchy={[{ name: 'Home', to: this.location}]}/>
+                </Route>
+
+                <Route exact path="/ws/about">
+                    <Content title="About us" content={<AboutUs/>} hierarchy={[{ name: 'Home', to: this.location}]}/>
+                </Route>
+
+                <Route exact path="/ws/logout">
+                    <Content title="Log out" content={<LogOut/>} hierarchy={[{ name: 'Home', to: this.location}]}/>
                 </Route>
 
 

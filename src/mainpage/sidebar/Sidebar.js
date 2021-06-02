@@ -29,6 +29,7 @@ export default class Sidebar extends React.Component{
 
                     <nav className="mt-2">
                         <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                            <SidebarHeader text="Application"/>
                             <SidebarButton name="Dashboard" iconClass="fa-bars" to="/ws" />
                             <SidebarButton name="Invitations" iconClass="fa-envelope" to="/ws/invitations"/>
                             <SidebarButton name="Conferences" iconClass="fa-bullhorn" children= {
@@ -51,6 +52,9 @@ export default class Sidebar extends React.Component{
                                     { key: 'room-view', name: 'Create room', to: '/ws/room/create' },
                                 ]
                             }/>
+                            <SidebarHeader text="General"/>
+                            <SidebarButton name="About us" iconClass="fa-address-card" to="/ws/about"/>
+                            <SidebarButton name="Logout" iconClass="fa-sign-out-alt" to='/ws/logout'/>
                         </ul>
                     </nav>
                 </div>
