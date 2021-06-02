@@ -90,7 +90,7 @@ export default class ProposalViewTableItem extends React.Component{
     setPermissions(){
         this.setState({
             canView: this.state.canView && true,
-            canEdit: localStorage.getItem('isChair') == 'true',
+            canEdit: localStorage.getItem('isChair') == 'true' && this.user.pid == localStorage.getItem('pid'),
             canReview: localStorage.getItem('isReviewer') == 'true',
             canDelete: false
         });
@@ -195,7 +195,7 @@ export default class ProposalViewTableItem extends React.Component{
                 </td>
                 <td className="project-actions" key={this.order}>
                     {this.state.canView &&
-                    <button className="btn btn-primary btn-sm" style={{marginRight:'3px'}}>
+                    <button className="btn btn-primary btn-sm" style={{marginRight:'3px'}} onClick={() => {window.location.href='/ws/conference/view/'+this.conference.conferenceId}}>
                         <i className="fas fa-folder"/>
                         View
                     </button>

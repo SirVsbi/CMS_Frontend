@@ -8,6 +8,7 @@ export default class ConferenceSection extends React.Component{
             id: props.data.id || 1,
             title: props.data.title || 'Section name',
             sessionChair: props.data.sessionChair,
+            authors: props.data.authors || [],
             roomId: props.data.roomId,
             roomName: props.data.roomName,
             timeStart: props.data.timeStart?moment(props.data.timeStart).format('YYYY-MM-DD HH:MM'):"Unknown",
@@ -36,11 +37,31 @@ export default class ConferenceSection extends React.Component{
     componentDidMount(){
         this.setTabActive('general');
         console.log(this.props);
-        
+    }
 
+    reviewProposal(id){
+        window.location.href = '/ws/proposal/review/' + id;
     }
 
     render(){
+        let authors = this.state.authors.map(auth => {
+            return (
+                <tr key={auth.authorId} id={auth.authorId}>
+                    <td><a href={"/ws/profile/" + auth.participant.pid}>{auth.participant.name + ' (' + auth.participant.userName + ')'}</a></td>
+                    <td>
+                        {auth.proposal.name}
+                    </td>
+                    {localStorage.getItem('isReviewer') == 'true' && 
+                        <td>
+                            <button className="btn btn-info btn-sm" style={{marginRight:'3px'}} onClick={() => {this.reviewProposal(auth.proposal.proposalId)}}>
+                                <i className="fas fa-clipboard-check"/>
+                                Review
+                            </button>
+                        </td>
+                    }
+                </tr>
+            )
+        });
         return (
             <div className="card card-primary card-tabs">
                 <div className="card-header p-0 pt-1">
@@ -84,11 +105,25 @@ export default class ConferenceSection extends React.Component{
                                 {this.state.timeEnd}
                             </p>
                             <hr />
-                            <button type="button" className="btn btn-block btn-info">Edit</button>
+                            {localStorage.getItem('isAdmin')=='true' && 
                             <button type="button" className="btn btn-block btn-danger" onClick={() => {this.state.onDelete(this.state.id)}}>Delete</button>
+                            }
                         </div>
                         <div id={this.state.id+"-authors-content"} className="tab-pane fade active-show" role="tabpanel" aria-labelledby={this.state.id+"-tab-authors"}>
-                            Authors
+                            <table className="table table-stripped">
+                                <thead>
+                                    <tr>
+                                        <th style={{width:'10%'}}>Author</th>
+                                        <th style={{width:'20%'}}>Proposal</th>
+                                        {localStorage.getItem('isReviewer')=='true' && 
+                                            <th style={{width:'10%'}}>Review</th>
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {authors}
+                                </tbody>
+                            </table>
                         </div>
                         <div id={this.state.id+"-edit-content"} className="tab-pane fade active-show" role="tabpanel" aria-labelledby={this.state.id+"-tab-edit"}>
                             Edit

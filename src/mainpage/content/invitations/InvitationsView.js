@@ -58,7 +58,10 @@ export default class InvitationsView extends React.Component{
             this.setState({success: "Successfully added a chair!"});
             this.setState({fetching: 4});
             this.getData();
-            localStorage.setItem('isChair', 'true');
+            if (pid == localStorage.getItem('pid')){
+                localStorage.setItem('isChair', 'true');
+            }
+            
         }, error => {
             alert("Error when trying to add chair: " + error.message || error);
         });
@@ -69,7 +72,9 @@ export default class InvitationsView extends React.Component{
             this.setState({success: "Successfully added a chair!"});
             this.setState({fetching: 4});
             this.getData();
-            localStorage.setItem('isReviewer', 'true');
+            if (pid == localStorage.getItem('pid')){
+                localStorage.setItem('isReviewer', 'true');
+            }
         }, error => {
             alert("Error when trying to add reviewer: " + error.message || error);
         });
@@ -80,7 +85,10 @@ export default class InvitationsView extends React.Component{
             this.setState({success: "Successfully added a chair!"});
             this.setState({fetching: 4});
             this.getData();
-            localStorage.setItem('isCoChair', 'true');
+            if (pid == localStorage.getItem('pid')){
+                localStorage.setItem('isCoChair', 'true');
+            }
+            
         }, error => {
             alert("Error when trying to add cochair: " + error.message || error);
         });
@@ -88,7 +96,7 @@ export default class InvitationsView extends React.Component{
 
     render(){
 
-        if (!localStorage.getItem('isAdmin') == "true"){
+        if (!(localStorage.getItem('isAdmin') == "true")){
             return (
                 <Error403/>
             )

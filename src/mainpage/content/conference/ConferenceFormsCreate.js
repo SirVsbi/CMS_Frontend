@@ -1,5 +1,6 @@
 import React from 'react';
 import ApiService from '../../../ApiService';
+import Error403 from '../errors/Error403';
 
 export default class ConferenceFormsCreate extends React.Component{
     constructor(props){
@@ -73,6 +74,11 @@ export default class ConferenceFormsCreate extends React.Component{
     }
 
     render(){
+        if (!(localStorage.getItem('isAdmin') == "true")){
+            return (
+                <Error403/>
+            )
+        }
         return (
             <div className="card card-danger">
                 <form onSubmit={this.handleSubmit} noValidate>
