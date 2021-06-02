@@ -139,7 +139,7 @@ class LoginForm extends React.Component{
         localStorage.setItem('ts', Date.now() / 1000);
         localStorage.setItem('isAdmin', (response.userName=='admin'));
         localStorage.setItem('isListener', (response.listener !== null));
-        localStorage.setItem('isAuthor', (response.author.length > 0));
+        localStorage.setItem('isAuthor', (response.authors.length > 0));
         localStorage.setItem('isChair', (response.chair !== null));
         localStorage.setItem('isCoChair', (response.coChair !== null));
         localStorage.setItem('isReviewer', (response.reviewer !== null));
