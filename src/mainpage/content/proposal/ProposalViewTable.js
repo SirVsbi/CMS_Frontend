@@ -13,8 +13,10 @@ export default class ProposalViewTable extends React.Component{
     }
 
     render(){
+        let order = 0;
         let tableItems = this.state.data.map(d => {
-            return <ProposalViewTableItem key={d.id} {...d}/>
+            order++;
+            return <ProposalViewTableItem key={d.id} {...d} order={order+'.'}/>
         });
 
         return (

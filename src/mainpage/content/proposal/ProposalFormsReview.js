@@ -29,7 +29,8 @@ export default class ProposalFormsReview extends React.Component{
         // get from database
         let authors = [{name: 'Szabolcs Vidam'}, {name: 'Bogdan Vasc'}, {name: 'Alexandra Tudorescu'}, {name: 'David Turcas'}, {name: 'Andrei Turcas'}, {name: 'Andrea Barrasa'}];
 
-        this.reviewer = props.reviewer || {participantId: 1, reviewerId: 1, name: "Bogdan Vasc"};
+        this.user = props.user || {pid: 1, reviewer: { reviewerId: 1 }, name: "Alexandra Tudorescu"};
+        this.reviewer = this.user.reviewer;
         this.proposal = props.proposal || {name: "Best proposal", paperAbstract: "Lorem ipsum", filePath: "../../../../public/testFiles/BestPaper.txt"};
         this.authors = props.authors || authors;
         this.keywords = props.keywords || keywords;
@@ -37,10 +38,11 @@ export default class ProposalFormsReview extends React.Component{
 
         // the fixed author should be the user who is making the proposal
         this.state = {
+            proposalId: this.id,
+            proposalData: null,
             filledAuthors: [...this.authors],
             selectedFile: '',
             isFilePicked: false,
-            proposalId: this.id,
             reviewerId: this.reviewer.reviewerId,
             conference: this.conference,
             conferenceSection: this.conferenceSection,
@@ -54,6 +56,16 @@ export default class ProposalFormsReview extends React.Component{
 
         this.fileHandleSubmission = this.fileHandleSubmission.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    getProposalDetails(){
+        ApiService.GetProposalDetails(this.state.proposalId.toString(), data => {
+            this.setState({
+                proposalData: data,
+            });
+        }, error => {
+            alert("Error when fetching proposal: " + error.message || error);
+        });
     }
 
     fileChangeHandler = event => {
@@ -112,9 +124,11 @@ export default class ProposalFormsReview extends React.Component{
         s.async = true;
 
         document.body.appendChild(s);
+        //this.getProposalDetails();
     }
 
     render(){
+        //alert(this.state.proposalId);
 
         //this.setState({filledAuthors: [...this.fixedAuthors, this.authors[2]]});
 
@@ -122,7 +136,6 @@ export default class ProposalFormsReview extends React.Component{
         const checkedIcon = <CheckBoxIcon fontSize="small" />;
         return (
             <div className="card card-danger">
-                <ProposalViewTable data={[this.props]}/>
                 <form onSubmit={this.handleSubmit}>
                 <div className="card-header">
                     <h3 className="card-title">Review proposal</h3>

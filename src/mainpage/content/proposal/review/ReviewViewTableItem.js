@@ -14,6 +14,15 @@ export default class ReviewViewTableItem extends React.Component{
         this.qualifier = props.qualifier;
         this.reviewer = props.reviewer;
         this.canReview = props.canReview || true;
+        this.possibleStatus = {
+            'bidding': {title: 'Bidding', className: 'bg-info'},
+            'accepted': {title: 'Accepted', className: 'bg-success'},
+            'contradictory': {title: 'Contradictory', className: 'bg-warning'},
+            'rejected': {title: 'Rejected', className: 'bg-danger'}
+        }
+        this.status = this.possibleStatus[this.proposal.status] || this.possibleStatus['bidding'];
+
+
 
         this.state = { //state is by default an object
             order: this.order,
@@ -24,7 +33,7 @@ export default class ReviewViewTableItem extends React.Component{
             qualifierName: this.qualifier.name,
             qualifierScore: this.qualifier.score,
             reviewer: this.reviewer,
-            reviewerName: this.reviewer.pcMember.participant.name
+            reviewerName: this.reviewer.participant.name
         };
 
     }
@@ -57,19 +66,8 @@ export default class ReviewViewTableItem extends React.Component{
                 <td>
                     <span>{this.state.justification}</span>
                 </td>
-                <td className="project-actions" key={this.order}>
-                    {this.canReview && (this.state.qualifierScore > 3) &&
-                    <button className="btn btn-primary btn-sm" style={{marginRight:'3px'}}>
-                        <i className="fas fa-check-circle"/>
-                        Accept paper
-                    </button>
-                    }
-                    {this.canReview && (this.state.qualifierScore <= 3) &&
-                    <button className="btn btn-danger btn-sm" style={{marginRight:'3px'}}>
-                        <i className="fas fa-folder"/>
-                        Reject paper
-                    </button>
-                    }
+                <td>
+                    <span className={"badge " + this.status.className}>{this.status.title}</span>
                 </td>
             </tr>
 

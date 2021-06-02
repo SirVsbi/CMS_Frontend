@@ -28,7 +28,7 @@ export default class ReviewViewTable extends React.Component{
                     <th style={{width:'15%'}}>Reviewer</th>
                     <th style={{width:'13%'}}>Review score</th>
                     <th style={{width:'40%'}}>Review justification</th>
-                    <th style={{width:'30%'}}></th>
+                    <th style={{width:'30%'}}>Status</th>
                 </tr>
                 </thead>
                 <tbody>
