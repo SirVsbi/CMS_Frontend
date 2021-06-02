@@ -12,7 +12,7 @@ class Profile extends React.Component{
         super(props);
 
         this.state = {
-            picture: "adminlte/dist/img/user_default.jpg",
+            picture: "https://i.ibb.co/bKb1FBn/avatar5.png",
             name: "",
             userInfo: {
                 affiliation: "",

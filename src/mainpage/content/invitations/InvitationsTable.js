@@ -32,7 +32,7 @@ export default class InvitationsTable extends React.Component{
             return (
                 <tr key={d.chairId}>
                     <th>{order+'.'}</th>
-                    <th style={{width: '5%'}}>{d.participant.userName}</th>
+                    <th style={{width: '5%'}}><a href={"/ws/profile/"+d.participant.pid}>{d.participant.userName}</a></th>
                     <th style={{width: '5%'}}>{d.participant.name}</th>
                     <th style={{width: '5%'}}><button className="btn btn-danger btn-sm" >Remove</button></th>
                 </tr>

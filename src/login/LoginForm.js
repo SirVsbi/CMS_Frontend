@@ -144,6 +144,7 @@ class LoginForm extends React.Component{
         localStorage.setItem('isChair', response.chair !== null?"true":"false");
         localStorage.setItem('isCoChair', response.coChair !== null?"true":"false");
         localStorage.setItem('isReviewer', response.reviewer !== null?"true":"false");
+        localStorage.setItem('picture', 'https://i.ibb.co/bKb1FBn/avatar5.png');
         window.location.href = '/ws';
         console.log('ha');
     }

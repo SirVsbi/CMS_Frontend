@@ -11,7 +11,7 @@ export default class ConferenceViewTableItem extends React.Component{
         this.order = props.order || "1.";
         this.title = props.name || "Untitled";
         this.createdOn = props.createdOn || "unknown";
-        this.chairPicture = props.chairPicture || "adminlte/dist/img/user_default.jpg";
+        this.chairPicture = props.chairPicture || localStorage.getItem('picture')
         this.chairName = props.chairName || "Unknown";
         this.startDate = props.timeStart?moment(props.timeStart).format('YYYY-MM-DD HH:MM'):"Unknown";
         this.endDate = props.timeEnd?moment(props.timeEnd).format('YYYY-MM-DD HH:MM'):"Unknown";

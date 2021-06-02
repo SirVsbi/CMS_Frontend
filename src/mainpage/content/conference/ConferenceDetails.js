@@ -101,7 +101,7 @@ class ConferenceDetails extends React.Component{
                                     Conference creator
                                     <div className="list-inline">
                                         <div className="list-inline-item">
-                                            <img alt="Avatar" src="adminlte/dist/img/user_default.jpg" style={{borderRadius: "50%", display: "inline", width: "2.5rem"}}></img>
+                                            <img alt="Avatar" src={localStorage.getItem('picture')} style={{borderRadius: "50%", display: "inline", width: "2.5rem"}}></img>
                                         </div>
                                         <div className="list-inline-item">
                                             <a href="/ws/profile/1">Admin</a>

@@ -6,7 +6,7 @@ export default class SidebarUser extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            picture: "adminlte/dist/img/" + (this.props.picture || "user_default.jpg"),
+            picture: localStorage.getItem('picture'),
             name: this.props.name || "Undefined"
         }
     }
