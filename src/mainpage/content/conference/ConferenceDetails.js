@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import ConferenceSection from './ConferenceSection';
 import ConferenceSectionAdd from './ConferenceSectionAdd';
 import ApiService from '../../../ApiService';
+import moment from 'moment';
 
 
 class ConferenceDetails extends React.Component{
@@ -31,8 +32,8 @@ class ConferenceDetails extends React.Component{
             console.log(data);
             this.setState({
                 name: data.name || 'Unknown',
-                timeStart: data.timeStart || 'Unknown',
-                timeEnd: data.timeEnd || 'Unknown',
+                timeStart: data.timeStart?moment(data.timeStart).format('YYYY-MM-DD HH:MM'):'Unknown',
+                timeEnd: data.timeEnd?moment(data.timeEnd).format('YYYY-MM-DD HH:MM'):'Unknown',
                 program: data.program || 'Unknown program',
                 fetching: this.state.fetching - 1
             });
@@ -50,7 +51,7 @@ class ConferenceDetails extends React.Component{
 
     deleteConferenceSection(id){
         ApiService.DeleteConfereceSection(id, response => {
-
+            this.getData();
         }, error => {
 
         });

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory } from "react-router-dom";
+import moment from 'moment';
 
 
 export default class ConferenceViewTableItem extends React.Component{
@@ -12,8 +13,8 @@ export default class ConferenceViewTableItem extends React.Component{
         this.createdOn = props.createdOn || "unknown";
         this.chairPicture = props.chairPicture || "adminlte/dist/img/user_default.jpg";
         this.chairName = props.chairName || "Unknown";
-        this.startDate = props.timeStart || "Unknown";
-        this.endDate = props.timeEnd || "Unknown";
+        this.startDate = props.timeStart?moment(props.timeStart).format('YYYY-MM-DD HH:MM'):"Unknown";
+        this.endDate = props.timeEnd?moment(props.timeEnd).format('YYYY-MM-DD HH:MM'):"Unknown";
         this.timeLeft = '';
         this.timeDone = 0;
 
@@ -67,8 +68,6 @@ export default class ConferenceViewTableItem extends React.Component{
                 <td>{this.order}</td>
                 <td>
                     <a href={"/ws/conference/view/" + this.conferenceId}>{this.title}</a>
-                    <br/>
-                    <small>Created on {this.createdOn}</small>
                 </td>
                 <td>
                     <div className="list-inline">
@@ -76,7 +75,7 @@ export default class ConferenceViewTableItem extends React.Component{
                             <img alt="Avatar" style={{borderRadius:'50%',display:'inline',width:'2.5rem'}} src={this.chairPicture}></img>
                         </div>
                         <div key="name" className="list-inline-item">
-                            <a href="/ws/profile">{this.chairName}</a>
+                            <a href="/ws/profile/1">Admin</a>
                         </div>
                     </div>
                 </td>
