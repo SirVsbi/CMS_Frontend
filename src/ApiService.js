@@ -214,7 +214,7 @@ var ApiService = {
             .then(response => response.json())
             .then(data => {
                 if (!data.proposals || data.proposals.length == 0) failure("No such proposal!");
-                else success(data.conferences[0]);
+                else success(data.proposals[0]);
             });
     },
 
