@@ -63,6 +63,7 @@ export default class RoomTimetableViewTableItem extends React.Component {
             const listener = this.state.listeners[i];
             const { participant } = listener;
             //console.log(author);
+            if (!participant) return false;
             let listenerPid = participant.pid;
             if(listenerPid.toString() === localStorage.getItem('pid')){
                 return true;
