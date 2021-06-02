@@ -10,25 +10,16 @@ export default class ProposalViewTableItem extends React.Component{
         this.user = props.user || {pid: 1, name: "Alexandra-Natalia Tudorescu", chair: {chairId: 1}}
         this.proposalId = props.proposalId;
         this.name = props.name || "Untitled";
-        this.createdOn = props.createdOn || "unknown";
         this.timeLeft = '';
         this.timeDone = 0;
         this.paperAbstract = props.paperAbstract || "Lorem ipsum";
         this.paperAbstractShort = this.paperAbstract.substr(0, 50);
         this.status = props.status;
-        //this.conference = props.conference || { name: "Test conference", call: {deadline: '2020-05-31'} };
-        //this.conferenceSection = props.conferenceSection || {name: "Test conference section"};
-        // should work if it's on the server: otherwise I get "failed - no file" error, but visually we get something downloading
         this.filePath = props.filePath || "ProposalFormsReview.js";
-        this.displayFilePath = props.name || "BestPaper.txt";
+        this.displayFilePath = props.name || "untitled";
         this.showMoreLess = 'show more';
 
-        this.authors = props.authors || [
-            { participantId: 1, authorName: 'Bogdan Vasc', email: 'bv@cs.ubbcluj.ro' },
-            { participantId: 2, authorName: 'Szabolcs Vidam', email: 'sv@cs.ubbcluj.ro' },
-        ];
-
-        console.log(this.authors);
+        this.authors = props.authors || [];
 
         this.conferenceSection = this.authors[0].conferenceSection;
         console.log(this.conferenceSection);
@@ -40,15 +31,6 @@ export default class ProposalViewTableItem extends React.Component{
         let deadlineUtc = Date.parse(this.deadline);
         let dateNow = Date.now();
 
-        this.topics = props.topics || [
-            { topicId: 1, name: 'Machine Learning'},
-            { topicId: 2, name: 'Cyber-security'},
-        ]
-        this.keywords = props.keywords || [
-            { keywordId: 1, name: 'methodology'},
-            { keywordId: 2, name: 'visualisation'},
-            { keywordId: 3, name: 'framework'},
-        ]
         this.possibleStatus = {
             'bidding': {title: 'Bidding', className: 'bg-info'},
             'accepted': {title: 'Accepted', className: 'bg-success'},
@@ -65,8 +47,6 @@ export default class ProposalViewTableItem extends React.Component{
             proposalId: this.proposalId,
             user: this.user,
             authors: this.authors,
-            topics: this.topics,
-            keywords: this.keywords,
             abstractExpanded: false,
             abstractTruncated:false,
             showMoreLess: this.showMoreLess,
@@ -155,7 +135,7 @@ export default class ProposalViewTableItem extends React.Component{
             const { authorId, participant } = author //destructuring
             return (
                 <tr key={authorId}>
-                    <td>{participant.name}</td>
+                    <td><a href={"/ws/profile/"+participant.pid}>{participant.name}</a></td>
                 </tr>
             )
         })
@@ -191,8 +171,6 @@ export default class ProposalViewTableItem extends React.Component{
                 <td>{this.order}</td>
                 <td>
                     <span>{this.name}</span>
-                    <br/>
-                    <small>Created on {this.createdOn}</small>
                 </td>
                 <td>
                 <table id='authors'>
@@ -200,20 +178,6 @@ export default class ProposalViewTableItem extends React.Component{
                     {this.renderAuthorTableData()}
                     </tbody>
                 </table>
-                </td>
-                <td>
-                    <table id='topics'>
-                        <tbody>
-                        {this.renderTopicTableData()}
-                        </tbody>
-                    </table>
-                </td>
-                <td>
-                    <table id='keywords'>
-                        <tbody>
-                        {this.renderKeywordTableData()}
-                        </tbody>
-                    </table>
                 </td>
                 <td>
                     <span id={"paperAbstract"+this.order} className={"showMore"}>
