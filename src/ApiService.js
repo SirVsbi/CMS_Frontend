@@ -302,6 +302,10 @@ var ApiService = {
             });
     },
 
+    async AddListener(data, success, failure){
+        this.__PostRequest(this.baseUrl + '/listener', data, success, failure);
+    },
+
     async AddProposal(data, success, failure){
         this.__PostRequest(this.baseUrl + '/proposal', data, success, failure);
     },

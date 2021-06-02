@@ -1,8 +1,9 @@
 import React from "react";
 import RoomTimetableViewTable from "./RoomTimetableViewTable";
 import ApiService from "../../../../ApiService";
+import {withRouter} from "react-router-dom";
 
-export default class RoomTimetableView extends React.Component {
+class RoomTimetableView extends React.Component {
     constructor(props) {
         super(props);
 
@@ -13,29 +14,42 @@ export default class RoomTimetableView extends React.Component {
         ];
 
         this.state = {
-            roomName: this.roomName,
-            data: this.data
+            roomName: "",
+            data: [],
+            fetching: true
         }
     }
 
     getRoom(){
         ApiService.GetRoomDetails(this.id, data => {
             this.setState({
-                data: data
-            })
+                data: data,
+                fetching: false
+            });
+        }, error => {
+            alert("Error when fetching room: " + error.message || error);
         })
     }
 
+    componentDidMount() {
+        this.getRoom();
+    }
+
     render(){
+        if (this.state.fetching){
+            return (
+                <span>Fetching data...</span>
+            )
+        }
         return (
             <div className="row">
                 <div className="">
                     <div className="card">
                         <div className="card-header">
-                            <h3 className="card-title">Room {this.roomName}</h3>
+                            <h3 className="card-title">Room {this.state.data.name}</h3>
                         </div>
                         <div className="card-body">
-                            <RoomTimetableViewTable data={this.data}/>
+                            <RoomTimetableViewTable data={this.state.data.conferenceSections}/>
                         </div>
                     </div>
                 </div>
@@ -43,3 +57,5 @@ export default class RoomTimetableView extends React.Component {
         );
     }
 }
+
+export default withRouter(RoomTimetableView)

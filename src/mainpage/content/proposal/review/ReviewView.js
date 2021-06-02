@@ -80,7 +80,7 @@ class ReviewView extends React.Component{
                 <span>Fetching data...</span>
             )
         }
-        console.log(this.getProposal());
+        //console.log(this.getProposal());
         return (
             <div className="row">
                 <div className="">
