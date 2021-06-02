@@ -1,5 +1,6 @@
 import React from "react";
 import ApiService from "../../../../ApiService";
+import moment from 'moment';
 
 export default class RoomTimetableViewTableItem extends React.Component {
     constructor(props) {
@@ -14,8 +15,8 @@ export default class RoomTimetableViewTableItem extends React.Component {
         this.conferenceName = props.conference.name;
         this.authors = props.authors || [{participantId: 1, authorName: 'Szabolcs Vidam'}, {participantId: 2, authorName: 'Bogdan Vasc'}, {participantId: 3, authorName: 'Alexandra Tudorescu'}, {participantId: 4, authorName: 'David Turcas'}, {participantId: 5, authorName: 'Andrei Turcas'}, {participantId: 6, authorName: 'Andrea Barrasa'}];
         this.listeners = props.listeners || []; //[{participantId: 1, name: 'Szabolcs Vidam'}, {participantId: 2, name: 'Bogdan Vasc'}, {participantId: 3, name: 'Alexandra Tudorescu'}, {participantId: 4, name: 'David Turcas'}, {participantId: 5, name: 'Andrei Turcas'}, {participantId: 6, name: 'Andrea Barrasa'}];
-        this.timeStart = props.timeStart;
-        this.timeFinish = props.timeEnd;
+        this.timeStart = props.timeStart?moment(props.timeStart).format('YYYY-MM-DD HH:MM'):"Unknown";;
+        this.timeFinish = props.timeEnd?moment(props.timeEnd).format('YYYY-MM-DD HH:MM'):"Unknown";;
         this.capacity = props.room.capacity || 20;
         this.canJoinListener = (props.canJoinListener!==undefined?props.canJoinListener:true);
         this.canDelete = (props.canDelete!==undefined?props.canDelete:true);
@@ -70,9 +71,16 @@ export default class RoomTimetableViewTableItem extends React.Component {
         return false;
     }
 
+    isFull(){
+        if(this.state.listeners.length >= this.state.capacity){
+            return true;
+        }
+        return false;
+    }
+
     setPermissions(){
         console.log(localStorage);
-        if(this.sessionChair.pid.toString() !== localStorage.getItem('pid') && !this.isUserAuthor() && !this.isUserListener()){
+        if(this.sessionChair.pid.toString() !== localStorage.getItem('pid') && !this.isUserAuthor() && !this.isUserListener() && !this.isFull()){
             this.setState({canJoinListener: this.state.canJoinListener && true});
         }
         else{
