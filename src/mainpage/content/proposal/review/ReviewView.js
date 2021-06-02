@@ -10,7 +10,7 @@ class ReviewView extends React.Component{
 
         this.id = parseInt(this.props.match.params.id) || null;
 
-        this.canReview = props.canReview || true;
+        this.canReview = localStorage.getItem('isAdmin' == 'true');
 
         this.state = {
             proposalId: this.id,
