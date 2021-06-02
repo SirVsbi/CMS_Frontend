@@ -27,6 +27,7 @@ export default class ProposalView extends React.Component{
 
     componentDidMount(){
         ApiService.GetAllProposals(data => {
+            console.log(data);
             this.setState({
                 data: data,
                 fetching: false

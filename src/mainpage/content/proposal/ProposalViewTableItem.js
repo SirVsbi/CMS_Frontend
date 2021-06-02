@@ -1,6 +1,7 @@
 import React from 'react';
 import ShowMore from "../../../shared/ShowMore";
 import ApiService from "../../../ApiService";
+import moment from 'moment';
 
 export default class ProposalViewTableItem extends React.Component{
     constructor(props){
@@ -24,33 +25,18 @@ export default class ProposalViewTableItem extends React.Component{
         this.displayFilePath = props.name || "BestPaper.txt";
         this.showMoreLess = 'show more';
 
-        this.authors = props.authors || [
-            { participantId: 1, authorName: 'Bogdan Vasc', email: 'bv@cs.ubbcluj.ro' },
-            { participantId: 2, authorName: 'Szabolcs Vidam', email: 'sv@cs.ubbcluj.ro' },
-        ];
-
-        console.log(this.authors);
-        console.log(this.user);
+        this.authors = props.authors || [];
 
         this.conferenceSection = this.authors[0].conferenceSection;
         console.log(this.conferenceSection);
         this.conference = this.conferenceSection.conference;
-        this.deadline = this.conference.deadline || "2021-04-31";
+        this.deadline = this.conference.deadline;
         //this.deadline = "2021-04-31";
 
         //console.log(this.conference.deadline);
         let deadlineUtc = Date.parse(this.deadline);
         let dateNow = Date.now();
 
-        this.topics = props.topics || [
-            { topicId: 1, name: 'Machine Learning'},
-            { topicId: 2, name: 'Cyber-security'},
-        ]
-        this.keywords = props.keywords || [
-            { keywordId: 1, name: 'methodology'},
-            { keywordId: 2, name: 'visualisation'},
-            { keywordId: 3, name: 'framework'},
-        ]
         this.possibleStatus = {
             'bidding': {title: 'Bidding', className: 'bg-info'},
             'accepted': {title: 'Accepted', className: 'bg-success'},
@@ -59,16 +45,14 @@ export default class ProposalViewTableItem extends React.Component{
         }
         this.status = this.possibleStatus[props.status] || this.possibleStatus['bidding'];
         this.canView = (props.canView!==undefined?props.canView:true);
-        this.canEdit = (props.canEdit!==undefined?props.canEdit && dateNow < deadlineUtc:true);
-        this.canDelete = (props.canDelete!==undefined?props.canDelete:true);
-        this.canReview = (props.canReview!==undefined?props.canReview:true);
+        this.canEdit = (props.canEdit!==undefined?props.canEdit && dateNow < deadlineUtc:false);
+        this.canDelete = (props.canDelete!==undefined?props.canDelete:false);
+        this.canReview = localStorage.getItem('isReviewer')=='true'?true:false;//(props.canReview!==undefined?props.canReview:true);
 
         this.state = { //state is by default an object
             proposalId: this.proposalId,
             user: this.user,
             authors: this.authors,
-            topics: this.topics,
-            keywords: this.keywords,
             abstractExpanded: false,
             abstractTruncated:false,
             showMoreLess: this.showMoreLess,
@@ -215,20 +199,6 @@ export default class ProposalViewTableItem extends React.Component{
                     {this.renderAuthorTableData()}
                     </tbody>
                 </table>
-                </td>
-                <td>
-                    <table id='topics'>
-                        <tbody>
-                        {this.renderTopicTableData()}
-                        </tbody>
-                    </table>
-                </td>
-                <td>
-                    <table id='keywords'>
-                        <tbody>
-                        {this.renderKeywordTableData()}
-                        </tbody>
-                    </table>
                 </td>
                 <td>
                     <span id={"paperAbstract"+this.order} className={"showMore"}>

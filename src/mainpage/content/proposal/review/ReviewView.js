@@ -20,6 +20,7 @@ export default class ReviewView extends React.Component{
 
     getData(){
         ApiService.GetAllReviews(data => {
+            console.log(data);
             this.setState({data: data, fetching: false});
         }, error => {
             alert('Failed getting reviews! Error: ' + (error.message || error));
@@ -72,7 +73,7 @@ export default class ReviewView extends React.Component{
                         <div className="card-body">
                             <ReviewViewTable data={this.state.data}/>
                             <div className="project-actions">
-                                {this.canReview && this.state.data[0].proposal.status == "contradictory" &&
+                                {this.canReview && this.state.data.length > 0 && this.state.data[0].proposal.status == "contradictory" &&
                                 <div>
                                     <button className="btn btn-success btn-sm" style={{marginRight:'3px'}} onClick={this.acceptPaper}>
                                         <i className="fas fa-check-circle"/>

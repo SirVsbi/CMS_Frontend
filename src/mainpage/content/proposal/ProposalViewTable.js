@@ -16,7 +16,7 @@ export default class ProposalViewTable extends React.Component{
         let order = 0;
         let tableItems = this.state.data.map(d => {
             order++;
-            return <ProposalViewTableItem key={d.id} {...d} order={order+'.'}/>
+            return <ProposalViewTableItem key={d.proposalId} {...d} order={order+'.'}/>
         });
 
         return (
@@ -26,11 +26,9 @@ export default class ProposalViewTable extends React.Component{
                     <th style={{width:"1%"}}>#</th>
                     <th style={{width:'18%'}}>Name</th>
                     <th style={{width:'12%'}}>Author(s)</th>
-                    <th style={{width:'13%'}}>Topic(s)</th>
-                    <th style={{width:'15%'}}>Keyword(s)</th>
                     <th style={{width:'15%'}}>Abstract</th>
                     <th style={{width:'10%'}}>Paper</th>
-                    <th style={{width:"32%"}}>Conference</th>
+                    <th style={{width:"15%"}}>Conference</th>
                     <th style={{width:"40px"}}>Status</th>
                     <th style={{width:'30%'}}></th>
                 </tr>

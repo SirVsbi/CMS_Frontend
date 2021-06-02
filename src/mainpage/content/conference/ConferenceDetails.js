@@ -9,10 +9,10 @@ import moment from 'moment';
 class ConferenceDetails extends React.Component{
     constructor(props){
         super(props);
-        this.sections = [];
         this.state = {
             //sections: [{name: 'First section'}, {}, {}, {}],
             conferenceId: this.props.match.params.id,
+            sections: [],
             name: '',
             timeStart: '',
             timeEnd: '',
@@ -28,9 +28,9 @@ class ConferenceDetails extends React.Component{
 
     getData(){
         ApiService.GetConferenceDetails(this.state.conferenceId,  data => {
-            this.sections = data.conferenceSections;
             console.log(data);
             this.setState({
+                sections: data.conferenceSections,
                 name: data.name || 'Unknown',
                 timeStart: data.timeStart?moment(data.timeStart).format('YYYY-MM-DD HH:MM'):'Unknown',
                 timeEnd: data.timeEnd?moment(data.timeEnd).format('YYYY-MM-DD HH:MM'):'Unknown',
@@ -64,9 +64,10 @@ class ConferenceDetails extends React.Component{
             )
         }
         let col1 = [], col2 = [], id = 1;
-        for (var i = 0; i < this.sections.length; i++){
-            let s = this.sections[i];
-            let sData = {id: s.conferenceSectionId, title: s.name, timeStart: s.timeStart, timeEnd: s.timeEnd, roomId: s.room.roomId, roomName: s.room.name, sessionChair: s.sessionChair}
+        for (var i = 0; i < this.state.sections.length; i++){
+            let s = this.state.sections[i];
+            console.log(s);
+            let sData = {id: s.conferenceSectionId, title: s.name, timeStart: s.timeStart, timeEnd: s.timeEnd, roomId: s.room.roomId, roomName: s.room.name, sessionChair: s.sessionChair, authors: s.authors}
             let sec = <ConferenceSection id={s.conferenceSectionId} key={s.conferenceSectionId} data={sData} onDelete={this.deleteConferenceSection}/>;
             if (i%2==0) col1.push(sec);
             else col2.push(sec);
@@ -136,13 +137,16 @@ class ConferenceDetails extends React.Component{
                     </div>
                     <div className="card-body">
                         <div className="row">
+                            {localStorage.getItem('isAdmin')=='true'
+                            &&
                             <div className="col-12 col-md-12 col-lg-3 order-1 order-md-1">
                                 <ConferenceSectionAdd conferenceId={this.state.conferenceId} onAdd={this.getData}/>
                             </div>
-                            <div className="col-12 col-md-12 col-lg-3 order-2 order-md-2">
+                            }
+                            <div className="col-12 col-md-12 col-lg-4 order-2 order-md-2">
                                 {col1}
                             </div>
-                            <div className="col-12 col-md-12 col-lg-3 order-2 order-md-2">
+                            <div className="col-12 col-md-12 col-lg-4 order-2 order-md-2">
                                 {col2}
                             </div>
                             

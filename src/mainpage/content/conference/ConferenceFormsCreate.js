@@ -1,5 +1,6 @@
 import React from 'react';
 import ApiService from '../../../ApiService';
+import Error403 from '../errors/Error403';
 
 export default class ConferenceFormsCreate extends React.Component{
     constructor(props){
@@ -9,7 +10,8 @@ export default class ConferenceFormsCreate extends React.Component{
                 title: '',
                 description: '',
                 startDate: '',
-                endDate: ''
+                endDate: '',
+                deadline: ''
             },
             error: null,
             success: null
@@ -26,7 +28,8 @@ export default class ConferenceFormsCreate extends React.Component{
         s.type = 'text/javascript';
         s.async = true;
         s.innerHTML = '$("#add-start-date").inputmask("mm/dd/yyyy hh:mm", { "placeholder": "mm/dd/yyyy hh:mm" });' +
-                      '$("#add-end-date").inputmask("mm/dd/yyyy hh:mm", { "placeholder": "mm/dd/yyyy hh:mm" })';
+                      '$("#add-end-date").inputmask("mm/dd/yyyy hh:mm", { "placeholder": "mm/dd/yyyy hh:mm" });' +
+                      '$("#add-deadline").inputmask("mm/dd/yyyy hh:mm", { "placeholder": "mm/dd/yyyy hh:mm" })';
         
         document.body.appendChild(s);
         
@@ -36,6 +39,7 @@ export default class ConferenceFormsCreate extends React.Component{
         event.preventDefault();
         const startDate = document.getElementById('add-start-date').value;
         const endDate = document.getElementById('add-end-date').value;
+        const deadline = document.getElementById('add-deadline').value;
         const title = document.getElementById('add-title').value;
         const desc = document.getElementById('add-description').value;
         let fields = this.state.fields;
@@ -43,6 +47,7 @@ export default class ConferenceFormsCreate extends React.Component{
         fields.startDate = startDate;
         fields.endDate = endDate;
         fields.description = desc;
+        fields.deadline = deadline;
         this.setState({fields: fields});
 
         console.log(this.state.fields);
@@ -50,6 +55,7 @@ export default class ConferenceFormsCreate extends React.Component{
             name: this.state.fields.title,
             timeStart: Date.parse(this.state.fields.startDate),
             timeEnd: Date.parse(this.state.fields.endDate),
+            deadline: Date.parse(this.state.fields.deadline),
             program: this.state.fields.description
         });
 
@@ -68,6 +74,11 @@ export default class ConferenceFormsCreate extends React.Component{
     }
 
     render(){
+        if (!(localStorage.getItem('isAdmin') == "true")){
+            return (
+                <Error403/>
+            )
+        }
         return (
             <div className="card card-danger">
                 <form onSubmit={this.handleSubmit} noValidate>
@@ -113,6 +124,16 @@ export default class ConferenceFormsCreate extends React.Component{
                                     <span className="input-group-text"><i className="fas fa-calendar-alt"></i></span>
                                 </div>
                                 <input name="endDate" type="text" id="add-end-date" className="form-control" blabla="123" data-inputmask-alias="datetime" data-inputmask-inputformat="mm/dd/yyyy HH:MM" data-mask inputMode="numeric"/>
+                            </div>
+                        </div>
+
+                        <div className="form-group">
+                            <label>Deadline:</label>
+                            <div className="input-group">
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text"><i className="fas fa-calendar-alt"></i></span>
+                                </div>
+                                <input name="deadline" type="text" id="add-deadline" className="form-control" blabla="123" data-inputmask-alias="datetime" data-inputmask-inputformat="mm/dd/yyyy HH:MM" data-mask inputMode="numeric"/>
                             </div>
                         </div>
 

@@ -110,12 +110,13 @@ export default class ProposalFormsReview extends React.Component{
         }
         console.log(data);
         ApiService.CreateReview(data, success => {
-                this.setState({success: 'Review was registered'})
+                this.setState({success: 'Review was registered'});
+                window.location.reload();
             }, error => {
                 this.setState({error: 'Failed to register review: ' + error.message || error});
             }
         );
-        this.fileHandleSubmission();
+        //this.fileHandleSubmission();
     }
 
     componentDidMount(){
