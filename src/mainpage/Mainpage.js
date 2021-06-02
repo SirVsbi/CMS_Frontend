@@ -72,7 +72,7 @@ class Mainpage extends React.Component{
                     <Content title="View conferences" content={<ConferenceView/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 
-                <Route path='/ws/proposal/create'>
+                <Route path='/ws/proposal/create/:id?'>
                     <Content title="Submit a proposal" content={<ProposalFormsCreate/>} hierarchy={[{ name: 'Home', to: this.location }]}/>
                 </Route>
 

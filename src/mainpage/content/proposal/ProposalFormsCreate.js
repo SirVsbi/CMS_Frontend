@@ -4,13 +4,15 @@ import {Checkbox, Chip, TextField} from "@material-ui/core";
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import ApiService from '../../../ApiService';
+import {withRouter} from "react-router-dom";
 
 
 
-export default class ProposalFormsCreate extends React.Component{
+class ProposalFormsCreate extends React.Component{
     constructor(props) {
         super(props);
 
+        this.proposalId = parseInt(this.props.match.params.id) || null;
         this.conference = props.conference || "Test conference";
         this.conferenceSection = props.conferenceSection || "Test conference section";
         this.deadline = props.deadline || "01/01/2001";
@@ -33,13 +35,18 @@ export default class ProposalFormsCreate extends React.Component{
         this.fixedAuthors = [];
 
         this.state = {
+            proposalData: [],
             filledAuthors: [],
             selectedFile: '',
             isFilePicked: false,
+            isSelected: false,
+            conferenceName: '',
+            paperAbstract: '',
             conferences: [],
             conferenceSelected: null,
             sectionSelected: null,
             deadline: this.deadline,
+            readOnly: false,
             fetching: 2
         }
 
@@ -47,10 +54,39 @@ export default class ProposalFormsCreate extends React.Component{
         this.onSelectChange = this.onSelectChange.bind(this);
         this.fileHandleSubmission = this.fileHandleSubmission.bind(this);
         this.getData = this.getData.bind(this);
+        this.onChange = this.onChange.bind(this);
+
+    }
+
+    getProposalDetails(){
+        console.log(this.proposalId);
+        ApiService.GetProposalDetails(this.proposalId, data => {
+            this.setState({
+                proposalData: data,
+            });
+            this.setState({
+                sectionSelected: this.state.proposalData.authors[0].conferenceSection,
+                conferenceSelected: this.state.proposalData.authors[0].conferenceSection.conference,
+                proposalName: this.state.proposalData.name,
+                paperAbstract: this.state.proposalData.paperAbstract,
+                selectedFile: this.state.proposalData.filePath,
+                readOnly: true,
+                fetching: false
+            });
+            console.log(this.state);
+
+        }, error => {
+            alert("Error when fetching proposal: " + error.message || error);
+        });
     }
 
     componentDidMount(){
-        this.getData();
+        if(this.proposalId !== null){
+            this.getProposalDetails();
+        }
+        else{
+            this.getData();
+        }
     }
 
     getData(){
@@ -90,9 +126,7 @@ export default class ProposalFormsCreate extends React.Component{
         this.setState({isSelected: true});
     };
 
-    // NEEDS MODIFICATION FOR OUR OWN DB (if we're going to store the files there)
-    fileHandleSubmission(){
-        //proposal: 
+    addProposal(){
         let proposalName = document.getElementById('proposal-name').value;
         let fileName = this.state.selectedFile?this.state.selectedFile.name:'';
         let abstract = document.getElementById('abstract').value;
@@ -130,13 +164,42 @@ export default class ProposalFormsCreate extends React.Component{
         })
 
         //authors:
-        
+
 
         console.log(authors);
         console.log(conferenceSectionId);
+    }
 
+    updateProposal(){
+        let paperAbstract = document.getElementById('abstract').value;
+        let filePath = this.state.selectedFile?this.state.selectedFile.name:'';
+        let oldProposal = this.state.proposalData;
+        let newProposal = oldProposal;
+        newProposal.paperAbstract = paperAbstract;
+        if(this.state.isSelected) {
+            newProposal.filePath = filePath;
+        }
+        ApiService.UpdateProposal(newProposal, success => {
+            alert("Successfully updated proposal");
+        }, error => {
+            alert("Could not update proposal");
+        })
+    }
 
+    // NEEDS MODIFICATION FOR OUR OWN DB (if we're going to store the files there)
+    fileHandleSubmission(){
+        //proposal: 
+        if(this.state.readOnly){
+            this.updateProposal();
+        }
+        else{
+            this.addProposal();
+        }
     };
+
+    onChange(event) {
+        this.setState({[event.target.name]: event.target.value})
+    }
 
     onSelectChange(event){
         let id = event.target.id;
@@ -159,16 +222,22 @@ export default class ProposalFormsCreate extends React.Component{
         const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
         const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-        let conferenceOptions = this.state.conferences.map(c => {
-            return (
-                <option key={c.conferenceId} value={c.conferenceId}>{c.name}</option>
-            );
-        });
-        let sectionsOptions = this.state.conferenceSelected == null?[] : this.state.conferenceSelected.conferenceSections.map(s => {
-            return (
-                <option key={s.conferenceSectionId} value={s.conferenceSectionId}>{s.name}</option>
-            );
-        });
+        console.log(this.state);
+
+        let conferenceOptions = null;
+        let sectionsOptions = null;
+        if(!this.state.readOnly) {
+            conferenceOptions = this.state.conferences.map(c => {
+                return (
+                    <option key={c.conferenceId} value={c.conferenceId}>{c.name}</option>
+                );
+            });
+            sectionsOptions = this.state.conferenceSelected == null ? [] : this.state.conferenceSelected.conferenceSections.map(s => {
+                return (
+                    <option key={s.conferenceSectionId} value={s.conferenceSectionId}>{s.name}</option>
+                );
+            });
+        }
 
         return (
             <div className="card card-danger">
@@ -183,11 +252,11 @@ export default class ProposalFormsCreate extends React.Component{
                             <div className="input-group-prepend">
                                 <span className="input-group-text"><i className="fas fa-feather"></i></span>
                             </div>
-                            <input id="proposal-name" type="text" className="form-control"/>
+                            <input id="proposal-name" type="text" className="form-control" value={this.state.proposalName} readOnly={this.state.readOnly}/>
                         </div>
                     </div>
 
-                    <div>
+                    {!this.state.readOnly && <div>
                         <Autocomplete
                             multiple
                             id="author-checkbox"
@@ -214,7 +283,7 @@ export default class ProposalFormsCreate extends React.Component{
                                 <TextField {...params} label="Authors" variant="outlined" placeholder="Auth" />
                             )}
                         />
-                    </div>
+                    </div>}
                     {false &&
                     <div className="form-group">
                         <Autocomplete
@@ -268,35 +337,40 @@ export default class ProposalFormsCreate extends React.Component{
                     </div>
                     }
 
+                    {!this.state.readOnly &&
                     <div className="form-group">
                         <label>Conference:</label>
                         <div className="input-group">
                             <div className="input-group-prepend">
                                 <span className="input-group-text"><i className="fas fa-feather"></i></span>
                             </div>
-                            <select id="conference-selector" className="form-control" onChange={this.onSelectChange} autoComplete="off">
+                            <select id="conference-selector" className="form-control" onChange={this.onSelectChange}
+                                    autoComplete="off">
                                 {conferenceOptions}
                             </select>
                         </div>
                     </div>
-
+                    }
+                    {!this.state.readOnly &&
                     <div className="form-group">
                         <label>Conference Section:</label>
                         <div className="input-group">
                             <div className="input-group-prepend">
                                 <span className="input-group-text"><i className="fas fa-feather"></i></span>
                             </div>
-                            
-                            <select id="section-selector" className="form-control" onChange={this.onSelectChange} autoComplete="off">
+
+                            <select id="section-selector" className="form-control" onChange={this.onSelectChange}
+                                    autoComplete="off">
                                 {sectionsOptions}
                             </select>
                         </div>
                     </div>
+                    }
 
 
                     <div className="form-group">
                         <label>Abstract:</label>
-                        <textarea id="abstract" className="form-control" rows="6" placeholder="Enter..."></textarea>
+                        <textarea id="abstract" className="form-control" rows="6" placeholder="Enter..." name="paperAbstract" value={this.state.paperAbstract} onChange={(value) => this.onChange(value)}></textarea>
                     </div>
                 </div>
 
@@ -311,3 +385,5 @@ export default class ProposalFormsCreate extends React.Component{
         )
     }
 }
+
+export default withRouter(ProposalFormsCreate)
